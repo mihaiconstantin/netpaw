@@ -1,0 +1,14 @@
+Package: netTinker
+Title: Simulations for the master's thesis
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: Network models simulations for the master's thesis.
+Depends: R (>= 3.4.3),
+         qgraph,
+         IsingFit,
+         IsingSampler,
+         bootnet
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
