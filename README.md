@@ -69,7 +69,7 @@ result_cell = run_cell(participants = 500,
 - applies the simulation procedure on a selected number of cells (i.e., it is a wrapper around `run_cell`)
 
 ```r
-result_cells = run_cells(design[c(1, 10, 15), ])
+result_cells = run_cells(design[c(1, 97, 165), ])
 ```
 
 - outputs a list containing the output of `run_cell` for each selected cell:
@@ -89,7 +89,7 @@ result_cells = run_cells(design[c(1, 10, 15), ])
 - applies the simulation procedure on a selected number of cell and replicates the procedure `n` number of times (i.e., it is a wrapper around `run_cells`)
 
 ```r
-run_cells_with_replication = run_cells_with_replication(design[c(1, 10, 15), ], 100)
+run_cells_with_replication = run_cells_with_replication(design[c(1, 97, 165), ], 10)
 ```
 
 - outputs a list containing a list indicating the replication number. Each replication list holds the same output as `run_cells`:
