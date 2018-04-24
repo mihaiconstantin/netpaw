@@ -8,7 +8,7 @@
 #'
 #' TODO: Add one more factor: network architecture (i.e., after asking Claudia).
 #
-#' @usage build_design(participants, nodes, densities)
+#' @usage build_design(participants, nodes, densities, architectures)
 #'
 #' @param participants (int vector) Varying number of participants, e.g., \code{c(10, 50, 100)}.
 #' @param nodes        (int vector) Varying number of nodes (i.e., variables), e.g., \code{c(10, 15, 30)}.

@@ -9,18 +9,18 @@
 #'
 #' TODO: Describe the steps of the simulation.
 #'
-#' @usage run_cell(participants, nodes, density)
+#' @usage run_cell(participants, nodes, density, architecture)
 #'
 #' @param participants  (int scalar) A number of participants, e.g., 100.
 #' @param nodes         (int scalar) A number of nodes (i.e., variables), e.g., 15.
 #' @param density       (double scalar) A value indicating the density, e.g., .3.
-#' @param architectures (int scalar) A value indicating the network architecture, i.e., c(random = 1, small_world = 2, scale_free = 3, empirical = 4).
+#' @param architecture  (int scalar) A value indicating the network architecture, i.e., c(random = 1).
 #'
 #' @return              A list containing three sub-lists: \code{$config}, \code{$true}, and \code{$estimated}.
 #'                      \enumerate {
 #'                          \item \code{$config} contains a vector with the levels specified for this cell
-#'                          \item \code{$graph}) contains a matrix representing the network structure
-#'                          \item \code{$thresholds}) holds a vector representing the model thresholds
+#'                          \item \code{$graph} contains a matrix representing the network structure
+#'                          \item \code{$thresholds} holds a vector representing the model thresholds
 #'                      }
 #'
 #' @export
