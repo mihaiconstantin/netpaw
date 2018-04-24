@@ -8,6 +8,15 @@
     - `ising_small_world()`
 
 
+## Installation
+- the package can be installed as `devtools::install_github('mihaiconstantin/netTinker')`
+- it depends on:
+    - [`qgraph`](https://github.com/SachaEpskamp/qgraph)
+    - [`IsingFit`](https://github.com/cvborkulo/IsingFit)
+    - [`IsingSampler`](https://github.com/SachaEpskamp/IsingSampler)
+    - [`bootnet`](https://github.com/SachaEpskamp/bootnet)
+
+
 ## Description
 The code block below illustrates the main four functions found in this package. 
 
@@ -36,6 +45,8 @@ design = build_design(participants,
 [5,]           50    10     0.2            1
 [6,]           50    10     0.2            2
 ```
+
+- **note**: currently the simulation cannot be performed for architectures 2 and 3 (i.e., small world and scale-free) 
 
 
 #### 2. run_cell(participants, nodes, density, architecture)
