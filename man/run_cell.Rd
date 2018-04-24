@@ -4,7 +4,7 @@
 \alias{run_cell}
 \title{Runs the simulation for a single configuration (i.e., design cell).}
 \usage{
-run_cell(participants, nodes, density)
+run_cell(participants, nodes, density, architecture)
 }
 \arguments{
 \item{participants}{(int scalar) A number of participants, e.g., 100.}
@@ -13,14 +13,14 @@ run_cell(participants, nodes, density)
 
 \item{density}{(double scalar) A value indicating the density, e.g., .3.}
 
-\item{architectures}{(int scalar) A value indicating the network architecture, i.e., c(random = 1, small_world = 2, scale_free = 3, empirical = 4).}
+\item{architecture}{(int scalar) A value indicating the network architecture, i.e., c(random = 1).}
 }
 \value{
 A list containing three sub-lists: \code{$config}, \code{$true}, and \code{$estimated}.
                      \enumerate {
                          \item \code{$config} contains a vector with the levels specified for this cell
-                         \item \code{$graph}) contains a matrix representing the network structure
-                         \item \code{$thresholds}) holds a vector representing the model thresholds
+                         \item \code{$graph} contains a matrix representing the network structure
+                         \item \code{$thresholds} holds a vector representing the model thresholds
                      }
 }
 \description{

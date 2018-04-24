@@ -66,7 +66,7 @@ run_cell <- function(participants, nodes, density, architecture)
         )
     )
 
-    # User feedback at end.
+    # User feedback at the end.
     cat(' Done. \u2713 \n')
 
     return(result)

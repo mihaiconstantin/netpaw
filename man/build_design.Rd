@@ -4,7 +4,7 @@
 \alias{build_design}
 \title{Build the factorial design of the study.}
 \usage{
-build_design(participants, nodes, densities)
+build_design(participants, nodes, densities, architectures)
 }
 \arguments{
 \item{participants}{(int vector) Varying number of participants, e.g., \code{c(10, 50, 100)}.}

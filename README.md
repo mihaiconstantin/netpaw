@@ -46,7 +46,7 @@ design = build_design(participants,
 [6,]           50    10     0.2            2
 ```
 
-- **note**: ***currently the simulation cannot be performed for architectures 2 and 3 (i.e., small world and scale-free)***
+- **note**: ***currently the simulation cannot be performed for architectures 2 and 3 (i.e., small world and scale-free)***. For now, please run configurations or design cells that do not include values of 2 and 3 for the architecture factor.
 
 
 #### 2. run_cell(participants, nodes, density, architecture)
