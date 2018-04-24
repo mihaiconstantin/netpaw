@@ -2,21 +2,19 @@
 % Please edit documentation in R/run_cells.R
 \name{run_cells}
 \alias{run_cells}
-\title{Run the simulation for the selected design cells.}
+\title{Runs the simulation for a selected number of design cells.}
 \usage{
-run_cell(participants, nodes, density)
+run_cells(cells)
 }
 \arguments{
-\item{cells}{(matrix) A matrix containing the specifications for the cells that will be ran.
-Usually a subset of the result of \code{build_desing}.}
+\item{cells}{(matrix) A matrix containing the specifications of the cells that will be ran.
+Usually a subset of the result of \code{\link{build_design}}.}
 }
 \value{
-A list containing the output of \code{run_cell} for each cell specified.
+A list containing the output of \code{\link{run_cell}} for each specified cell.
 }
 \description{
-This function is a wrapper around \code{run_cell} and it performs the simulation procedure
-for all the design cells specified. The simulation is ran without replication. Check
-\code{run_cells_with_replication} for replication purposes.
-
-TODO: Improve the documentation: Link to the other functions.
+This function is a wrapper around \code{\link{run_cell}} and it applies the simulation procedure
+for all specified cells. The simulation is ran without replication. Check \code{\link{run_cells_with_replication}} 
+for replication purposes.
 }

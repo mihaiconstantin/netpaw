@@ -20,15 +20,15 @@ A list containing the graph (i.e., interaction parameters) and the thresholds.
 This function is used to generate random Ising model parameters for a random network architecture.
 }
 \details{
-First, we sample a binary dataset N ^ 2, where N is the number of nodes in the network. The
-probability of sampling a value of 1 is equal to the probability specified by the function
-argument p, and the probability of sampling a 0 is 1 - p.
+First, we sample a binary vector of \eqn{N^2} length, where \eqn{N} is the number of nodes in 
+the network. The probability of sampling a value of 1 is equal to the probability specified by 
+the function argument \code{p}, and the probability of sampling a 0 is \eqn{1 - p}.
 
-Next, we create a new symmetrical matrix from the sampled dataset and set its main diagonal
-to 0. This represents the unweighted graph.
+Next, we create a symmetrical matrix from the sampled vector and we set its main diagonal
+to 0. This matrix represents the unweighted graph.
 
 Next, we create an weighted graph from the unweighted graph. To do so we generate a matrix
-with values from the normal distribution (M = 0, SD = 1) with the same number of columns
+with values from the normal distribution (\eqn{M = 0}, \eqn{SD = 1}) with the same number of columns
 and rows and the unweighted matrix. We also make this matrix symmetrical (i.e., no need to
 set the main diagonal to 0). Now, the weighted random graph is obtained by multiplying
 the unweighted graph by the symmetrical random matrix.

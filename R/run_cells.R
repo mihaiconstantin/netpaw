@@ -1,19 +1,17 @@
 
-#' @title Run the simulation for the selected design cells.
+#' @title Runs the simulation for a selected number of design cells.
 #'
 #' @description
-#' This function is a wrapper around \code{run_cell} and it performs the simulation procedure
-#' for all the design cells specified. The simulation is ran without replication. Check
-#' \code{run_cells_with_replication} for replication purposes.
+#' This function is a wrapper around \code{\link{run_cell}} and it applies the simulation procedure
+#' for all specified cells. The simulation is ran without replication. Check \code{\link{run_cells_with_replication}} 
+#' for replication purposes.
 #'
-#' TODO: Improve the documentation: Link to the other functions.
+#' @usage run_cells(cells)
 #'
-#' @usage run_cell(participants, nodes, density)
+#' @param cells (matrix) A matrix containing the specifications of the cells that will be ran.
+#'                       Usually a subset of the result of \code{\link{build_design}}.
 #'
-#' @param cells (matrix) A matrix containing the specifications for the cells that will be ran.
-#'                       Usually a subset of the result of \code{build_desing}.
-#'
-#' @return A list containing the output of \code{run_cell} for each cell specified.
+#' @return A list containing the output of \code{\link{run_cell}} for each specified cell.
 #'
 #' @export
 #'
@@ -27,12 +25,12 @@ run_cells <- function(cells) {
     # Running the cells.
     for (cell in 1:nrow(cells))
     {
-        cell_result = run_cell(cells[cell, 1], cells[cell, 2], cells[cell, 3])
+        cell_result = run_cell(cells[cell, 1], cells[cell, 2], cells[cell, 3], cells[cell, 4])
         results[[cell]] = cell_result
     }
 
     # User feedback at end.
-    cat('-> Completed all', nrow(cells), 'cells.\n\n')
+    cat('-> Completed all', nrow(cells), 'cells.\n')
 
     return(results)
 }

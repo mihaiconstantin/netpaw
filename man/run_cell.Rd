@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_cell.R
 \name{run_cell}
 \alias{run_cell}
-\title{Run the simulation for a single configuration.}
+\title{Runs the simulation for a single configuration (i.e., design cell).}
 \usage{
 run_cell(participants, nodes, density)
 }
@@ -11,18 +11,23 @@ run_cell(participants, nodes, density)
 
 \item{nodes}{(int scalar) A number of nodes (i.e., variables), e.g., 15.}
 
-\item{density}{(double scalar) A value indicating the density, e.g., .3}
+\item{density}{(double scalar) A value indicating the density, e.g., .3.}
+
+\item{architectures}{(int scalar) A value indicating the network architecture, i.e., c(random = 1, small_world = 2, scale_free = 3, empirical = 4).}
 }
 \value{
 A list containing three sub-lists: \code{$config}, \code{$true}, and \code{$estimated}.
-                     \code{$config} contains a vector with the levels specified for this cell (i.e., same order
-                     as specified by the function definition). \code{$graph}) contains a matrix representing the
-                     network structure. \code{$thresholds}) holds a vector representing the model thresholds.
+                     \enumerate {
+                         \item \code{$config} contains a vector with the levels specified for this cell
+                         \item \code{$graph}) contains a matrix representing the network structure
+                         \item \code{$thresholds}) holds a vector representing the model thresholds
+                     }
 }
 \description{
-This function performs the simulation procedure for a single combination of factor levels (e.g.,
-100 participants x 15 nodes x .3 density). The simulation is ran without replication.
-Check \code{run_cells_with_replication} for replication purposes.
+Applies the simulation procedure for a single combination of factor levels (e.g.,
+100 participants x 15 nodes x .3 density x random architecture). The simulation is
+ran without replication. Check \code{\link{run_cells_with_replication}} for
+replication purposes.
 
 TODO: Describe the steps of the simulation.
 }
