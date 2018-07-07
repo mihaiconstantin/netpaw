@@ -1,40 +1,35 @@
 # This file contains functions related to estimating the model.
 
 
+
 #' @title .
 #' @export
-run_cell <- function(participants, nodes, architecture, connectedness) {
-	# User feedback at start.
-	cat('\t-> cell configuration:', participants, 'participants |', nodes, 'nodes |', architecture, 'architecture |', connectedness, 'connectedness\n')
-	
-	# Operationalizing connectivity for each type of graph.
-	connectivity = operationalize_connectedness(architecture, connectedness)
+estimate_model <- function(model, data) {
+	# Determine which estimator to use based on the model type.
+	model_estimator = operationalize_model_estimator(model)
 
-	# Building the true network.
-	true_network = build_true_network(nodes, architecture, connectivity)
+	# Fit the model.
+	estimated_model = model_estimator(data)
 
-	# Sampling data.
-	# # MOVE THIS TO A SEPARTEE FILE.
-	# data = IsingSampler::IsingSampler(participants, true_network$graph, true_network$thresholds, nIter = 100, method = 'MH')
-
-	# Estimating the observed network.
-	estimated_network = IsingFit::IsingFit(filter_nodes_with_little_variance(data), plot = F, progressbar = F)
-
-	# Preparing the return list.
-	result = list(
-		config = c(participants = participants, nodes = nodes, connectedness = connectedness, architecture = architecture),
-		true = true_network,
-		estimated = list(
-			graph = estimated_network$weiadj,
-			thresholds = estimated_network$thresh
-		)
-	)
-
-	# User feedback at the end.
-	cat('\t-> cell done \u2713 \n')
+	# Extract only the relevant results.
+	result = extract_from_fitted_model(model, estimated_model)
 
 	return(result)
 }
 
 
+
+#' @title .
+#' @export
+ising_model_estimator <- function(data) {
+	result = IsingFit::IsingFit(data, plot = F, progressbar = F)
+}
+
+
+
+#' @title .
+#' @export
+ggm_model_estimator <- function(data) {
+	result = bootnet::estimateNetwork(data, default = 'EBICglasso', verbose = F, memorysaver = T)
+}
 

@@ -4,41 +4,50 @@
 
 #' @title .
 #' @export
-select_true_model <- function(nodes, architecture, connectivity, model, ...) {
-	
-	# Random graphs.
-	if(architecture == 1) { 
-		undirected_unweighted_graph = architecture_random(nodes, connectivity$probability) 
-	}
+select_true_model <- function(nodes, architecture, connectedness, model, ...) {
+	# Get the right architect.
+	architect = operationalize_architecture(architecture)
 
-	# Scale-free graphs.
-	if(architecture == 2) { 
-		undirected_unweighted_graph = architecture_small_world(nodes, connectivity$neighbours, connectivity$rewiring_p) 
-	}
+	# Determine the right density based on the specified architecture.
+	connectivity = operationalize_connectedness(architecture, connectedness)
 
-	# Small world graphs.
-	if(architecture == 3) { 
-		undirected_unweighted_graph = architecture_scale_free(nodes, connectivity$attachmenet_p, connectivity$edges_per_step) 
-	}
+	# Determine the right model generator.
+	model_generator = operationalize_model_generator(model)
 
-	# Prepare the true model data structure.	
-	true_network = list(
-		architecture = undirected_unweighted_graph
+	# Prepare the paramters.
+	parameters = list(
+		nodes = nodes,
+		architect = architect,
+		# Additional arguments intended for the `...` can be passed here (i.e., positive_ratio).
+		... = ...
 	)
+	parameters = append_architeture_parameters(parameters, architecture, connectivity)
 
-	# Determine the parameters for the Ising model.
-	if(model == 1) {
-		parameters = parameters_ising_model(nodes)
-		true_network$weights = undirected_unweighted_graph * parameters$weights
-		true_network$thresholds = parameters$thresholds
-	}
-
-	# Determine the parameters for the GGM model.
-	if(model == 2) {
-		parameters = parameters_ggm_model(nodes)
-		true_network$weights = undirected_unweighted_graph * parameters$weights
-	}
+	# Generate the true network.
+	true_network = do.call('model_generator', parameters)
 
 	# Return.
 	return(true_network)
+}
+
+
+
+#' @title .
+#' @export
+append_architeture_parameters <- function(parameters, architecture_code, connectivity) {
+	if(architecture_code == 1) {
+		parameters$p.or.m = connectivity$probability
+	}
+
+	if(architecture_code == 2) {
+		parameters$nei = connectivity$neighbors
+		parameters$p = connectivity$rewiring_p
+	}
+
+	if(architecture_code == 2) {
+		parameters$power = connectivity$attachmenet_p
+		parameters$m = connectivity$edges_per_step
+	}
+
+	return(parameters)
 }

@@ -6,7 +6,6 @@
 #' vectors specified as arguments. Each argument specified (i.e., vector) is regarded
 #' as a factor, and each value of the vectors is regarded as a level.
 #'
-#' TODO: Add one more factor: network architecture (i.e., after asking Claudia).
 #
 #' @usage build_design(participants, nodes, connectedness, architectures)
 #'

@@ -1,5 +1,11 @@
-IsingFitEssential <- function(x, family ='binomial', AND = TRUE, gamma = 0.25, lowerbound.lambda = NA, ...) 
-{    
+# This file contains external functions from other packages, trimmed down or optimized for the simulation.
+# All authors will be credited.
+
+
+
+#' @title .
+#' @export
+IsingFitEssential <- function(x, family ='binomial', AND = TRUE, gamma = 0.25, lowerbound.lambda = NA) {
 	if (family!='binomial') 
 		stop ("This procedure is currently only supported for binary (family='binomial') data")
 

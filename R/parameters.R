@@ -10,9 +10,9 @@
 
 #' @title .
 #' @export
-parameters_ising_model <- function(nodes) {
+parameters_ising_model <- function(nodes, architect, ...) {
 	# Weights.
-	weights = ising_weights(nodes)
+	weights = ising_weights(nodes, architect, ...)
 	
 	# Thresholds.
 	thresholds <- -abs(rnorm(nodes, colSums(weights) / 2, abs(colSums(weights) / 6)))
@@ -28,9 +28,9 @@ parameters_ising_model <- function(nodes) {
 
 #' @title .
 #' @export
-parameters_ggm_model <- function(nodes) {
+parameters_ggm_model <- function(nodes, architect, ...) {
 	# Weights.
-	weights = ggm_weights(nodes)
+	weights = ggm_weights(nodes, architect, ...)
 	
 	# Return list.
 	return(list(
@@ -42,27 +42,13 @@ parameters_ggm_model <- function(nodes) {
 
 #' @title .
 #' @export
-ising_weights <- function(nodes) {
-	number_parameters = (nodes * (nodes - 1)) / 2
-	parameters = abs(rnorm(number_parameters, mean = 0, sd = 1))
-
-	weights = matrix(0, nodes, nodes)
-	weights[upper.tri(weights)] <- parameters
-	weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
-	# weights = pmax(weights, t(weights))
-
-	return(weights)
-}
-
-#' @title .
-#' @export
-ising_weights <- function(nodes, architecture_generator, ..., positive_ratio = 1) {
+ising_weights <- function(nodes, architect, ..., positive_ratio = 1) {
     # Undireghted, unweighted network structure.
-	weights = architecture_generator(nodes, ...)
+	weights = architect(nodes, ...)
 
 	# Sampling the parameters.
 	number_parameters = (nodes * (nodes - 1)) / 2
-	ratio <- sample(c(-1, 1), number_parameters, TRUE, prob = c(1 -positive_ratio, positive_ratio))
+	ratio <- sample(c(-1, 1), number_parameters, TRUE, prob = c(1 - positive_ratio, positive_ratio))
 	parameters <- ratio * abs(rnorm(number_parameters, mean = 0, sd = 1))
 
     # Applying the parameters to the network structure.
@@ -73,11 +59,12 @@ ising_weights <- function(nodes, architecture_generator, ..., positive_ratio = 1
 }
 
 
+
 #' @title .
 #' @export
-ggm_weights <- function(nodes, architecture_generator, ..., range = c(.5, 1), positive_ratio = 1, constant = 1.5) {
+ggm_weights <- function(nodes, architect, ...,  positive_ratio = 1, range = c(0, 1), constant = 1.5) {
     # Undireghted, unweighted network structure.
-    weights = architecture_generator(nodes, ...)
+    weights = architect(nodes, ...)
 
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2

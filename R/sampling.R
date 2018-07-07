@@ -5,49 +5,37 @@
 
 #' @title .
 #' @export
-sample_data <- function(nodes, model) {
+sample_data <- function(participants, model, true_model) {
+	# Determine the data sampler for which model to use.
+	data_sampler = operationalize_data_generator(model)
 
+	# Call the sampler.
+	data = data_sampler(participants, true_model)
+
+	return(data)
 }
 
 
 
+#' @title .
+#' @export
+ising_data_sampler <- function(participants, true_model) {
+	# Sample data.
+	data = IsingSampler::IsingSampler(participants, true_model$weights, true_model$thresholds, nIter = 100, method = 'MH')
 
-
-
-ising_data_sampler <- function(participants, weights, thresholds) {
-	data = IsingSampler::IsingSampler(participants, weights, thresholds, nIter = 100, method = 'MH')
-
-
+	return(data)
 }
 
 
 
+#' @title .
+#' @export
+ggm_data_sampler <- function(participants, true_model, nLevels = 5) {
+	# Create the ordinal data sampler.
+	ggm_sampler = bootnet::ggmGenerator(TRUE, nLevels)
 
+	# Sample the data.
+	data = ggm_sampler(participants, true_model$weights)
 
-
-ggm_data_sampler <- function() {
-
-	else {
-		if (!is.matrix(input)) {
-			stop("'input' is not a matrix or list.")
-		}
-		graph <- input
-		intercepts <- rep(0, ncol(graph))
-	}
-	if (!all(diag(graph) == 0 | diag(graph) == 1)) {
-		graph <- cov2cor(graph)
-	}
-	
-	diag(graph) <- 0
-	Sigma <- cov2cor(solve(diag(ncol(graph)) - graph))
-	Data <- mvtnorm::rmvnorm(n, sigma = Sigma)
-
-	for (i in 1:ncol(Data)){
-	  Data[,i] <- as.numeric(cut(Data[,i],sort(c(-Inf,rnorm(5.000000-1),Inf))))
-	}
-	return(Data)
-
-
-
-
+	return(data)
 }
