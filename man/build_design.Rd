@@ -4,14 +4,14 @@
 \alias{build_design}
 \title{Build the factorial design of the study.}
 \usage{
-build_design(participants, nodes, densities, architectures)
+build_design(participants, nodes, connectedness, architectures)
 }
 \arguments{
 \item{participants}{(int vector) Varying number of participants, e.g., \code{c(10, 50, 100)}.}
 
 \item{nodes}{(int vector) Varying number of nodes (i.e., variables), e.g., \code{c(10, 15, 30)}.}
 
-\item{densities}{(double vector) Varying number of densities, e.g., \code{c(.2, .5, .8)}.}
+\item{connectedness}{(double vector) Varying number of connectivity, e.g., \code{c(.2, .5, .8)}.}
 
 \item{architecture}{(int vector) Network architectures, e.g., \code{c(random = 1, small_world = 2, scale_free = 3, empirical = 4)}.}
 }
