@@ -19,6 +19,7 @@ parameters_ising_model <- function(nodes, architect, ...) {
 
 	# Return list.
 	return(list(
+		model = 'ising',
 		weights = weights, 
 		thresholds = thresholds
 	))
@@ -34,7 +35,9 @@ parameters_ggm_model <- function(nodes, architect, ...) {
 	
 	# Return list.
 	return(list(
-		weights = weights
+		model = 'ggm',
+		weights = weights,
+		thresholds = 'n.a.'
 	))
 }
 

@@ -4,5 +4,5 @@
 \alias{architecture_random}
 \title{.}
 \usage{
-architecture_random(nodes, p)
+architecture_random(nodes, ...)
 }

@@ -90,6 +90,23 @@ operationalize_data_generator <- function(model_code) {
 
 #' @title .
 #' @export
+operationalize_data_generator_string <- function(model_string) {
+	data_sampler = ifelse(
+		model_string == 'ising', 
+		ising_data_sampler, 
+		ifelse(
+			model_string == 'ggm',
+			ggm_data_sampler,
+			stop('Internally set model name not recognized.')
+		)
+	)
+	return(data_sampler)
+}
+
+
+
+#' @title .
+#' @export
 operationalize_model_estimator <- function(model_code) {
 	model_estimator = ifelse(
 		model_code == 1, 

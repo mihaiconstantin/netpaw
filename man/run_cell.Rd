@@ -4,5 +4,5 @@
 \alias{run_cell}
 \title{.}
 \usage{
-run_cell(participants, nodes, architecture, connectedness)
+run_cell(participants, nodes, architecture, connectedness, model)
 }

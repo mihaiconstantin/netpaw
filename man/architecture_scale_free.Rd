@@ -4,5 +4,5 @@
 \alias{architecture_scale_free}
 \title{.}
 \usage{
-architecture_scale_free(nodes, attachmenet_p, edges_per_step)
+architecture_scale_free(nodes, ...)
 }

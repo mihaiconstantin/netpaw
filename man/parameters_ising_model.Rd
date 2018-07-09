@@ -4,5 +4,5 @@
 \alias{parameters_ising_model}
 \title{.}
 \usage{
-parameters_ising_model(nodes)
+parameters_ising_model(nodes, architect, ...)
 }

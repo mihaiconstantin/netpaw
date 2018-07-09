@@ -22,7 +22,10 @@ estimate_model <- function(model, data) {
 #' @title .
 #' @export
 ising_model_estimator <- function(data) {
-	result = IsingFit::IsingFit(data, plot = F, progressbar = F)
+	# result = IsingFit::IsingFit(data, plot = F, progressbar = F)	
+	result = IsingFitEssential(data)
+
+	return(result)
 }
 
 
@@ -31,5 +34,9 @@ ising_model_estimator <- function(data) {
 #' @export
 ggm_model_estimator <- function(data) {
 	result = bootnet::estimateNetwork(data, default = 'EBICglasso', verbose = F, memorysaver = T)
-}
+	
+	# Remove the names, not needed.
+	rownames(result$graph) <- colnames(result$graph) <- NULL
 
+	return(result)
+}

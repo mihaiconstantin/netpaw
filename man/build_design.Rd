@@ -22,6 +22,4 @@ A matrix representing the factorial design of the study, where each row is a des
 This function builds the factorial design of the study based on the elements of the
 vectors specified as arguments. Each argument specified (i.e., vector) is regarded
 as a factor, and each value of the vectors is regarded as a level.
-
-TODO: Add one more factor: network architecture (i.e., after asking Claudia).
 }

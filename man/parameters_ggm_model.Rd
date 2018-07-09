@@ -4,5 +4,5 @@
 \alias{parameters_ggm_model}
 \title{.}
 \usage{
-parameters_ggm_model(nodes)
+parameters_ggm_model(nodes, architect, ...)
 }

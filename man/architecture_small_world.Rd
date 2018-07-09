@@ -4,5 +4,5 @@
 \alias{architecture_small_world}
 \title{.}
 \usage{
-architecture_small_world(nodes, neighbours, rewiring_p)
+architecture_small_world(nodes, ...)
 }

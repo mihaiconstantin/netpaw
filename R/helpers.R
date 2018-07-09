@@ -16,7 +16,8 @@ extract_from_fitted_model <- function(model_code, estimation_result) {
 	# Extracting parameters for GGM model.
 	if(model_code == 2) {
 		extraction = list(
-			weights = estimation_result$graph
+			weights = estimation_result$graph,
+			thresholds = 'n.a.'
 		)
 	}
 
@@ -27,43 +28,47 @@ extract_from_fitted_model <- function(model_code, estimation_result) {
 
 #' @title .
 #' @export
-check_node_variance <- function(nodeValues) {
-    nodeValues = as.factor(nodeValues)
-    valuesFrequency = table(nodeValues)
-    minFrequency = min(valuesFrequency)
-    maxFrequency = max(valuesFrequency)
-    if(minFrequency <= 1 || maxFrequency >= length(nodeValues) - 1) return(F) else return(T)
-}
-
-
-
-#' @title .
-#' @export
-filter_nodes_with_little_variance <- function(data) {
-	allowed_nodes = apply(data, 2, check_node_variance)
-	return(data[, allowed_nodes])
-}
-
-
-
-# Activate only if required.
-#' @title .
-#' @export
-sample_ising_data_with_variance <- function(participants, true_network_graph, true_network_thresholds) {
-	cat('\t\t-> sampling data | ')
+is_invariant <- function(node, tolerance = 1) {
+	node = as.factor(node)
+	frequencies = table(node)
+	categories = length(frequencies)
 	
-	attepmt = 1
-	data = IsingSampler::IsingSampler(participants, true_network_graph, true_network_thresholds, nIter = 100, method = 'MH')
-
-	# In case there is a column with no variance, resample.
-	while(any(colSums(data) == 0) || any(colSums(data) == dim(data)[1])) 
+	if(categories <= 2)
 	{
-		attepmt = attepmt + 1
-		data = IsingSampler::IsingSampler(participants, true_network_graph, true_network_thresholds, nIter = 100, method = 'MH')
-		print(colSums(data))
+		nobs = length(node)
+		min_frequency = min(frequencies)
+		max_frequency = max(frequencies)
+		
+		if(min_frequency <= tolerance || max_frequency >= nobs - tolerance) {
+			return(TRUE) 
+		}
+		else {
+			return(FALSE)
+		}
+	} else {
+		return(FALSE)
 	}
-	
-	cat(attepmt, 'needed\n')
+}
 
-	return(data)
+
+
+#' @title .
+#' @export
+should_resample <- function(data, tolerance = 1) {
+	# Check each column in the dataset for at least 2 responses on a given category.
+	variance_checks = apply(data, 2, is_invariant, tolerance)
+
+	# Determine how many invariant nodes and return the integer (i.e., > 0 suggests resampling).
+	invariant_nodes = sum(variance_checks)
+
+	return(invariant_nodes)
+}
+
+
+
+#' @title .
+#' @export
+filter_invariant_nodes <- function(data, tolerance = 1) {
+	invariant_nodes = apply(data, 2, is_invariant, tolerance)
+	return(data[, !invariant_nodes,  drop = FALSE])
 }
