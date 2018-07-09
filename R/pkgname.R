@@ -13,8 +13,6 @@
 #' @import IsingFit
 #' @import IsingSampler
 #' @import bootnet
-#' @import Matrix
-#' @import glmnet
 #'
 #' @docType package
 #' @name netPower
