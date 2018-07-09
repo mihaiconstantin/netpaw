@@ -11,8 +11,9 @@
 #'
 #' @param participants (int vector) Varying number of participants, e.g., \code{c(10, 50, 100)}.
 #' @param nodes        (int vector) Varying number of nodes (i.e., variables), e.g., \code{c(10, 15, 30)}.
-#' @param connectedness    (double vector) Varying number of connectivity, e.g., \code{c(.2, .5, .8)}.
-#' @param architecture (int vector) Network architectures, e.g., \code{c(random = 1, small_world = 2, scale_free = 3, empirical = 4)}.
+#' @param connectedness    (double vector) Varying number of connectivity, e.g., \code{c(1, 2, 3)}.
+#' @param architecture (int vector) Network architectures, e.g., \code{c(random = 1, small_world = 2, scale_free = 3)}.
+#' @param models (int vector) Network models, e.g., \code{c(ising = 1, ggm = 2)}.
 #'
 #' @return A matrix representing the factorial design of the study, where each row is a design cell.
 #'
