@@ -1,7 +1,7 @@
-#' foo: A package for computating the notorious bar statistic.
+#' netPower: A package for network simulations.
 #'
 #' The netPower package provides three categories of important functions:
-#' foo, bar and baz.
+#' TODO: fix the documenation for all functions.
 #' 
 #' @section netPower functions:
 #' The netPower functions ...
