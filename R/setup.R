@@ -36,8 +36,8 @@ run_cell_range <- function(start, end, directory = ".", replications = 100)
 	sink(logs, type = "message")
 
 	# Perform the simulation.
-	designs = initializeDesign()
-	results = runSelectedCellsWithReplication(designs[start:end, ], replications)
+	designs = initialize_design()
+	results = replicate_cells(designs[start:end, ], replications)
 	
 	# Store the results.
 	saveRDS(object = results, 				file = paste0(start, "_to_", end, "_results.RData"))

@@ -5,10 +5,10 @@
 \alias{netPower}
 \alias{netPower-package}
 \alias{netPower-package}
-\title{foo: A package for computating the notorious bar statistic.}
+\title{netPower: A package for network simulations.}
 \description{
 The netPower package provides three categories of important functions:
-foo, bar and baz.
+TODO: fix the documenation for all functions.
 }
 \section{netPower functions}{
 
