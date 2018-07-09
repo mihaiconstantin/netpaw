@@ -72,3 +72,11 @@ filter_invariant_nodes <- function(data, tolerance = 1) {
 	invariant_nodes = apply(data, 2, is_invariant, tolerance)
 	return(data[, !invariant_nodes,  drop = FALSE])
 }
+
+
+
+#' @title .
+#' @export
+toggle_console_warnings <- function(status) {
+	options(warn = ifelse(status == 'on', 0, -1))
+}
