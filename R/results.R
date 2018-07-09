@@ -52,6 +52,9 @@ prepare_computed_results <- function(true_model, estimated_model) {
 	# Check if perfect estimation.
 	perfect = all((true == 0) == (esti == 0))
 
+	# Check the size of both graphs (i.e., useful of nodes were dropped due to resampling problems).
+	equal_size = dim(true_model$weights)[1] == dim(estimated_model$weights)[1]
+
 	# True/ False Positive/ Negative rates.
 	TP <- sum(true != 0 & esti != 0)
 	FP <- sum(true == 0 & esti != 0)
@@ -65,14 +68,11 @@ prepare_computed_results <- function(true_model, estimated_model) {
 	type_two 	<- FN / (TP + FN)
 
 	# Edge weights correlation.
-	correlation <- cor(true, esti)
+	correlation <- ifelse(equal_size, cor(true, esti), NA)
 	
 	# Density for true and estimated graphs. 
 	density_true = sum(true != 0) / length(true)
 	density_esti = sum(esti != 0) / length(esti)
-
-	# Check the size of both graphs (i.e., useful of nodes were dropped due to resampling problems).
-	equal_size = dim(true_model$weights)[1] == dim(estimated_model$weights)[1]
 
 	# Store everything into a list.
 	computed_results = list(
