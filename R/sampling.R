@@ -18,7 +18,9 @@ sample_data <- function(participants, true_model, resampling_attepmts = 10) {
 	
 	# check if a resampling is needed and perform it for 10 times at most.
 	if(should_resample(data$data) > 0) {
-		print('Resampling!')
+		# User feedback:
+		cat('invariant nodes: resampling. ')
+		
 		data = attempt_resampling(participants, true_model, data_sampler, resampling_attepmts)
 	} 
 
@@ -33,6 +35,7 @@ attempt_resampling <- function(participants, true_model, data_sampler, attempts 
 	# Starting at 2nd attempt with an optimistic view that a good dataset will be found.
 	attempt = 2
 	status = 'ok'
+	feedback = paste0('Succeeded on attempt ', attempt, '. ')
 
 	# Initial resample.
 	data = data_sampler(participants, true_model)
@@ -42,14 +45,17 @@ attempt_resampling <- function(participants, true_model, data_sampler, attempts 
 	{
 		attempt = attempt + 1
 		data = data_sampler(participants, true_model)
-		print(should_resample(data))
 	}
 
 	# Determine if the approach was successful and remove the invariant nodes, but mark the data as not safe.
 	if(should_resample(data) > 0) {
 		status = 'not ok'
 		data = filter_invariant_nodes(data)
+		feedback = paste('Failed after', attempt, 'attempts. Dropping nodes. ')
 	}
+
+	# User feedback:
+	cat(feedback)
 
 	# Return the data list object: attempts, status, actual data.
 	return(
