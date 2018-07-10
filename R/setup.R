@@ -25,14 +25,14 @@ initialize_design <- function() {
 #' @title .
 #' @export
 run_cell_range <- function(start, end, directory = ".", replications = 100, console) {
+	# Set the working directory.
+	setwd(directory)
+
 	# Starting time.
 	t0 = Sys.time()
 
 	# Create a unique identifier for the data.
 	uuid = paste0(as.numeric(Sys.time()), '_', console, '_', round(runif(1), 5), '_')
-
-	# Set the working directory.
-	setwd(directory)
 
 	# Open the connection to the log file.
 	logs <- file(paste0(uuid, start, "_to_", end, "_logs.Rlog"), open = "wt")
