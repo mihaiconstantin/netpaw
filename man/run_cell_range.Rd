@@ -4,5 +4,5 @@
 \alias{run_cell_range}
 \title{.}
 \usage{
-run_cell_range(start, end, directory = ".", replications = 100)
+run_cell_range(start, end, directory = ".", replications = 100, console)
 }
