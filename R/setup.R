@@ -25,6 +25,9 @@ initialize_design <- function() {
 #' @title .
 #' @export
 run_cell_range <- function(start, end, directory = ".", replications = 100, console) {
+	# Enable immediate warnings.
+	options(warn = 1)
+
 	# Set the working directory.
 	setwd(directory)
 
