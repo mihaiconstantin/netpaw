@@ -53,7 +53,7 @@ run_cell_range <- function(start, end, directory = ".", replications = 100, cons
 
 	# Notify that everything went fine.
 	cat(paste0(uuid, start, "_to_", end, "_results.RData"), "was sucessfuly written at", directory, "\n\n")
-	cat(paste0('Start: ', t0, '. End: ', t1, '. Delta: ', t1 - t0, '.'))
+	cat(paste0('Start: ', t0, '. End: ', t1, '. Delta: ', t1 - t0, '.'), "\n\n")
 
 	# Close the connection to the log file and disable the sink.
 	sink(type = "message")
