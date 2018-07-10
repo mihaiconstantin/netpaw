@@ -5,7 +5,7 @@
 #' @title . 
 #' @export
 initialize_design <- function() {
-	participants 	= seq(100, 1000, 100)
+	participants 	= seq(50, 1000, 50)
 	nodes 			= c(10, 20, 30)
 	architectures 	= c(random = 1, small_world = 2, scale_free = 3)
 	connectedness 	= c(low = 1, medium = 2, large = 3)
