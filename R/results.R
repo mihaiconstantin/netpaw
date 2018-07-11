@@ -24,9 +24,9 @@ prepare_cell_results <- function(participants, nodes, architecture, connectednes
 
 #' @title .
 #' @export
-prepare_raw_results <- function(participants, nodes, connectedness, architecture, model, data, true_model, estimated_model) {
+prepare_raw_results <- function(participants, nodes, architecture, connectedness, model, data, true_model, estimated_model) {
 	raw_results = list(
-		config = c(participants = participants, nodes = nodes, connectedness = connectedness, architecture = architecture, model = model),
+		config = c(participants = participants, nodes = nodes, architecture = architecture, connectedness = connectedness, model = model),
 		data = data,
 		true = list(
 			weights = true_model$weights,
