@@ -7,6 +7,7 @@
 
 
 ## Description
+The data used in the study can be loaded via `data("netPowerData")`.
 The code block below illustrates the main four functions found in this package. 
 
 
