@@ -52,9 +52,8 @@ cell_error_parser <- function(error_string, position_in_design = NULL) {
     config = c(config, position = position_in_design)
     
     return(
-        list(
-            config = config,
-            results = NA
+        list(config = config,
+             results = list(perfect = NA, true_positive = NA, false_positive = NA, true_negative = NA, false_negative = NA, sensitivity = NA, specificity = NA, type_one = NA, type_two = NA, edge_correlation = NA, density_true_model = NA, density_estimated_model = NA, equal_size = NA)
         )
     )
 }
@@ -88,6 +87,7 @@ extract_from_cell <- function(cell, position_in_design = NULL, correction = TRUE
 }
 
 
+
 #' @title .
 #' @export
 extract_from_replication <- function(replication) {
@@ -104,6 +104,7 @@ extract_from_replication <- function(replication) {
     
     return(results)
 }
+
 
 
 #' @title .
@@ -137,5 +138,65 @@ combine_replication_sets_from_paths <- function(paths) {
         data = c(data, set)
     }
 
+    return(data)
+}
+
+
+
+#' @title .
+#' @description Sorry for these messy loops. There is certainly a better way to do this: aperm(array(unlist(data), c(19, 1080, 118)), c(2, 1, 3))
+#' @export
+list_to_data_frames <- function(data) {
+    # The `data` argument must be merged and in the list format.
+    data_frames = list()
+
+    for (replication in 1:length(data))
+    {
+        # This data frame holds the results for each cell within a replication (i.e., as a row).
+        replication_data_frame = data.frame()
+
+        for (cell in 1:length(data[[replication]]))
+        {
+            # Dataframe from config vector.
+            config = as.data.frame(matrix(data[[replication]][[cell]]$config, ncol = length(data[[replication]][[cell]]$config), byrow = T))
+            colnames(config) <- names(data[[replication]][[cell]]$config)
+
+            # Dataframe from results list.
+            results = data[[replication]][[cell]]$results
+
+            if (length(results) == 1 && is.na(results)) {
+
+                results = data.frame(
+                    perfect = NA, true_positive = NA, false_positive = NA, true_negative = NA,
+                    false_negative = NA, sensitivity = NA, specificity = NA, type_one = NA, type_two = NA,
+                    edge_correlation = NA, density_true_model = NA, density_estimated_model = NA, equal_size = NA
+
+                )
+            }
+
+            results = as.data.frame(results)
+
+            # Combined dataframe with both config and results columns.
+            row = cbind(config, results)
+
+            # Append to the replication data frame.
+            replication_data_frame = rbind(replication_data_frame, row)
+
+        }
+
+        # Append the replication data frame to the list of replications.
+        data_frames[[replication]] = replication_data_frame
+    }
+
+    return(data_frames)
+}
+
+
+
+#' @title .
+#' @description This should be the better alternative to the `list_to_data_frames()`.
+#' @export
+list_to_data_frames_array <- function(data, cols, rows, layers, perm = c(2, 1, 3)) {
+    data = aperm(array(unlist(data), c(cols, rows, layers)), perm)
     return(data)
 }
