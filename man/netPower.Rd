@@ -16,6 +16,6 @@ The netPower functions ...
 }
 
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Mihai Constantin \email{constantin.mihai.alexandru@gmail.com}
 
 }
