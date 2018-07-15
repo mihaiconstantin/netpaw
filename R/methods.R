@@ -55,10 +55,9 @@ print.netPowerCell <- function(object, ...) {
 		'\n'
 	)
 	cat('\t -> sensitivity:', object$computed$sensitivity, '\n')
-	cat('\t -> specificty:', object$computed$specificity, '\n')
+	cat('\t -> specificity:', object$computed$specificity, '\n')
 	cat('\t -> type one error:', object$computed$type_one, '\n')
 	cat('\t -> type two error:', object$computed$type_two, '\n')
-	cat('\t -> specificty:', object$computed$specificity, '\n')
 	cat('\t -> edge correlation:', object$computed$edge_correlation, '\n')
 	cat('\t -> equal # nodes:', ifelse(object$computed$equal_size, 'yes', 'no'), '\n')
 	cat('Try plot(result) for a visual inspection.', '\n\n')

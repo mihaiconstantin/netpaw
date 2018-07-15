@@ -18,7 +18,7 @@ operationalize_connectedness <- function(architecture_code, connectedness_code) 
 		if(connectedness_code == 3) { opertaionalization$probability = .3 }
 	}
 
-	# Scale-free graphs (neighbors | rewiring_p):
+	# Small world graphs (neighbors | rewiring_p):
 	#   low     = 2 | .1
 	#   medium  = 2 | .5 
 	#   large   = 2 |  1
@@ -29,7 +29,7 @@ operationalize_connectedness <- function(architecture_code, connectedness_code) 
 		if(connectedness_code == 3) { opertaionalization$rewiring_p =  1 }
 	}
 	
-	# Small world graphs (attachmenet_p | edges_per_step):
+	# Scale-free graphs (attachmenet_p | edges_per_step):
 	# 	low 	= 1 | 1
 	# 	medium 	= 1 | 2
 	# 	large 	= 1 | 3
