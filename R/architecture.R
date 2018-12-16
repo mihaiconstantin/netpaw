@@ -1,5 +1,4 @@
-# In this file we are generating UNDIREGTED & UNWEIGHTED GRAPHS for various architectures. 
-# All functions must return an adjency matrix.
+# In this file we are generating UNDIREGTED & UNWEIGHTED GRAPHS of various architectures.
 
 
 
@@ -33,7 +32,7 @@ architecture.scale.free <- function(nodes, attachment, edges) {
 
 
 
-#' @title .
+#' @title Generate an undirected unweighted graph.
 #' @export
 get.architecture <- function(type, nodes, ...) {
 	# Capture the dot arguments.
