@@ -34,46 +34,39 @@ architecture.scale.free <- function(nodes, attachment, edges) {
 
 #' @title Generate an undirected unweighted graph.
 #' @export
-get.architecture <- function(type, nodes, ...) {
+get.architecture <- function(type, nodes,..., positive.edge.ratio = 1) {
 	# Capture the dot arguments.
 	. <- list(...)
-
+	
 	# Make sure that the dots are not empty.
 	if(length(.) == 0) {
 		stop("Invalid `...` arguments. Please check the documentation.")
 	}
-
-	# Providing a random graph.
+	
+	# Providing the desired graph.
 	if(type == "random") {
-		# Stop the execution if the correct arguments are not specified.
 		if(is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
+		graph = architecture.random(nodes, .[["p"]])
 
-		# Provide the graph.
-		return(
-			architecture.random(nodes, .[["p"]])
-		)
-	}
-
-	# Providing a small world graph.
-	if(type == "smallworld") {
-		# Stop the execution if the correct arguments are not specified.
+	} else if(type == "smallworld") {
 		if(is.null(.[["neighborhood"]]) || is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
+		graph = architecture.small.world(nodes, .[["neighborhood"]], .[["p"]])
 
-		# Provide the graph.
-		return(
-			architecture.small.world(nodes, .[["neighborhood"]], .[["p"]])
-		)
-	}
-
-
-	# Providing a scale free graph. 
-	if(type == "scalefree") {
-		# Stop the execution if the correct arguments are not specified.
+	} else if(type == "scalefree") {
 		if(is.null(.[["attachment"]]) || is.null(.[["edges"]])) stop("Missing expected argument(s). See the documentation.")
-
-		# Provide the graph.
-		return(
-			architecture.scale.free(nodes, .[["attachment"]], .[["edges"]])
-		)
+		graph = architecture.scale.free(nodes, .[["attachment"]], .[["edges"]])
+	
+	} else {
+		stop("Unsupported graph type. Please request it at ...")
 	}
+	
+	# Determine the positive edge ratio.
+	number.parameters = (nodes * (nodes - 1)) / 2
+	positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - positive.edge.ratio, positive.edge.ratio))
+	
+	# Apply the positive edge ration.
+	graph[upper.tri(graph)] <- graph[upper.tri(graph)] * positive.ratio
+	graph[lower.tri(graph)] <- t(graph)[lower.tri(graph)]
+	
+	return(graph)
 }

@@ -8,8 +8,7 @@ model.ising <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, mea
 
 	# Sampling the parameters.
 	number_parameters = (nodes * (nodes - 1)) / 2
-	ratio <- sample(c(-1, 1), number_parameters, TRUE, prob = c(positive.edge.ratio, 1 - positive.edge.ratio))
-	parameters <- ratio * abs(rnorm(number_parameters, mean, sd))
+	parameters <- abs(rnorm(number_parameters, mean, sd))
 
     # Applying the parameters to the network structure.
 	weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
@@ -29,13 +28,16 @@ model.ising <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, mea
 
 
 model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range = c(0.5, 1), constant = 1.5) {
+    # Since we get the partial correlation matrix by taking the negative standardization of the precision 
+    # matrix (i.e., see line 52) we need to redefine what the positive.edge.proportion argument means.
+    positive.edge.ratio = 1 - positive.edge.ratio
+    
     # Undireghted, unweighted network structure.
-    weights <- get.architecture(type = architecture, nodes = nodes, ...)
+    weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
 
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
-    ratio <- sample(c(-1, 1), number_parameters, TRUE, prob = c(positive.edge.ratio, 1 - positive.edge.ratio))
-    parameters <- ratio * runif(number_parameters, min(range), max(range))
+    parameters <- runif(number_parameters, min(range), max(range))
 
     # Applying the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
@@ -64,25 +66,20 @@ model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
 get.model <- function(type, nodes, architecture, ...) {
-	# Capture the dot arguments.
-	. <- list(...)
-
 	# Make sure that the dots are not empty.
-	if(length(.) == 0) {
-		stop("Invalid `...` arguments. Please check the documentation.")
-	}
+	if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
 
 	# Handle the parameter generation for the Ising model.
 	if(type == "ising") {		
 		return(
-			model.ising(nodes, positive.edge.ratio, architecture, ...)
+			model.ising(nodes, architecture, ...)
 		)
 	}
 
 	# Handle the parameter generation for the GGM model.
 	if(type == "ggm") {		
 		return(
-			model.ggm(nodes, positive.edge.ratio, architecture, ...)
+			model.ggm(nodes, architecture, ...)
 		)
 	}
 }
