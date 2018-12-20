@@ -91,7 +91,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 	if(should.resample(data) > 0) {
 		status = 1
 		data = drop.invariant.nodes(data)
-		feedback = paste('Failed after', attempt, 'resampling attempts. Dropping invariant nodes:', dims(data)[2], "of", dims(model$weights)[2], " total nodes. ")
+		feedback = paste('Failed after', attempt, 'resampling attempts. Dropping invariant nodes:', dim(data)[2], "of", dim(model$weights)[2], " total nodes. ")
 	}
 
 	# User feedback:
