@@ -63,7 +63,7 @@ get.data <- function(n, model, attempts = 5, ...) {
 		# User feedback:
 		cat('Invariant nodes detected -> attempting resampling... ')
 		
-		data = attempt.resampling(n, model, sampler.fun, attempts)
+		data = attempt.resampling(n, model, sampler.fun, attempts, ...)
 	} 
 
 	return(data)	
@@ -78,7 +78,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 	feedback = paste0('Succeeded on attempt ', attempt, '. ')
 
 	# Initial resample.
-	data = sampler.fun(n, model)
+	data = sampler.fun(n, model, ...)
 
 	# Attempt to get a good dataset, but no more than 10 times.
 	while((should.resample(data) > 0) && (attempt <= attempts)) 
