@@ -1,9 +1,45 @@
-# This file contains the functions for sampling data under various PMRF models.
+# This file contains functions for sampling data for various PMRF models.
 # The data is checked for invariant columns (i.e., nodes).
 
 
 
-#' @title .
+sampler.ising <- function(n, model, nIter = 100, method = "MH") {
+	# Sample data.
+	data = IsingSampler::IsingSampler(n, model$weights, model$thresholds, nIter = 100, method = "MH")
+
+	return(data)
+}
+
+
+
+sampler.ggm <- function(n, model, levels = 5) {
+	# Fetch the weights.
+	weights <- model$weights
+
+	# Check for positive semi-definite.
+	if (any(eigen(diag(ncol(weights)) - weights)$values < 0)) {
+		stop("Precision matrix is not positive semi-definite")
+	}
+
+	# Get the covariance matrix.
+	sigma <- cov2cor(solve(diag(ncol(weights)) - weights))
+	
+	# Sample data.
+	data <- mvtnorm::rmvnorm(n, sigma = sigma)
+
+	# Split the data into item steps.
+	for (i in 1:ncol(data)) {
+		data[, i] <- as.numeric(cut(data[, i], sort(c(-Inf, rnorm(levels - 1), Inf))))
+	}
+
+	# Return the data.
+	return(data)
+}
+
+
+
+
+#' @title Sample data based on specified PMRF model.
 #' @export
 sample_data <- function(participants, true_model, resampling_attepmts = 10) {
 	# Determine the data sampler for which model to use.
