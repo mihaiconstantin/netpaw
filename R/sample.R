@@ -61,7 +61,7 @@ get.data <- function(n, model, attempts = 5, ...) {
 	# check if a resampling is needed and perform it for 10 times at most.
 	if(should.resample(data$data) > 0) {
 		# User feedback:
-		cat('Invariant nodes detected -> attempting resampling... ')
+		cat("Invariant nodes detected -> attempting resampling... ")
 		
 		data = attempt.resampling(n, model, sampler.fun, attempts, ...)
 	} 
@@ -75,7 +75,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 	# Starting at 2nd attempt with an optimistic view that a good dataset will be found.
 	attempt = 1
 	status = 0
-	feedback = paste0('Succeeded on attempt ', attempt, '. ')
+	feedback = paste0("Succeeded on attempt ", attempt, ".\n")
 
 	# Initial resample.
 	data = sampler.fun(n, model, ...)
@@ -91,7 +91,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 	if(should.resample(data) > 0) {
 		status = 1
 		data = drop.invariant.nodes(data)
-		feedback = paste('Failed after', attempt, 'resampling attempts. Dropping invariant nodes -> kept', dim(data)[2], "of", dim(model$weights)[2], " nodes. ")
+		feedback = paste("Failed after", attempt, "resampling attempts. Dropping invariant nodes:", dim(model$weights)[2] - dim(data)[2],  "out of", dim(model$weights)[2], " total nodes.\n")
 	}
 
 	# User feedback:
