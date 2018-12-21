@@ -55,7 +55,8 @@ get.data <- function(n, model, attempts = 5, ...) {
 	data = list(
 		data = sampler.fun(n, model, ...),
 		attempts = 0, 
-		status = 0
+		status = 0,
+		model = model$model
 	)
 	
 	# check if a resampling is needed and perform it for 10 times at most.
@@ -79,7 +80,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 
 	# Initial resample.
 	data = sampler.fun(n, model, ...)
-
+ 	
 	# Attempt to get a good dataset, but no more than 10 times.
 	while((should.resample(data) > 0) && (attempt <= attempts)) 
 	{
@@ -102,7 +103,8 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 		list(
 			data = data,
 			attempts = attempt,
-			status = status
+			status = status,
+			model = model$model
 		)
 	)
 }
