@@ -26,18 +26,30 @@ estimator.ggm <- function(data) {
 #' @title Estimated the model based on the type of data provided.
 #' @export
 estimate.model <- function(data) {
-    # Determine which estimator to use based on the model type.
-    if(data$model == "ising") 
-        estimator.fun = estimator.ising
-    else if(data$model == "ggm")
-        estimator.fun = estimator.ggm
-    else
+    # Determine which estimator to use based on the model type. Ensure that regardless 
+    # of the estimation function, the result object looks the same.
+    # Estimating Ising.
+    if(data$model == "ising") {
+        model.fit = estimator.ising(data$data)
+        result = list(
+            weights = model.fit$weiadj,
+            thresholds = model.fit$thresholds
+        )
+
+    # Estimating GGM.
+    } else if(data$model == "ggm") {
+        model.fit = estimator.ggm(data$data)
+        result = list(
+            weights = model.fit$graph,
+            thresholds = 'n.a.'
+        )
+    
+    # Unrecognized model type.
+    } else {
         stop("Unrecognized estimator type.")
+    }
 
-    # Fit the model.
-    model.fit = estimator.fun(data$data)
-
-    return(model.fit)
+    return(result)
 }
 
 
