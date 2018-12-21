@@ -4,25 +4,25 @@
 
 model.ising <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
-	weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
+    weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
 
-	# Sampling the parameters.
-	number_parameters = (nodes * (nodes - 1)) / 2
-	parameters <- abs(rnorm(number_parameters, mean, sd))
+    # Sampling the parameters.
+    number_parameters = (nodes * (nodes - 1)) / 2
+    parameters <- abs(rnorm(number_parameters, mean, sd))
 
     # Applying the parameters to the network structure.
-	weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
-	weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
+    weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
+    weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
 
-	# Creating the threshold parameters.
-	thresholds <- -abs(rnorm(nodes, colSums(weights) / 2, abs(colSums(weights) / 6)))
+    # Creating the threshold parameters.
+    thresholds <- -abs(rnorm(nodes, colSums(weights) / 2, abs(colSums(weights) / 6)))
 
-	# Return list.
-	return(list(
-		model = 'ising',
-		weights = weights, 
-		thresholds = thresholds
-	))
+    # Return list.
+    return(list(
+        model = 'ising',
+        weights = weights, 
+        thresholds = thresholds
+    ))
 }
 
 
@@ -53,12 +53,12 @@ model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range
     weights <- -cov2cor(weights)
     diag(weights) <- 0
 
-	# Return list.
-	return(list(
-		model = 'ggm',
-		weights = weights,
-		thresholds = 'n.a.'
-	))
+    # Return list.
+    return(list(
+        model = 'ggm',
+        weights = weights,
+        thresholds = 'n.a.'
+    ))
 }
 
 
@@ -66,21 +66,21 @@ model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
 get.model <- function(type, nodes, architecture, ...) {
-	# Make sure that the dots are not empty.
-	if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
+    # Make sure that the dots are not empty.
+    if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
 
-	# Handle the parameter generation for the supported models.
-	if(type == "ising") {		
-		return(
-			model.ising(nodes, architecture, ...)
-		)
+    # Handle the parameter generation for the supported models.
+    if(type == "ising") {       
+        return(
+            model.ising(nodes, architecture, ...)
+        )
 
-	} else if(type == "ggm") {		
-		return(
-			model.ggm(nodes, architecture, ...)
-		)
-	
-	} else {
-		stop("Unsupported model type. Please request it at ...")
-	}
+    } else if(type == "ggm") {
+        return(
+            model.ggm(nodes, architecture, ...)
+        )
+    
+    } else {
+        stop("Unsupported model type. Please request it at ...")
+    }
 }
