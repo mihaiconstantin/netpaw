@@ -69,17 +69,18 @@ get.model <- function(type, nodes, architecture, ...) {
 	# Make sure that the dots are not empty.
 	if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
 
-	# Handle the parameter generation for the Ising model.
+	# Handle the parameter generation for the supported models.
 	if(type == "ising") {		
 		return(
 			model.ising(nodes, architecture, ...)
 		)
-	}
 
-	# Handle the parameter generation for the GGM model.
-	if(type == "ggm") {		
+	} else if(type == "ggm") {		
 		return(
 			model.ggm(nodes, architecture, ...)
 		)
+	
+	} else {
+		stop("Unsupported model type. Please request it at ...")
 	}
 }
