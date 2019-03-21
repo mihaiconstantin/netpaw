@@ -2,17 +2,13 @@
 
 
 
-model.ising <- function(graph, mean = 0, sd = 1) {
+model.ising <- function(graph.type, nodes, ..., mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
+    graph <- get.graph(graph.type, nodes, ...)
+
+    # Preparing the weights matrix.
     weights <- graph
     
-    # Determine and check the dimensions.
-    dimensions = dim(graph);
-    if(dimensions[1] != dimensions[2])stop('Wrong graph: dimensions do not match.')
-    
-    # Set the number of nodes.
-    nodes = dimensions[1]
-
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
     parameters <- abs(rnorm(number_parameters, mean, sd))
@@ -70,25 +66,16 @@ model.ggm <- function(architecture, range = c(0.5, 1), constant = 1.5) {
 }
 
 
+
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
-get.model <- function(type, architecture, ...) {
-    # Make sure that the dots are not empty.
-    if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
-
-    # Check if the arguments psssed via the ... are relevant for the ising and ggm, otherwise ignore them and use the defauts.
-
-
+get.model <- function(type, graph.type, nodes, ...) {
     # Handle the parameter generation for the supported models.
     if(type == "ising") {       
-        return(
-            model.ising(nodes, architecture, ...)
-        )
+        return(model.ising(graph.type, nodes, ...))
 
     } else if(type == "ggm") {
-        return(
-            model.ggm(nodes, architecture, ...)
-        )
+        return(model.ggm(graph.type, nodes, ...))
     
     } else {
         stop("Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
