@@ -12,7 +12,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "R --quiet -e devtools::document() -e devtools::install() && R --quiet",
+            "command": "R --quiet -e devtools::document() -e devtools::install()",
             "group": {
                 "kind": "build",
                 "isDefault": true
