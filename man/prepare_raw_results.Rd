@@ -4,6 +4,9 @@
 \alias{prepare_raw_results}
 \title{.}
 \usage{
-prepare_raw_results(participants, nodes, architecture, connectedness, model,
-  data, true_model, estimated_model)
+prepare_raw_results(participants, nodes, architecture, connectedness,
+  model, data, true_model, estimated_model)
+}
+\description{
+.
 }

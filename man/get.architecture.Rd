@@ -4,7 +4,7 @@
 \alias{get.architecture}
 \title{Generate an undirected unweighted graph.}
 \usage{
-get.architecture(type, nodes, ..., positive.edge.ratio = 1)
+get.architecture(type, nodes, positive.edge.ratio, ...)
 }
 \description{
 Generate an undirected unweighted graph.

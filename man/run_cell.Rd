@@ -4,5 +4,8 @@
 \alias{run_cell}
 \title{.}
 \usage{
-run_cell(participants, nodes, architecture, connectedness, model)
+run_cell(participants, nodes, model, architecture, ...)
+}
+\description{
+.
 }

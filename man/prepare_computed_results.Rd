@@ -6,3 +6,6 @@
 \usage{
 prepare_computed_results(true_model, estimated_model)
 }
+\description{
+.
+}

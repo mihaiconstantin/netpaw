@@ -6,3 +6,6 @@
 \usage{
 replicate_cells(cells, replications)
 }
+\description{
+.
+}

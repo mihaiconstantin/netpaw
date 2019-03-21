@@ -4,6 +4,9 @@
 \alias{prepare_cell_results}
 \title{.}
 \usage{
-prepare_cell_results(participants, nodes, architecture, connectedness, model,
-  data, true_model, estimated_model)
+prepare_cell_results(participants, nodes, architecture, connectedness,
+  model, data, true_model, estimated_model)
+}
+\description{
+.
 }
