@@ -1,8 +1,8 @@
-# In this file we are generating UNDIREGTED & UNWEIGHTED GRAPHS of various architectures.
+# In this file we are generating UNDIREGTED & UNWEIGHTED GRAPHS of various graphs.
 
 
 
-architecture.random <- function(nodes, p) {
+graph.random <- function(nodes, p) {
     # Graph.
     graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
     
@@ -12,7 +12,7 @@ architecture.random <- function(nodes, p) {
 
 
 
-architecture.small.world <- function(nodes, neighborhood, p) {
+graph.small.world <- function(nodes, neighborhood, p) {
     # Graph.
     graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p)))
     
@@ -22,7 +22,7 @@ architecture.small.world <- function(nodes, neighborhood, p) {
 
 
 
-architecture.scale.free <- function(nodes, attachment, edges) {
+graph.scale.free <- function(nodes, attachment, edges) {
     # Graph.
     graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(nodes, power = attachment, m = edges, directed = F)))
 
@@ -34,7 +34,7 @@ architecture.scale.free <- function(nodes, attachment, edges) {
 
 #' @title Generate an undirected unweighted graph.
 #' @export
-get.architecture <- function(type, nodes, ..., positive.edge.ratio = 1) {
+get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
     # Capture the dot arguments.
     . <- list(...)
     
@@ -46,15 +46,15 @@ get.architecture <- function(type, nodes, ..., positive.edge.ratio = 1) {
     # Providing the desired graph.
     if(type == "random") {
         if(is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = architecture.random(nodes, .[["p"]])
+        graph = graph.random(nodes, .[["p"]])
 
     } else if(type == "smallworld") {
         if(is.null(.[["neighborhood"]]) || is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = architecture.small.world(nodes, .[["neighborhood"]], .[["p"]])
+        graph = graph.small.world(nodes, .[["neighborhood"]], .[["p"]])
 
     } else if(type == "scalefree") {
         if(is.null(.[["attachment"]]) || is.null(.[["edges"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = architecture.scale.free(nodes, .[["attachment"]], .[["edges"]])
+        graph = graph.scale.free(nodes, .[["attachment"]], .[["edges"]])
     
     } else {
         stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`")
