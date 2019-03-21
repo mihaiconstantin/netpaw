@@ -2,9 +2,16 @@
 
 
 
-model.ising <- function(architecture, mean = 0, sd = 1) {
+model.ising <- function(graph, mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
-    weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
+    weights <- graph
+    
+    # Determine the nodes.
+    dimensions = dim(graph);
+
+    # Check the dimensions.
+    if(dimensions[1] != dimensions[2])stop('Wrong graph: dimensions do not match.')
+    nodes = dimensions[1]
 
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
@@ -20,6 +27,7 @@ model.ising <- function(architecture, mean = 0, sd = 1) {
     # Return list.
     return(list(
         model = 'ising',
+        graph = graph,
         weights = weights, 
         thresholds = thresholds
     ))
