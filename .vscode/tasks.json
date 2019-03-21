@@ -17,6 +17,12 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "Rscript tests/test.R",
+            "group": "test"
         }
     ]
 }
