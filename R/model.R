@@ -6,11 +6,11 @@ model.ising <- function(graph, mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
     weights <- graph
     
-    # Determine the nodes.
+    # Determine and check the dimensions.
     dimensions = dim(graph);
-
-    # Check the dimensions.
     if(dimensions[1] != dimensions[2])stop('Wrong graph: dimensions do not match.')
+    
+    # Set the number of nodes.
     nodes = dimensions[1]
 
     # Sampling the parameters.
