@@ -112,7 +112,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 
 
 # # # ------------------------------------
-# # # Healper functions for sampling data. 
+# # # Helper functions for sampling data. 
 # # # ------------------------------------
 
 

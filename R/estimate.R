@@ -55,7 +55,7 @@ estimate.model <- function(data) {
 
 
 # # # 
-# External functions.
+# External functions (re-implemented).
 # # #
 
 #' @title .

@@ -2,7 +2,7 @@
 
 
 
-model.ising <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, mean = 0, sd = 1) {
+model.ising <- function(architecture, mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
     weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
 
@@ -27,7 +27,7 @@ model.ising <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, mea
 
 
 
-model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range = c(0.5, 1), constant = 1.5) {
+model.ggm <- function(architecture, range = c(0.5, 1), constant = 1.5) {
     # Since we get the partial correlation matrix by taking the negative standardization of the precision 
     # matrix (i.e., see line 52) we need to redefine what the positive.edge.proportion argument means.
     positive.edge.ratio = 1 - positive.edge.ratio
@@ -62,12 +62,14 @@ model.ggm <- function(nodes, architecture, ..., positive.edge.ratio = 0.5, range
 }
 
 
-
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
-get.model <- function(type, nodes, architecture, ...) {
+get.model <- function(type, architecture, ...) {
     # Make sure that the dots are not empty.
     if(length(list(...)) == 0) stop("Invalid `...` arguments. Please check the documentation.")
+
+    # Check if the arguments psssed via the ... are relevant for the ising and ggm, otherwise ignore them and use the defauts.
+
 
     # Handle the parameter generation for the supported models.
     if(type == "ising") {       
@@ -81,6 +83,6 @@ get.model <- function(type, nodes, architecture, ...) {
         )
     
     } else {
-        stop("Unsupported model type. Please request it at ...")
+        stop("Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
     }
 }

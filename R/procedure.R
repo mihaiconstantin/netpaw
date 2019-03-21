@@ -4,12 +4,16 @@
 
 #' @title .
 #' @export
-run_cell <- function(participants, nodes, architecture, connectedness, model) {
+run_cell <- function(participants, nodes, model, architecture, ...) {
 	# User feedback at start.
-	cat('\t-> config:', participants, 'par |', nodes, 'nod |', architecture, 'arc |', connectedness, 'con |', model, 'mod. ')
+	cat('\t-> config:', participants, 'par |', nodes, 'nod |', architecture, 'arc |', model, 'mod. ')
 	
+    # Select the graph (i.e., architecture).
+    architecture <- get.architecture(architecture, nodes, ...)
+
 	# Select the true model.
-	true_model <- select_true_model(nodes, architecture, connectedness, model)
+	# true_model <- select_true_model(nodes, architecture, model)
+    true_model <- get.model(model, architecture)
 
 	# Sample data based on the true model.
 	data <- sample_data(participants, true_model)
@@ -18,7 +22,7 @@ run_cell <- function(participants, nodes, architecture, connectedness, model) {
 	estimated_model <- estimate_model(model, data$data)
 
 	# Prepare the results.
-	result <- prepare_cell_results(participants, nodes, architecture, connectedness, model, data, true_model, estimated_model)
+	result <- prepare_cell_results(participants, nodes, architecture, model, data, true_model, estimated_model)
 	class(result) <- c('netPowerCell', 'list')
 
 	# User feedback at the end.

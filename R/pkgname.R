@@ -1,10 +1,10 @@
-#' netPower: A package for network simulations.
+#' netpower: A package for network simulations.
 #'
-#' The netPower package provides three categories of important functions:
+#' The netpower package provides three categories of important functions:
 #' TODO: fix the documenation for all functions.
 #' 
-#' @section netPower functions:
-#' The netPower functions ...
+#' @section netpower functions:
+#' The netpower functions ...
 #'
 #' @import Matrix
 #' @import glmnet
@@ -15,7 +15,7 @@
 #' @import bootnet
 #'
 #' @docType package
-#' @name netPower
+#' @name netpower
 "_PACKAGE"
 
 

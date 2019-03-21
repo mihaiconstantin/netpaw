@@ -34,7 +34,7 @@ architecture.scale.free <- function(nodes, attachment, edges) {
 
 #' @title Generate an undirected unweighted graph.
 #' @export
-get.architecture <- function(type, nodes,..., positive.edge.ratio = 1) {
+get.architecture <- function(type, nodes, ..., positive.edge.ratio = 1) {
     # Capture the dot arguments.
     . <- list(...)
     
@@ -57,7 +57,7 @@ get.architecture <- function(type, nodes,..., positive.edge.ratio = 1) {
         graph = architecture.scale.free(nodes, .[["attachment"]], .[["edges"]])
     
     } else {
-        stop("Unsupported graph type. Please request it at ...")
+        stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`")
     }
     
     # Determine the positive edge ratio.
