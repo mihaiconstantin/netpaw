@@ -14,7 +14,8 @@ Imports:
 	Matrix,
 	glmnet
 Suggests:
-    devtools
+    devtools,
+    testthat
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
