@@ -75,7 +75,7 @@ IsingFitEssential <- function(x, AND = TRUE, gamma = 0.25, lowerbound.lambda = N
         nlambdas[i] <- length(lambdas[[i]])
     }
 
-    P <- logl <- sumlogl <- J <- matrix(0, max(nlambdas), nvar)
+    sumlogl <- J <- matrix(0, max(nlambdas), nvar)
 
     for (i in 1:nvar) {
         J[1:ncol(betas[[i]]), i] <- colSums(betas[[i]] != 0)
