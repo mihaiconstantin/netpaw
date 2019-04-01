@@ -4,7 +4,7 @@
 \alias{get.model}
 \title{Generate a PMRF (i.e., GGM or Ising).}
 \usage{
-get.model(type, architecture, ...)
+get.model(type, graph.type, nodes, ...)
 }
 \description{
 Generate a PMRF (i.e., GGM or Ising).

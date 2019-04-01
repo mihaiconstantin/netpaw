@@ -2,8 +2,8 @@
 
 export(IsingFitEssential)
 export(estimate.model)
-export(get.architecture)
 export(get.data)
+export(get.graph)
 export(get.model)
 export(prepare_cell_results)
 export(prepare_computed_results)
