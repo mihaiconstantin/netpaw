@@ -80,6 +80,7 @@ model.ggm <- function(graph.type, nodes, ..., range = c(0.5, 1), constant = 1.5)
     # Return list.
     return(list(
         model = 'ggm',
+        graph = graph,
         weights = weights,
         thresholds = 'n.a.'
     ))
