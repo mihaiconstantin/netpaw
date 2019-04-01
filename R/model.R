@@ -31,13 +31,33 @@ model.ising <- function(graph.type, nodes, ..., mean = 0, sd = 1) {
 
 
 
-model.ggm <- function(architecture, range = c(0.5, 1), constant = 1.5) {
+model.ggm <- function(graph.type, nodes, ..., range = c(0.5, 1), constant = 1.5) {
     # Since we get the partial correlation matrix by taking the negative standardization of the precision 
-    # matrix (i.e., see line 52) we need to redefine what the positive.edge.proportion argument means.
-    positive.edge.ratio = 1 - positive.edge.ratio
+    # matrix (i.e., see line 61) we need to redefine what the positive.edge.proportion argument means.
+    # We do this by flipping the `meaning` of `positive.edge.ratio` argument of `get.graph`.
+    . <- list(...)
+    
+    if (length(.) != 0 && !is.null(.[["positive.edge.ratio"]])) {
+        .[["positive.edge.ratio"]] = 1 - .[["positive.edge.ratio"]]
+    } else {
+        # The reason for this is the following: if we want 100% positive edges, then we need to
+        # specify that we want only negative edges (i.e., 0%) and due to the inverse sign we
+        # get positive edges as a result. Below things are written explicitly. Second one 
+        # represents the default positive edge ratio.
+        .[["positive.edge.ratio"]] = 1 - 1
+    }
+    
+    # Prepare the arguments for the graph.
+    graph.args <- c(list(
+        type = graph.type,
+        nodes = nodes
+    ), .)
     
     # Undireghted, unweighted network structure.
-    weights <- get.architecture(type = architecture, nodes = nodes, ..., positive.edge.ratio = positive.edge.ratio)
+    graph <- do.call("get.graph", args = graph.args)
+
+    # Preparing the weights matrix.
+    weights <- graph
 
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
