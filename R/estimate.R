@@ -26,8 +26,9 @@ estimator.ggm <- function(data) {
 #' @title Estimated the model based on the type of data provided.
 #' @export
 estimate.model <- function(data) {
-    # Determine which estimator to use based on the model type. Ensure that regardless 
-    # of the estimation function, the result object looks the same.
+    # Determine which estimator to use based on the model type. 
+    # Ensure that regardless of the estimation function, the result object looks the same.
+    
     # Estimating Ising.
     if(data$model == "ising") {
         model.fit = estimator.ising(data$data)
@@ -46,7 +47,7 @@ estimate.model <- function(data) {
     
     # Unrecognized model type.
     } else {
-        stop("Unrecognized estimator type.")
+        stop("Unsupported model type during estimation. Please request it at `m.a.constantin@uvt.nl`.")
     }
 
     return(result)
@@ -57,6 +58,8 @@ estimate.model <- function(data) {
 # # # 
 # External functions (re-implemented).
 # # #
+
+
 
 #' @title .
 #' Copyright: https://github.com/cvborkulo/IsingFit
