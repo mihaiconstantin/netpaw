@@ -132,7 +132,7 @@ IsingFitEssential <- function(x, AND = TRUE, gamma = 0.25, lowerbound.lambda = N
         thresholds[i] <- intercepts[[i]][lambda.opt[i]]
     }
 
-    weights.opt <- matrix(, nvar, nvar)
+    weights.opt <- matrix(NA, nvar, nvar)
 
     for (i in 1:nvar) {
         weights.opt[i, -i] <- betas[[i]][, lambda.opt[i]]
