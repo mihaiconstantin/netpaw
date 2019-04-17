@@ -1,6 +1,23 @@
-# netPower
+# **`netpower`**
 **Sample Size Recommendations for Estimating Cross-Sectional Network Models.** 
 
+---
+
+## ⚠️ Notice:
+The version on this branch is currently under heavy development and many things will change.
+
+## Checklist:
+- ✅ generate graphs
+- ✅ generate parameters
+- ✅ generate data
+- ✅ estimate models
+- ⚠️ compare generated & estimated models 
+- ❌ expand combinations of simulation factors into a data frame
+- ❌ run and replicate combinations of design factors
+- ❌ connect and store the results to a MySQL database
+- ❌ post the results to an API endpoint using encrypted pre-generated tokens
+
+---
 
 ## Installation
 - the package can be installed as `devtools::install_github('mihaiconstantin/netPower')`
@@ -66,7 +83,7 @@ result_cell
 plot(result_cell)
 ```
 
-![Plot for `run_cell` result object.](https://constantinmihai.com/tmp/run_cell_plot.png)
+![Plot for `run_cell` result object.](https://constantinmihai.com/)
 
 - the output contains a list containing two sub-lists: `$raw`, `$computed`:
     - `$raw` contains the true and estimated model parameters and the data
