@@ -119,6 +119,8 @@ print.netpowerTrueModel <- function(object, graph = TRUE, ...) {
     cat("\n")
     cat("Model details:")
     cat("\n")
+    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat("\n")
     cat("  - type:", shQuote(object$model))
     cat("\n")
     cat("  - mean absolute:", mean(abs(object$weights[upper.tri(object$weights)])))
@@ -156,13 +158,10 @@ plot.netpowerTrueModel <- function(object, ...) {
     # Compute the average layout.
     average.layout = qgraph::averageLayout(qgraph.object.graph, qgraph.object.weights)
     
-    # Get the non-zero edges.
-    graph.weights = object$weights[upper.tri(object$weights)]
-    edges = graph.weights[graph.weights != 0]
-    
-    colors = rep(NA, length(edges))
-    colors[edges > 0] = POSITIVE.EDGE.COLOR
-    colors[edges < 0] = NEGATIVE.EDGE.COLOR
+    # Color the edges.
+    colors = matrix(NA, ncol(object$weights), nrow(object$weights))
+    colors[object$weights > 0] = POSITIVE.EDGE.COLOR
+    colors[object$weights < 0] = NEGATIVE.EDGE.COLOR
     
     # Split the screen.
     par(mfrow = c(1, 2))
