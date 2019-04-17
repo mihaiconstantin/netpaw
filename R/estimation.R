@@ -34,7 +34,7 @@ estimate.model <- function(data) {
     # Ensure that regardless of the estimation function, the result object looks the same.
     
     # Check that a `npdata` object is used.
-    if(!inherits(model, "npdata")) {
+    if(!inherits(data, "npdata")) {
         stop("Argument `data` must be an object of class `npdata`.")
     }
 
