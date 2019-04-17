@@ -87,8 +87,8 @@ get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
     positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - positive.edge.ratio, positive.edge.ratio))
     
     # Apply the positive edge ration.
-    graph[upper.tri(graph)] <- graph[upper.tri(graph)] * positive.ratio
-    graph[lower.tri(graph)] <- t(graph)[lower.tri(graph)]
+    graph$graph[upper.tri(graph$graph)] <- graph$graph[upper.tri(graph$graph)] * positive.ratio
+    graph$graph[lower.tri(graph$graph)] <- t(graph$graph)[lower.tri(graph$graph)]
     
     return(graph)
 }
