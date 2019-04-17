@@ -83,7 +83,7 @@ result_cell
 plot(result_cell)
 ```
 
-![Plot for `run_cell` result object.](https://constantinmihai.com/)
+![Plot for `run_cell` result object.](./examples/images/cell_evaluation_plot.svg)
 
 - the output contains a list containing two sub-lists: `$raw`, `$computed`:
     - `$raw` contains the true and estimated model parameters and the data
