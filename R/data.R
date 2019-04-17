@@ -3,6 +3,7 @@
 
 
 
+# Data generator types ----------------------------------------------------
 sampler.ising <- function(n, model, nIter = 100, method = "MH") {
     # Sample data.
     data = IsingSampler::IsingSampler(n, model$weights, model$thresholds, nIter = nIter, method = method)
@@ -35,6 +36,7 @@ sampler.ggm <- function(n, model, levels = 5) {
 
 
 
+# Exported wrapper --------------------------------------------------------
 #' @title Sample data for a specified PMRF model.
 #' @export
 get.data <- function(n, model, attempts = 5, ...) {
@@ -66,17 +68,15 @@ get.data <- function(n, model, attempts = 5, ...) {
         data = attempt.resampling(n, model, sampler.fun, attempts, ...)
     } 
 
-    return(data)    
+    # Set the class of the output.
+    class(data) <- c('netpowerGeneratedData', 'list')
+
+    return(data)
 }
 
 
 
-# # # ------------------------------------
-# # # Support functions for sampling data. 
-# # # ------------------------------------
-
-
-
+# Support functions for sampling data -------------------------------------
 attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
     # Starting at 2nd attempt with an optimistic view that a good dataset will be found.
     attempt = 1
@@ -118,12 +118,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 
 
 
-# # # ------------------------------------
-# # # Helper functions for sampling data. 
-# # # ------------------------------------
-
-
-
+# Helper functions for sampling data --------------------------------------
 should.resample <- function(data, tolerance = 1) {
     # Check each column in the dataset for at least 2 responses on a given category.
     variance.checks = apply(data, 2, is.invariant, tolerance)
@@ -163,4 +158,37 @@ is.invariant <- function(node, tolerance = 1) {
 drop.invariant.nodes <- function(data, tolerance = 1) {
     invariant.nodes = apply(data, 2, is.invariant, tolerance)
     return(data[, !invariant.nodes,  drop = FALSE])
+}
+
+
+
+# Object methods ----------------------------------------------------------
+print.netpowerGeneratedData <- function(object, data = TRUE, ...) {    
+    # Details about the model.
+    cat("\n")
+    cat("Data details:")
+    cat("\n")
+    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat("\n")
+    cat("  - generating model:", shQuote(object$model))
+    cat("\n")
+    cat("  - item steps:", paste(shQuote(c("min", "max")), c(min(object$data), max(object$data)), sep = " = ", collapse = " | "))
+    cat("\n")
+    cat("  - resampling attempts:", object$attempts)
+    cat("\n")
+    cat("  - generation status:", ifelse(object$status == 0, "succeeded", "failed"))
+    cat("\n")
+    
+    # The data matrix.
+    cat("\n")
+    cat("Dataset:")
+    cat("\n\n")
+    if(data) {
+        print(object$data, ...)
+    } else {
+        print(head(object$data, ...))
+        cat(". . .")
+        cat("\n")
+    }
+    cat("\n")
 }
