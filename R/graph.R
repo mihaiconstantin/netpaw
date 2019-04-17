@@ -3,6 +3,7 @@
 
 
 # Graph types -------------------------------------------------------------
+
 graph.random <- function(nodes, p) {
     # Graph.
     graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
@@ -55,9 +56,10 @@ graph.scale.free <- function(nodes, attachment, edges) {
 
 
 # Exported wrappers -------------------------------------------------------
+
 #' @title Generate an undirected unweighted graph.
 #' @export
-get.graph <- function(type, nodes, ...) {
+gen.graph <- function(type, nodes, ...) {
     # Capture the dot arguments.
     . <- list(...)
     
@@ -84,7 +86,7 @@ get.graph <- function(type, nodes, ...) {
     }
     
     # Set the class of the result.
-    class(graph) <- c('netpowerGraph', 'list')
+    class(graph) <- c('npgraph', 'list')
     
     return(graph)
 }
@@ -92,7 +94,8 @@ get.graph <- function(type, nodes, ...) {
 
 
 # Object methods ----------------------------------------------------------
-print.netpowerGraph <- function(object, details = TRUE, graph = TRUE, ...) {
+
+print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
     # Details about the graph.
     if (details) {
         cat("\n")
@@ -122,6 +125,6 @@ print.netpowerGraph <- function(object, details = TRUE, graph = TRUE, ...) {
 
 
 
-plot.netpowerGraph <- function(object, ...) {    
+plot.npgraph <- function(object, ...) {    
     qgraph::qgraph(object$graph, ..., layout = "circle", edge.width = 1.5, title = "Unweighted graph")
 }
