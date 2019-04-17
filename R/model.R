@@ -93,10 +93,19 @@ get.model <- function(type, graph.type, nodes, ...) {
         stop("Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
     }
     
-    # Set the class of the result.
+    # Set the class of the output.
     class(result) <- c('netpowerTrueModel', 'list')
     
     return(result)
+}
+
+
+
+# Helpers --------------------------------------------------------
+positive.parameter.ratio <- function(number.parameters, ratio) {
+    positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - ratio, ratio))
+
+    return(positive.ratio)    
 }
 
 
