@@ -89,17 +89,91 @@ model.ggm <- function(graph.type, nodes, ..., range = c(0.5, 1), constant = 1.5)
 
 
 
+# Exported wrapper --------------------------------------------------------
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
 get.model <- function(type, graph.type, nodes, ...) {
     # Handle the parameter generation for the supported models.
     if(type == "ising") {       
-        return(model.ising(graph.type, nodes, ...))
+        result <- model.ising(graph.type, nodes, ...)
 
     } else if(type == "ggm") {
-        return(model.ggm(graph.type, nodes, ...))
+        result <- model.ggm(graph.type, nodes, ...)
     
     } else {
         stop("Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
     }
+    
+    # Set the class of the result.
+    class(result) <- c('netpowerTrueModel', 'list')
+    
+    return(result)
+}
+
+
+
+# Object methods ----------------------------------------------------------
+print.netpowerTrueModel <- function(object, graph = TRUE, ...) {
+    # Details about the graph.
+    print(object$graph, graph = FALSE)
+    
+    # Details about the model.
+    cat("\n")
+    cat("Model details:")
+    cat("\n")
+    cat("  - type:", shQuote(object$model))
+    cat("\n")
+    cat("  - mean absolute:", mean(abs(object$weights[upper.tri(object$weights)])))
+    cat("\n")
+    cat("  - sd:", sd(object$weights[upper.tri(object$weights)]))
+    cat("\n")
+    cat("  - range:", paste(shQuote(c("min", "max")), round(c(min(object$weights), max(object$weights)), 3), sep = " = ", collapse = " | "))
+    cat("\n")
+    
+    if (graph) {
+        # The graph matrix.
+        print(object$graph, details = FALSE)
+        
+        # The weights matrix.
+        cat("Weights matrix:")
+        cat("\n\n")
+        print(object$weights, digits = 3)
+        cat("\n")
+        
+        # The threhsold vector if applicable.
+        cat("Thresholds:")
+        cat("\n\n")
+        print(object$thresholds, digits = 3)
+        cat("\n")
+    }
+}
+
+
+
+plot.netpowerTrueModel <- function(object, ...) {
+    # Store the qgraph objects to compute the average layout.
+    qgraph.object.graph <- qgraph::qgraph(object$graph$graph, layout = "spring", DoNotPlot = TRUE)
+    qgraph.object.weights <- qgraph::qgraph(object$weights, layout = "spring", DoNotPlot = TRUE)
+    
+    # Compute the average layout.
+    average.layout = qgraph::averageLayout(qgraph.object.graph, qgraph.object.weights)
+    
+    # Get the non-zero edges.
+    graph.weights = object$weights[upper.tri(object$weights)]
+    edges = graph.weights[graph.weights != 0]
+    
+    colors = rep(NA, length(edges))
+    colors[edges > 0] = POSITIVE.EDGE.COLOR
+    colors[edges < 0] = NEGATIVE.EDGE.COLOR
+    
+    # Split the screen.
+    par(mfrow = c(1, 2))
+    
+    # Plot the undirected, unweighted graph.
+    plot(object$graph, layout = average.layout)
+    
+    # Plot the weights matrix (i.e., true model). 
+    qgraph::qgraph(object$weights, layout = average.layout, edge.color = colors, title = "Weighted graph")
+    
+    par(mfrow = c(1, 1))
 }
