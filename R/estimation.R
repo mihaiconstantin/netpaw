@@ -1,11 +1,12 @@
-# This file contains functions related to estimating the model.
+# This file contains functions related to estimating PMRF models.
 
 
 
 # Estimator types ---------------------------------------------------------
+
 estimator.ising <- function(data) {
     # Estimate the model.
-    result = IsingFitEssential(data)
+    result <- IsingFitEssential(data)
 
     return(result)
 }
@@ -14,7 +15,7 @@ estimator.ising <- function(data) {
 
 estimator.ggm <- function(data) {
     # Estimate the model.
-    result = bootnet::estimateNetwork(data, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE)
+    result <- bootnet::estimateNetwork(data, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE)
     
     # Remove the names, not needed.
     rownames(result$graph) <- colnames(result$graph) <- NULL
@@ -25,6 +26,7 @@ estimator.ggm <- function(data) {
 
 
 # Exported wrapper --------------------------------------------------------
+
 #' @title Estimated the model based on the type of data provided.
 #' @export
 estimate.model <- function(data) {
@@ -35,10 +37,11 @@ estimate.model <- function(data) {
     if(!inherits(model, "npdata")) {
         stop("Argument `data` must be an object of class `npdata`.")
     }
+
     # Estimating Ising.
     if(data$model == "ising") {
-        model.fit = estimator.ising(data$data)
-        result = list(
+        model.fit <- estimator.ising(data$data)
+        result <- list(
             weights = model.fit$weiadj,
             model = data$model,
             thresholds = model.fit$thresholds
@@ -46,8 +49,8 @@ estimate.model <- function(data) {
 
     # Estimating GGM.
     } else if(data$model == "ggm") {
-        model.fit = estimator.ggm(data$data)
-        result = list(
+        model.fit <- estimator.ggm(data$data)
+        result <- list(
             weights = model.fit$graph,
             model = data$model,
             thresholds = 'n.a.'
@@ -59,7 +62,7 @@ estimate.model <- function(data) {
     }
 
     # Set the class of the output.
-    class(result) <- c('netpowerEstimatedModel', 'list')
+    class(result) <- c('npfit', 'list')
 
     return(result)
 }
@@ -67,7 +70,7 @@ estimate.model <- function(data) {
 
 
 # Object methods ----------------------------------------------------------
-print.netpowerEstimatedModel <- function(object, weights = TRUE, ...) {    
+print.npfit <- function(object, weights = TRUE, ...) {    
     # Details about the model.
     cat("\n")
     cat("Model details:")
@@ -102,9 +105,8 @@ print.netpowerEstimatedModel <- function(object, weights = TRUE, ...) {
 
 
 # External functions (re-implemented) -------------------------------------
-#' @title .
-#' Copyright: https://github.com/cvborkulo/IsingFit
-#' @export
+
+# Copyright: https://github.com/cvborkulo/IsingFit
 IsingFitEssential <- function(x, AND = TRUE, gamma = 0.25, lowerbound.lambda = NA) {
     nvar <- ncol(x)
     p <- nvar - 1
