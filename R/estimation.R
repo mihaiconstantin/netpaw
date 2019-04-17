@@ -54,17 +54,50 @@ estimate.model <- function(data) {
         stop("Unsupported model type during estimation. Please request it at `m.a.constantin@uvt.nl`.")
     }
 
+    # Set the class of the output.
+    class(result) <- c('netpowerEstimatedModel', 'list')
+
     return(result)
 }
 
 
 
-# # # 
-# External functions (re-implemented).
-# # #
+# Object methods ----------------------------------------------------------
+print.netpowerEstimatedModel <- function(object, weights = TRUE, ...) {    
+    # Details about the model.
+    cat("\n")
+    cat("Model details:")
+    cat("\n")
+    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat("\n")
+    cat("  - type:", shQuote(object$model))
+    cat("\n")
+    cat("  - mean absolute:", mean(abs(object$weights[upper.tri(object$weights)])))
+    cat("\n")
+    cat("  - sd:", sd(object$weights[upper.tri(object$weights)]))
+    cat("\n")
+    cat("  - range:", paste(shQuote(c("min", "max")), round(c(min(object$weights), max(object$weights)), 3), sep = " = ", collapse = " | "))
+    cat("\n")
+    
+    if (weights) {
+        # The weights matrix.
+        cat("\n")
+        cat("Weights matrix:")
+        cat("\n\n")
+        print(object$weights, digits = 3)
+        cat("\n")
+        
+        # The threhsold vector if applicable.
+        cat("Thresholds:")
+        cat("\n\n")
+        print(object$thresholds, digits = 3)
+        cat("\n")
+    }
+}
 
 
 
+# External functions (re-implemented) -------------------------------------
 #' @title .
 #' Copyright: https://github.com/cvborkulo/IsingFit
 #' @export
