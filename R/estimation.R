@@ -31,6 +31,10 @@ estimate.model <- function(data) {
     # Determine which estimator to use based on the model type. 
     # Ensure that regardless of the estimation function, the result object looks the same.
     
+    # Check that a `npdata` object is used.
+    if(!inherits(model, "npdata")) {
+        stop("Argument `data` must be an object of class `npdata`.")
+    }
     # Estimating Ising.
     if(data$model == "ising") {
         model.fit = estimator.ising(data$data)
