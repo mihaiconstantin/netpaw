@@ -57,7 +57,7 @@ graph.scale.free <- function(nodes, attachment, edges) {
 # Exported wrappers -------------------------------------------------------
 #' @title Generate an undirected unweighted graph.
 #' @export
-get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
+get.graph <- function(type, nodes, ...) {
     # Capture the dot arguments.
     . <- list(...)
     
@@ -83,14 +83,6 @@ get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
         stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`")
     }
     
-    # Determine the positive edge ratio.
-    number.parameters = (nodes * (nodes - 1)) / 2
-    positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - positive.edge.ratio, positive.edge.ratio))
-    
-    # Apply the positive edge ration.
-    graph$graph[upper.tri(graph$graph)] <- graph$graph[upper.tri(graph$graph)] * positive.ratio
-    graph$graph[lower.tri(graph$graph)] <- t(graph$graph)[lower.tri(graph$graph)]
-    
     # Set the class of the result.
     class(graph) <- c('netpowerGraph', 'list')
     
@@ -99,10 +91,8 @@ get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
 
 
 
-
 # Object methods ----------------------------------------------------------
 print.netpowerGraph <- function(object, details = TRUE, graph = TRUE, ...) {
-    
     # Details about the graph.
     if (details) {
         cat("\n")
@@ -132,14 +122,6 @@ print.netpowerGraph <- function(object, details = TRUE, graph = TRUE, ...) {
 
 
 
-plot.netpowerGraph <- function(object, ...) {
-    # Plot the undirected, unweighted graph.
-    graph.parameters = object$graph[upper.tri(object$graph)]
-    edges = graph.parameters[graph.parameters != 0]
-    
-    colors = rep(NA, length(edges))
-    colors[edges > 0] = POSITIVE.EDGE.COLOR
-    colors[edges < 0] = NEGATIVE.EDGE.COLOR
-    
-    qgraph::qgraph(abs(object$graph), ..., layout = "circle", edge.width = 1.5, edge.color = colors, title = "Unweighted graph")
+plot.netpowerGraph <- function(object, ...) {    
+    qgraph::qgraph(object$graph, ..., layout = "circle", edge.width = 1.5, title = "Unweighted graph")
 }
