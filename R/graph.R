@@ -54,6 +54,7 @@ graph.scale.free <- function(nodes, attachment, edges) {
 
 
 
+# Exported wrappers -------------------------------------------------------
 #' @title Generate an undirected unweighted graph.
 #' @export
 get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
@@ -90,5 +91,55 @@ get.graph <- function(type, nodes, ..., positive.edge.ratio = 1) {
     graph$graph[upper.tri(graph$graph)] <- graph$graph[upper.tri(graph$graph)] * positive.ratio
     graph$graph[lower.tri(graph$graph)] <- t(graph$graph)[lower.tri(graph$graph)]
     
+    # Set the class of the result.
+    class(graph) <- c('netpowerGraph', 'list')
+    
     return(graph)
+}
+
+
+
+
+# Object methods ----------------------------------------------------------
+print.netpowerGraph <- function(object, details = TRUE, graph = TRUE, ...) {
+    
+    # Details about the graph.
+    if (details) {
+        cat("\n")
+        cat("Graph details:")
+        cat("\n")
+        cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+        cat("\n")
+        cat("  - type:", shQuote(object$type))
+        cat("\n")
+        cat("  - options:", paste(shQuote(names(unlist(object$options))), object$options, sep = " = ", collapse = " | "))
+        cat("\n")
+        cat("  - dimensions:", paste(dim(object$graph), collapse = "x"))
+        cat("\n")
+        cat("  - density:", round(get.graph.density(object$graph), 3))
+        cat("\n")      
+    }
+
+    # The graph matrix.
+    if (graph) {
+        cat("\n")
+        cat("Graph matrix:")
+        cat("\n\n")
+        print(object$graph)
+        cat("\n")
+    }
+}
+
+
+
+plot.netpowerGraph <- function(object, ...) {
+    # Plot the undirected, unweighted graph.
+    graph.parameters = object$graph[upper.tri(object$graph)]
+    edges = graph.parameters[graph.parameters != 0]
+    
+    colors = rep(NA, length(edges))
+    colors[edges > 0] = POSITIVE.EDGE.COLOR
+    colors[edges < 0] = NEGATIVE.EDGE.COLOR
+    
+    qgraph::qgraph(abs(object$graph), ..., layout = "circle", edge.width = 1.5, edge.color = colors, title = "Unweighted graph")
 }
