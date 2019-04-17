@@ -70,6 +70,7 @@ estimate.model <- function(data) {
 
 
 # Object methods ----------------------------------------------------------
+
 print.npfit <- function(object, weights = TRUE, ...) {    
     # Details about the model.
     cat("\n")
@@ -100,6 +101,18 @@ print.npfit <- function(object, weights = TRUE, ...) {
         print(object$thresholds, digits = 3)
         cat("\n")
     }
+}
+
+
+
+plot.npfit <- function(object, ...) {
+    # Color the edges.
+    colors <- matrix(NA, ncol(object$weights), nrow(object$weights))
+    colors[object$weights > 0] <- POSITIVE.EDGE.COLOR
+    colors[object$weights < 0] <- NEGATIVE.EDGE.COLOR
+        
+    # Plot the weights matrix (i.e., estimated model). 
+    qgraph::qgraph(object$weights, layout = "spring", edge.color = colors, title = "Weighted graph (estimated model)")    
 }
 
 
