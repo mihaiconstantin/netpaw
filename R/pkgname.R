@@ -1,10 +1,10 @@
-#' netpower: A package for network simulations.
+#' \code{netpaw}: A package for corss-sectional network simulations.
 #'
-#' The netpower package provides three categories of important functions:
-#' TODO: fix the documenation for all functions.
+#' The \code{netpaw} package provides three categories of functions...
+#' TODO: Add documentation.
 #' 
-#' @section netpower functions:
-#' The netpower functions ...
+#' @section \code{netpaw} functions:
+#' The \code{netpaw} functions...
 #'
 #' @import Matrix
 #' @import glmnet
@@ -15,7 +15,7 @@
 #' @import bootnet
 #'
 #' @docType package
-#' @name netpower
+#' @name netpaw
 "_PACKAGE"
 
 
