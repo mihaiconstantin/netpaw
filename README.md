@@ -1,4 +1,4 @@
-# **`netpower`**
+# **`netpaw`**
 **Sample Size Recommendations for Estimating Cross-Sectional Network Models.** 
 
 ---
@@ -20,11 +20,11 @@ The version on this branch is currently under heavy development and many things 
 ---
 
 ## Installation
-- the package can be installed as `devtools::install_github('mihaiconstantin/netPower')`
+- the package can be installed as `devtools::install_github('mihaiconstantin/netpaw')`
 
 
 ## Description
-The data used in the study can be loaded via `data("netPowerData")`.
+The data used in the study can be loaded via `data("netpawData")`.
 The code block below illustrates the main four functions found in this package. 
 
 
