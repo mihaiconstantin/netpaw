@@ -2,12 +2,13 @@
 
 
 
+# Model types -------------------------------------------------------------
 model.ising <- function(graph.type, nodes, ..., mean = 0, sd = 1) {
     # Undireghted, unweighted network structure.
     graph <- get.graph(graph.type, nodes, ...)
 
     # Preparing the weights matrix.
-    weights <- graph
+    weights <- graph$graph
     
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
@@ -57,19 +58,19 @@ model.ggm <- function(graph.type, nodes, ..., range = c(0.5, 1), constant = 1.5)
     graph <- do.call("get.graph", args = graph.args)
 
     # Preparing the weights matrix.
-    weights <- graph
+    weights <- graph$graph
 
     # Sampling the parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
     parameters <- runif(number_parameters, min(range), max(range))
 
     # Applying the parameters to the network structure.
+    # TODO: Consider remving the positive edge ration from the graph file and add it here.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
     weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
 
     # Creating the precision matrix (i.e., inverse of covariance matrix---concentration matrix) as Yin and Li (2011) and bootnet::genGGM().
     diag(weights) <- constant * rowSums(abs(weights))
-    diag(weights) <- ifelse(diag(weights) == 0, 1, diag(weights))
     weights <- weights / diag(weights)[row(weights)]
     weights <- (weights + t(weights)) / 2
 
