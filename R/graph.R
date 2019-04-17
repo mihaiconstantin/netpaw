@@ -2,12 +2,19 @@
 
 
 
+# Graph types -------------------------------------------------------------
 graph.random <- function(nodes, p) {
     # Graph.
     graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
     
     # Return graph.
-    return(graph)
+    return(list(
+        graph = graph,
+        type = "random",
+        options = list(
+            p = p
+        )
+    ))
 }
 
 
@@ -17,7 +24,14 @@ graph.small.world <- function(nodes, neighborhood, p) {
     graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p)))
     
     # Return graph.
-    return(graph)
+    return(list(
+        graph = graph,
+        type = "smallworld",
+        options = list(
+            p = p,
+            neighborhood = neighborhood
+        )
+    ))
 }
 
 
@@ -27,7 +41,15 @@ graph.scale.free <- function(nodes, attachment, edges) {
     graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(nodes, power = attachment, m = edges, directed = F)))
 
     # Return graph.
-    return(graph)
+    # Return graph.
+    return(list(
+        graph = graph,
+        type = "scalefree",
+        options = list(
+            attachment = attachment,
+            edges = edges
+        )
+    ))
 }
 
 
