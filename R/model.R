@@ -37,49 +37,33 @@ model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean 
 
 
 
-model.ggm <- function(graph.type, nodes, ..., range = c(0.5, 1), constant = 1.5) {
-    # Since we get the partial correlation matrix by taking the negative standardization of the precision 
-    # matrix (i.e., see line 61) we need to redefine what the positive.edge.proportion argument means.
-    # We do this by flipping the `meaning` of `positive.edge.ratio` argument of `get.graph`.
-    . <- list(...)
-    
-    if (length(.) != 0 && !is.null(.[["positive.edge.ratio"]])) {
-        .[["positive.edge.ratio"]] = 1 - .[["positive.edge.ratio"]]
-    } else {
-        # The reason for this is the following: if we want 100% positive edges, then we need to
-        # specify that we want only negative edges (i.e., 0%) and due to the inverse sign we
-        # get positive edges as a result. Below things are written explicitly. Second one 
-        # represents the default positive edge ratio.
-        .[["positive.edge.ratio"]] = 1 - 1
-    }
-    
-    # Prepare the arguments for the graph.
-    graph.args <- c(list(
-        type = graph.type,
-        nodes = nodes
-    ), .)
-    
-    # Undireghted, unweighted network structure.
-    graph <- do.call("get.graph", args = graph.args)
+model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range = c(0.5, 1), constant = 1.5) {
+    # Undirected, unweighted network structure.
+    graph <- get.graph(graph.type, nodes, ...)
 
-    # Preparing the weights matrix.
+    # Prapre the weights matrix.
     weights <- graph$graph
 
-    # Sampling the parameters.
+    # Determine the number of parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
-    parameters <- runif(number_parameters, min(range), max(range))
+    
+    # Decide the number of positive and negative edges.
+    ratio <- positive.parameter.ratio(number_parameters, 1 - positive.edge.ratio)
 
-    # Applying the parameters to the network structure.
-    # TODO: Consider remving the positive edge ration from the graph file and add it here.
+    # Sample the parameters.
+    parameters <- runif(number_parameters, min(range), max(range)) * ratio
+
+    # Apply the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
     weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
 
-    # Creating the precision matrix (i.e., inverse of covariance matrix---concentration matrix) as Yin and Li (2011) and bootnet::genGGM().
+    # Create the precision matrix (i.e., inverse of covariance matrix---concentration matrix) as Yin and Li (2011) and bootnet::genGGM().
     diag(weights) <- constant * rowSums(abs(weights))
+    diag(weights) <- ifelse(diag(weights) == 0, 1, diag(weights))
     weights <- weights / diag(weights)[row(weights)]
     weights <- (weights + t(weights)) / 2
 
-    # Creating the partial corelation matrix from the precision matrix as qgraph::wi2net.
+    # Create the partial corelation matrix from the precision matrix as qgraph::wi2net.
     weights <- -cov2cor(weights)
     diag(weights) <- 0
 
