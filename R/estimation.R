@@ -2,6 +2,7 @@
 
 
 
+# Estimator types ---------------------------------------------------------
 estimator.ising <- function(data) {
     # Estimate the model.
     result = IsingFitEssential(data)
@@ -23,6 +24,7 @@ estimator.ggm <- function(data) {
 
 
 
+# Exported wrapper --------------------------------------------------------
 #' @title Estimated the model based on the type of data provided.
 #' @export
 estimate.model <- function(data) {
@@ -34,6 +36,7 @@ estimate.model <- function(data) {
         model.fit = estimator.ising(data$data)
         result = list(
             weights = model.fit$weiadj,
+            model = data$model,
             thresholds = model.fit$thresholds
         )
 
@@ -42,6 +45,7 @@ estimate.model <- function(data) {
         model.fit = estimator.ggm(data$data)
         result = list(
             weights = model.fit$graph,
+            model = data$model,
             thresholds = 'n.a.'
         )
     
