@@ -1,4 +1,4 @@
-# This file contains the functions needed for running and replicating the procedure.
+# This file contains the functions needed for running and replicating design cells.
 
 
 

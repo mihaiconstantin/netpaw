@@ -1,9 +1,9 @@
 # Progress:
 #   - (OK) graph algorithms
-#   - (OK) model parameters
+#   - (progress - generting model parameters for GGM) model parameters
 #   - (OK) data sampling
 #   - (OK) estimation
-#   - (progress) procedure
+#   - (CONTINUE) procedure
 #   - results
 #   - storage
 
@@ -19,12 +19,10 @@ source('R/estimation.R')
 
 # Run the relevant commands.
 
-true.model = get.model('ggm', 'random', 10, p = .3, positive.edge.ratio = 1)
-data = get.data(300, true.model)
-esti.model = estimate.model(data)
+g = get.graph("random", 5, p = .5, positive.edge.ratio = .5)
+plot(g)
 
-par(mfrow = c(1, 2))
-    graph = qgraph::qgraph(true.model$weights)
-    qgraph::qgraph(esti.model$weights, layout = graph$layout)
-par(mfrow = c(1, 1))
+m = get.model("ggm", "random", 3, p = .5, positive.edge.ratio = .5)
+plot(m)
 
+m

@@ -18,7 +18,7 @@ sampler.ggm <- function(n, model, levels = 5) {
         stop("Precision matrix is not positive semi-definite.")
     }
 
-    # Get the covariance matrix.
+    # Get the covariance (? correlation perhaps) matrix.
     sigma <- cov2cor(solve(diag(ncol(model$weights)) - model$weights))
     
     # Sample data.
