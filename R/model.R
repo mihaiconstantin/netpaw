@@ -3,22 +3,27 @@
 
 
 # Model types -------------------------------------------------------------
-model.ising <- function(graph.type, nodes, ..., mean = 0, sd = 1) {
-    # Undireghted, unweighted network structure.
+model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean = 0, sd = 1) {
+    # Undirected, unweighted network structure.
     graph <- get.graph(graph.type, nodes, ...)
 
-    # Preparing the weights matrix.
+    # Prepare the weights matrix.
     weights <- graph$graph
     
-    # Sampling the parameters.
+    # Determine the number of parameters.
     number_parameters = (nodes * (nodes - 1)) / 2
-    parameters <- abs(rnorm(number_parameters, mean, sd))
+    
+    # Decide the number of positive and negative edges.
+    ratio <- positive.parameter.ratio(number_parameters, positive.edge.ratio)
 
-    # Applying the parameters to the network structure.
+    # Sample the parameters.
+    parameters <- abs(rnorm(number_parameters, mean, sd)) * ratio
+
+    # Apply the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
     weights[lower.tri(weights)] <- t(weights)[lower.tri(weights)]
 
-    # Creating the threshold parameters.
+    # Create the threshold parameters.
     thresholds <- -abs(rnorm(nodes, colSums(weights) / 2, abs(colSums(weights) / 6)))
 
     # Return list.
