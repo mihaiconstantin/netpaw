@@ -4,9 +4,10 @@
 
 
 # Data generator types ----------------------------------------------------
+
 sampler.ising <- function(n, model, nIter = 100, method = "MH") {
     # Sample data.
-    data = IsingSampler::IsingSampler(n, model$weights, model$thresholds, nIter = nIter, method = method)
+    data <- IsingSampler::IsingSampler(n, model$weights, model$thresholds, nIter = nIter, method = method)
 
     return(data)
 }
@@ -37,9 +38,15 @@ sampler.ggm <- function(n, model, levels = 5) {
 
 
 # Exported wrapper --------------------------------------------------------
+
 #' @title Sample data for a specified PMRF model.
 #' @export
-get.data <- function(n, model, attempts = 5, ...) {
+gen.data <- function(n, model, attempts = 5, ...) {
+    # Check that a `npmodel` object is used.
+    if(!inherits(model, "npmodel")) {
+        stop("Argument `model` must be an object of class `npmodel`.")
+    }
+
     # Select the sampler.
     if(model$model == "ising") {
         sampler.fun = sampler.ising
@@ -52,7 +59,7 @@ get.data <- function(n, model, attempts = 5, ...) {
     }
 
     # Call the sampler; status 0 means sampling went fine; 1 indicates presence of invariant node(s).
-    data = list(
+    data <- list(
         data = sampler.fun(n, model, ...),
         attempts = 0, 
         status = 0,
@@ -65,11 +72,11 @@ get.data <- function(n, model, attempts = 5, ...) {
         cat("Invariant nodes detected -> attempting resampling... ")
         
         # Resampling.
-        data = attempt.resampling(n, model, sampler.fun, attempts, ...)
+        data <- attempt.resampling(n, model, sampler.fun, attempts, ...)
     } 
 
     # Set the class of the output.
-    class(data) <- c('netpowerGeneratedData', 'list')
+    class(data) <- c('npdata', 'list')
 
     return(data)
 }
@@ -79,27 +86,27 @@ get.data <- function(n, model, attempts = 5, ...) {
 # Support functions for sampling data -------------------------------------
 attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
     # Starting at 2nd attempt with an optimistic view that a good dataset will be found.
-    attempt = 1
-    status = 0
+    attempt <- 1
+    status <- 0
     
     # Initial resample.
-    data = sampler.fun(n, model, ...)
+    data <- sampler.fun(n, model, ...)
     
     # Attempt to get a good dataset, but no more than 10 times.
     while((should.resample(data) > 0) && (attempt <= attempts)) 
     {
-        attempt = attempt + 1
-        data = sampler.fun(n, model, ...)
+        attempt <- attempt + 1
+        data <- sampler.fun(n, model, ...)
     }
 
     # Determine if the approach was successful and remove the invariant nodes, but mark the data as not safe.
     if(should.resample(data) > 0) {
-        status = 1
-        data = drop.invariant.nodes(data)
-        feedback = paste("Failed after", attempt, "resampling attempts. Dropping invariant nodes:", dim(model$weights)[2] - dim(data)[2], "out of", dim(model$weights)[2], "total nodes.\n")
+        status <- 1
+        data <- drop.invariant.nodes(data)
+        feedback <- paste("Failed after", attempt, "resampling attempts. Dropping invariant nodes:", dim(model$weights)[2] - dim(data)[2], "out of", dim(model$weights)[2], "total nodes.\n")
     
     } else {
-        feedback = paste0("Succeeded on attempt ", attempt, ".\n")
+        feedback <- paste0("Succeeded on attempt ", attempt, ".\n")
     }
 
     # User feedback:
@@ -121,10 +128,10 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 # Helper functions for sampling data --------------------------------------
 should.resample <- function(data, tolerance = 1) {
     # Check each column in the dataset for at least 2 responses on a given category.
-    variance.checks = apply(data, 2, is.invariant, tolerance)
+    variance.checks <- apply(data, 2, is.invariant, tolerance)
 
     # Determine how many invariant nodes and return the integer (i.e., > 0 suggests resampling).
-    invariant.nodes = sum(variance.checks)
+    invariant.nodes <- sum(variance.checks)
 
     return(invariant.nodes)
 }
@@ -132,15 +139,15 @@ should.resample <- function(data, tolerance = 1) {
 
 
 is.invariant <- function(node, tolerance = 1) {
-    node = as.factor(node)
-    frequencies = table(node)
-    categories = length(frequencies)
+    node <- as.factor(node)
+    frequencies <- table(node)
+    categories <- length(frequencies)
     
     if(categories <= 2)
     {
-        nobs = length(node)
-        min.frequency = min(frequencies)
-        max.frequency = max(frequencies)
+        nobs <- length(node)
+        min.frequency <- min(frequencies)
+        max.frequency <- max(frequencies)
         
         if(min.frequency <= tolerance || max.frequency >= nobs - tolerance) {
             return(TRUE) 
@@ -163,7 +170,7 @@ drop.invariant.nodes <- function(data, tolerance = 1) {
 
 
 # Object methods ----------------------------------------------------------
-print.netpowerGeneratedData <- function(object, data = TRUE, ...) {    
+print.npdata <- function(object, data = TRUE, ...) {
     # Details about the model.
     cat("\n")
     cat("Data details:")
