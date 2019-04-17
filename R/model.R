@@ -1,23 +1,24 @@
-# In this file we are generating model parameters for various PRMF models.
+# In this file we are generating model parameters for various PMRFs.
 
 
 
 # Model types -------------------------------------------------------------
+
 model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean = 0, sd = 1) {
     # Undirected, unweighted network structure.
-    graph <- get.graph(graph.type, nodes, ...)
+    graph <- gen.graph(graph.type, nodes, ...)
 
     # Prepare the weights matrix.
     weights <- graph$graph
     
     # Determine the number of parameters.
-    number_parameters = (nodes * (nodes - 1)) / 2
+    number.parameters <- (nodes * (nodes - 1)) / 2
     
     # Decide the number of positive and negative edges.
-    ratio <- positive.parameter.ratio(number_parameters, positive.edge.ratio)
+    ratio <- sample.positive.parameter.ratio(number.parameters, positive.edge.ratio)
 
     # Sample the parameters.
-    parameters <- abs(rnorm(number_parameters, mean, sd)) * ratio
+    parameters <- abs(rnorm(number.parameters, mean, sd)) * ratio
 
     # Apply the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
@@ -39,19 +40,19 @@ model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean 
 
 model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range = c(0.5, 1), constant = 1.5) {
     # Undirected, unweighted network structure.
-    graph <- get.graph(graph.type, nodes, ...)
+    graph <- gen.graph(graph.type, nodes, ...)
 
     # Prapre the weights matrix.
     weights <- graph$graph
 
     # Determine the number of parameters.
-    number_parameters = (nodes * (nodes - 1)) / 2
+    number.parameters <- (nodes * (nodes - 1)) / 2
     
     # Decide the number of positive and negative edges.
-    ratio <- positive.parameter.ratio(number_parameters, 1 - positive.edge.ratio)
+    ratio <- sample.positive.parameter.ratio(number.parameters, 1 - positive.edge.ratio)
 
     # Sample the parameters.
-    parameters <- runif(number_parameters, min(range), max(range)) * ratio
+    parameters <- runif(number.parameters, min(range), max(range)) * ratio
 
     # Apply the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
@@ -79,9 +80,10 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range =
 
 
 # Exported wrapper --------------------------------------------------------
+
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
-get.model <- function(type, graph.type, nodes, ...) {
+gen.model <- function(type, graph.type, nodes, ...) {
     # Handle the parameter generation for the supported models.
     if(type == "ising") {       
         result <- model.ising(graph.type, nodes, ...)
@@ -94,7 +96,7 @@ get.model <- function(type, graph.type, nodes, ...) {
     }
     
     # Set the class of the output.
-    class(result) <- c('netpowerTrueModel', 'list')
+    class(result) <- c('npmodel', 'list')
     
     return(result)
 }
@@ -102,7 +104,8 @@ get.model <- function(type, graph.type, nodes, ...) {
 
 
 # Helpers --------------------------------------------------------
-positive.parameter.ratio <- function(number.parameters, ratio) {
+
+sample.positive.parameter.ratio <- function(number.parameters, ratio) {
     positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - ratio, ratio))
 
     return(positive.ratio)    
@@ -111,7 +114,8 @@ positive.parameter.ratio <- function(number.parameters, ratio) {
 
 
 # Object methods ----------------------------------------------------------
-print.netpowerTrueModel <- function(object, graph = TRUE, ...) {
+
+print.npmodel <- function(object, graph = TRUE, ...) {
     # Details about the graph.
     print(object$graph, graph = FALSE)
     
@@ -150,18 +154,18 @@ print.netpowerTrueModel <- function(object, graph = TRUE, ...) {
 
 
 
-plot.netpowerTrueModel <- function(object, ...) {
+plot.npmodel <- function(object, ...) {
     # Store the qgraph objects to compute the average layout.
     qgraph.object.graph <- qgraph::qgraph(object$graph$graph, layout = "spring", DoNotPlot = TRUE)
     qgraph.object.weights <- qgraph::qgraph(object$weights, layout = "spring", DoNotPlot = TRUE)
     
     # Compute the average layout.
-    average.layout = qgraph::averageLayout(qgraph.object.graph, qgraph.object.weights)
+    average.layout <- qgraph::averageLayout(qgraph.object.graph, qgraph.object.weights)
     
     # Color the edges.
-    colors = matrix(NA, ncol(object$weights), nrow(object$weights))
-    colors[object$weights > 0] = POSITIVE.EDGE.COLOR
-    colors[object$weights < 0] = NEGATIVE.EDGE.COLOR
+    colors <- matrix(NA, ncol(object$weights), nrow(object$weights))
+    colors[object$weights > 0] <- POSITIVE.EDGE.COLOR
+    colors[object$weights < 0] <- NEGATIVE.EDGE.COLOR
     
     # Split the screen.
     par(mfrow = c(1, 2))
