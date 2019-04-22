@@ -4,7 +4,7 @@
 \alias{gen.data}
 \title{Sample data for a specified PMRF model.}
 \usage{
-gen.data(n, model, attempts = 5, ...)
+gen.data(n, model, resampling.attempts = 5, ...)
 }
 \description{
 Sample data for a specified PMRF model.

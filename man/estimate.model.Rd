@@ -4,7 +4,7 @@
 \alias{estimate.model}
 \title{Estimated the model based on the type of data provided.}
 \usage{
-estimate.model(data)
+estimate.model(data, memory.saver = TRUE)
 }
 \description{
 Estimated the model based on the type of data provided.
