@@ -13,6 +13,7 @@
 #' @import IsingFit
 #' @import IsingSampler
 #' @import bootnet
+#' @import crayon
 #'
 #' @docType package
 #' @name netpaw
