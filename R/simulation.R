@@ -2,8 +2,27 @@
 
 
 
-#' @title .
-#' @export
+run.cell <- function(model) {
+    
+	# Select the true model.
+    model <- gen.model("ggm", "random", 10, p = .5, positive.edge.ratio = .9)
+    
+	# Sample data based on the true model.
+    data <- gen.data(1e3, model)
+
+	# Estimate the observed network.
+    fit <- estimate.model(data)
+
+    # Prepare the cell results.
+    result <- extract.results(model, fit)
+
+    return(result)
+}
+
+
+
+
+
 run_cell <- function(participants, nodes, model, architecture, ...) {
 	# User feedback at start.
 	cat('\t-> config:', participants, 'par |', nodes, 'nod |', architecture, 'arc |', model, 'mod. ')
