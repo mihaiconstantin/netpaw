@@ -181,32 +181,38 @@ drop.invariant.nodes <- function(data, tolerance = 1) {
 
 
 # Object methods ----------------------------------------------------------
-print.npdata <- function(object, data = TRUE, ...) {
-    # Details about the model.
+
+print.npdata <- function(object, short = TRUE, ...) {
+    # Details about the data.
     cat("\n")
-    cat("Data details:")
+    cat(crayon::black$bgGreen$bold("Data details:"))
     cat("\n")
-    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
     cat("\n")
-    cat("  - generating model:", shQuote(object$model))
+    cat("  - generating model:", shQuote(crayon::yellow(object$model)))
     cat("\n")
-    cat("  - item steps:", paste(shQuote(c("min", "max")), c(min(object$data), max(object$data)), sep = " = ", collapse = " | "))
+    cat("  - dimensions:", paste(object$rows, "by", object$cols))
     cat("\n")
-    cat("  - resampling attempts:", object$attempts)
+    cat("  - item steps:", paste(sort(unique(c(object$dataset))), collapse = crayon::silver(" | ")))
     cat("\n")
-    cat("  - generation status:", ifelse(object$status == 0, "succeeded", "failed"))
+    cat("  - resampling attempts:", object$resampling.attempts)
+    cat("\n")
+    cat("  - generation status:", ifelse(object$status == 0, crayon::green("succeeded"), crayon::red("failed")))
     cat("\n")
     
     # The data matrix.
     cat("\n")
-    cat("Dataset:")
+    cat(crayon::black$bgGreen$bold("Dataset preview:"))
     cat("\n\n")
-    if(data) {
+
+    if(!short) {
         print(object$data, ...)
     } else {
         print(head(object$data, ...))
-        cat(". . .")
+        cat("\n")
+        cat(crayon::green(". . ."))
         cat("\n")
     }
+
     cat("\n")
 }
