@@ -82,7 +82,7 @@ gen.graph <- function(type, nodes, ...) {
         graph = graph.scale.free(nodes, .[["attachment"]], .[["edges"]])
     
     } else {
-        stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`")
+        stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`.")
     }
     
     # Set the class of the result.
