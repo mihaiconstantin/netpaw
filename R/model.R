@@ -187,7 +187,7 @@ plot.npmodel <- function(object, ...) {
     plot(object$graph, layout = average.layout)
     
     # Plot the weights matrix (i.e., true model). 
-    qgraph::qgraph(object$weights, layout = average.layout, edge.color = colors, title = "Weighted graph")
+    qgraph::qgraph(object$weights, layout = average.layout, edge.color = colors, title = paste("True model edge weights (", object$type, ")", sep = ""))
     
     par(mfrow = c(1, 1))
 }
