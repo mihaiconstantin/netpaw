@@ -4,7 +4,7 @@
 
 # Exported wrapper --------------------------------------------------------
 
-#' @title asd
+#' @title Compare and compute the results for a single run.
 #' @export
 extract.results <- function(true.model, estimated.model) {
 

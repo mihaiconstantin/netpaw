@@ -125,6 +125,6 @@ print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
 
 
 
-plot.npgraph <- function(object, ...) {    
+plot.npgraph <- function(object, ...) {
     qgraph::qgraph(object$graph, ..., layout = "circle", edge.width = 1.5, title = paste("True model graph (", object$type, ")", sep = ""))
 }

@@ -114,7 +114,7 @@ gen.model <- function(model.type, graph.type, nodes, ...) {
 
 
 
-# Helpers --------------------------------------------------------
+# Helpers -----------------------------------------------------------------
 
 sample.positive.parameter.ratio <- function(number.parameters, ratio) {
     positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - ratio, ratio))
