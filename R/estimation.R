@@ -82,34 +82,37 @@ estimate.model <- function(data) {
 
 # Object methods ----------------------------------------------------------
 
-print.npfit <- function(object, weights = TRUE, ...) {    
+print.npfit <- function(object, weights = TRUE, ...) {
     # Details about the model.
     cat("\n")
-    cat("Model details:")
+    cat(crayon::black$bgGreen$bold("Fit details:"))
     cat("\n")
-    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
     cat("\n")
-    cat("  - type:", shQuote(object$model))
+    cat("  - type:", shQuote(crayon::yellow(object$type)))
     cat("\n")
-    cat("  - mean absolute:", mean(abs(object$weights[upper.tri(object$weights)])))
+    cat("  - mean absolute:", round(mean(abs(object$fit$weights[upper.tri(object$fit$weights)])), 3))
     cat("\n")
-    cat("  - sd:", sd(object$weights[upper.tri(object$weights)]))
+    cat("  - sd:", round(sd(object$fit$weights[upper.tri(object$fit$weights)]), 3))
     cat("\n")
-    cat("  - range:", paste(shQuote(c("min", "max")), round(c(min(object$weights), max(object$weights)), 3), sep = " = ", collapse = " | "))
+    cat("  - range:", paste(round(c(min(object$fit$weights), max(object$fit$weights)), 3), crayon::yellow(paste("(", c("min", "max"), ")", sep = "")), collapse = crayon::silver(" | ")))
     cat("\n")
     
+    # Details about the data.
+    print(object$data, short = TRUE)
+
     if (weights) {
         # The weights matrix.
         cat("\n")
-        cat("Weights matrix:")
+        cat(crayon::black$bgGreen$bold("Weights matrix:"))
         cat("\n\n")
-        print(object$weights, digits = 3)
+        print(object$fit$weights, digits = 3)
         cat("\n")
         
         # The threhsold vector if applicable.
-        cat("Thresholds:")
+        cat(crayon::black$bgGreen$bold("Thresholds:"))
         cat("\n\n")
-        print(object$thresholds, digits = 3)
+        print(object$fit$thresholds, digits = 3)
         cat("\n")
     }
 }
