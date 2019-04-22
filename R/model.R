@@ -29,10 +29,15 @@ model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean 
 
     # Return list.
     return(list(
-        model = 'ising',
+        type = 'ising',
         graph = graph,
         weights = weights, 
-        thresholds = thresholds
+        thresholds = thresholds,
+        generation.options = list(
+            positive.edge.ratio = positive.edge.ratio,
+            mean = mean,
+            sd = sd
+        )
     ))
 }
 
@@ -70,10 +75,16 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range =
 
     # Return list.
     return(list(
-        model = 'ggm',
+        type = 'ggm',
         graph = graph,
         weights = weights,
-        thresholds = 'n.a.'
+        thresholds = NULL,
+        generation.options = list(
+            positive.edge.ratio = positive.edge.ratio,
+            min = min(range), 
+            max = max(range), 
+            constant = constant
+        )
     ))
 }
 
