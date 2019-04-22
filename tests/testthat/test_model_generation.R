@@ -11,11 +11,11 @@ test_that("`gen.model` inherits from the correct class", {
 
 
 test_that("`gen.model` uses the correct model generator", {
-    expect_equal(gen.model("ggm", "random", 5, p = .5)$model, "ggm")
+    expect_equal(gen.model("ggm", "random", 5, p = .5)$type, "ggm")
     
-    expect_equal(gen.model("ising", "random", 5, p = .5)$model, "ising")
+    expect_equal(gen.model("ising", "random", 5, p = .5)$type, "ising")
     
-    expect_error(gen.model("unknown", "random", 5, p = .5)$model, "Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
+    expect_error(gen.model("unknown", "random", 5, p = .5)$type, "Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
 })
 
 
@@ -46,7 +46,7 @@ test_that("`model.ggm` matches `bootnet::genGGM`", {
 
 test_that("`gen.model` sets the correct thresholds", {
     
-    expect_equal(gen.model("ggm", "random", 5, p = .5)$thresholds, "n.a.")
+    expect_equal(gen.model("ggm", "random", 5, p = .5)$thresholds, NULL)
     
     expect_gte(length(gen.model("ising", "random", 5, p = .5)$thresholds), 1)
 })
