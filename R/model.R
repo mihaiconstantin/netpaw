@@ -94,12 +94,12 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range =
 
 #' @title Generate a PMRF (i.e., GGM or Ising).
 #' @export
-gen.model <- function(type, graph.type, nodes, ...) {
+gen.model <- function(model.type, graph.type, nodes, ...) {
     # Handle the parameter generation for the supported models.
-    if(type == "ising") {       
+    if(model.type == "ising") {       
         result <- model.ising(graph.type, nodes, ...)
 
-    } else if(type == "ggm") {
+    } else if(model.type == "ggm") {
         result <- model.ggm(graph.type, nodes, ...)
     
     } else {
