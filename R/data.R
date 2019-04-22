@@ -41,69 +41,76 @@ sampler.ggm <- function(n, model, levels = 5) {
 
 #' @title Sample data for a specified PMRF model.
 #' @export
-gen.data <- function(n, model, attempts = 5, ...) {
+gen.data <- function(n, model, resampling.attempts = 5, ...) {
     # Check that a `npmodel` object is used.
     if(!inherits(model, "npmodel")) {
         stop("Argument `model` must be an object of class `npmodel`.")
     }
 
     # Select the sampler.
-    if(model$model == "ising") {
+    if(model$type == "ising") {
         sampler.fun = sampler.ising
         
-    } else if(model$model == "ggm") {
+    } else if(model$type == "ggm") {
         sampler.fun = sampler.ggm
         
     } else {
         stop("Unsupported model type. Please request it at `m.a.constantin@uvt.nl`.")
     }
 
-    # Call the sampler; status 0 means sampling went fine; 1 indicates presence of invariant node(s).
-    data <- list(
-        data = sampler.fun(n, model, ...),
-        attempts = 0, 
-        status = 0,
-        model = model$model
+    # Call the sampler; 
+    dataset = sampler.fun(n, model, ...)
+    
+    # Set the results object; status 0 means sampling went fine; 1 indicates presence of invariant node(s).
+    result <- list(
+        model = model$type,
+        dataset = dataset,
+        rows = nrow(dataset),
+        cols = ncol(dataset),
+        item.steps = sort(unique(c(dataset))),
+        resampling.attempts = 0, 
+        status = 0
     )
     
     # Check if a resampling is needed and perform it for 5 times at most.
-    if(should.resample(data$data) > 0) {
+    if(should.resample(dataset) > 0) {
         # User feedback.
         cat("Invariant nodes detected -> attempting resampling... ")
         
         # Resampling.
-        data <- attempt.resampling(n, model, sampler.fun, attempts, ...)
+        result <- attempt.resampling(n, model, sampler.fun, resampling.attempts, ...)
     } 
 
     # Set the class of the output.
-    class(data) <- c('npdata', 'list')
+    class(result) <- c('npdata', 'list')
 
-    return(data)
+    return(result)
 }
 
 
 
 # Support functions for sampling data -------------------------------------
-attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
+
+attempt.resampling <- function(n, model, sampler.fun, resampling.attempts, ...) {
     # Starting at 2nd attempt with an optimistic view that a good dataset will be found.
     attempt <- 1
     status <- 0
     
     # Initial resample.
-    data <- sampler.fun(n, model, ...)
+    dataset <- sampler.fun(n, model, ...)
     
     # Attempt to get a good dataset, but no more than 10 times.
-    while((should.resample(data) > 0) && (attempt <= attempts)) 
+    while((should.resample(dataset) > 0) && (attempt <= resampling.attempts)) 
     {
         attempt <- attempt + 1
-        data <- sampler.fun(n, model, ...)
+        dataset <- sampler.fun(n, model, ...)
     }
 
     # Determine if the approach was successful and remove the invariant nodes, but mark the data as not safe.
-    if(should.resample(data) > 0) {
+    if(should.resample(dataset) > 0) {
         status <- 1
-        data <- drop.invariant.nodes(data)
-        feedback <- paste("Failed after", attempt, "resampling attempts. Dropping invariant nodes:", dim(model$weights)[2] - dim(data)[2], "out of", dim(model$weights)[2], "total nodes.\n")
+        dataset <- drop.invariant.nodes(dataset)
+        feedback <- paste("Failed after", attempt, "resampling attempts. Dropping invariant nodes:", dim(model$weights)[2] - dim(dataset)[2], "out of", dim(model$weights)[2], "total nodes.\n")
     
     } else {
         feedback <- paste0("Succeeded on attempt ", attempt, ".\n")
@@ -112,13 +119,16 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
     # User feedback:
     cat(feedback)
 
-    # Return the data list object: attempts, status, actual data.
+    # Return the data list object: resampling.attempts, status, actual data.
     return(
         list(
-            data = data,
-            attempts = attempt,
-            status = status,
-            model = model$model
+            model = model$type,
+            dataset = dataset,
+            rows = nrow(dataset),
+            cols = ncol(dataset),
+            item.steps = sort(unique(c(dataset))),
+            resampling.attempts = attempt,
+            status = status
         )
     )
 }
@@ -126,6 +136,7 @@ attempt.resampling <- function(n, model, sampler.fun, attempts, ...) {
 
 
 # Helper functions for sampling data --------------------------------------
+
 should.resample <- function(data, tolerance = 1) {
     # Check each column in the dataset for at least 2 responses on a given category.
     variance.checks <- apply(data, 2, is.invariant, tolerance)
