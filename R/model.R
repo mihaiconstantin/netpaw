@@ -132,17 +132,19 @@ print.npmodel <- function(object, graph = TRUE, ...) {
     
     # Details about the model.
     cat("\n")
-    cat("Model details:")
+    cat(crayon::black$bgGreen$bold("Model details:"))
     cat("\n")
-    cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
     cat("\n")
-    cat("  - type:", shQuote(object$model))
+    cat("  - type:", shQuote(crayon::yellow(object$type)))
     cat("\n")
-    cat("  - mean absolute:", mean(abs(object$weights[upper.tri(object$weights)])))
+    cat("  - mean absolute:", round(mean(abs(object$weights[upper.tri(object$weights)])), 3))
     cat("\n")
-    cat("  - sd:", sd(object$weights[upper.tri(object$weights)]))
+    cat("  - sd:", round(sd(object$weights[upper.tri(object$weights)]), 3))
     cat("\n")
-    cat("  - range:", paste(shQuote(c("min", "max")), round(c(min(object$weights), max(object$weights)), 3), sep = " = ", collapse = " | "))
+    cat("  - range:", paste(round(c(min(object$weights), max(object$weights)), 3), crayon::yellow(c("(min)", "(max)")), collapse = crayon::silver(" | ")))
+    cat("\n")
+    cat("  - generation options:", paste(object$generation.options, crayon::yellow(paste("(", names(unlist(object$generation.options)), ")", sep = "")), collapse = crayon::silver(" | ")))
     cat("\n")
     
     if (graph) {
@@ -150,13 +152,13 @@ print.npmodel <- function(object, graph = TRUE, ...) {
         print(object$graph, details = FALSE)
         
         # The weights matrix.
-        cat("Weights matrix:")
+        cat(crayon::black$bgGreen$bold("Weights matrix:"))
         cat("\n\n")
         print(object$weights, digits = 3)
         cat("\n")
         
         # The threhsold vector if applicable.
-        cat("Thresholds:")
+        cat(crayon::black$bgGreen$bold("Thresholds:"))
         cat("\n\n")
         print(object$thresholds, digits = 3)
         cat("\n")
