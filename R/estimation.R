@@ -30,30 +30,41 @@ estimator.ggm <- function(data) {
 #' @title Estimated the model based on the type of data provided.
 #' @export
 estimate.model <- function(data) {
-    # Determine which estimator to use based on the model type. 
-    # Ensure that regardless of the estimation function, the result object looks the same.
-    
     # Check that a `npdata` object is used.
     if(!inherits(data, "npdata")) {
         stop("Argument `data` must be an object of class `npdata`.")
     }
 
+    # Determine which estimator to use based on the model type. 
+    # Ensure that regardless of the estimation function, the result object looks the same.
+    result <- list(
+        # Record the model type.
+        type = data$model, 
+
+        # Store data and related infromation.
+        data = data
+    )
+
     # Estimating Ising.
     if(data$model == "ising") {
+        # Fir the Ising model.
         model.fit <- estimator.ising(data$data)
-        result <- list(
+        
+        # Store the estimated paramaters.
+        result$fit <- list(
             weights = model.fit$weiadj,
-            model = data$model,
             thresholds = model.fit$thresholds
         )
 
     # Estimating GGM.
     } else if(data$model == "ggm") {
+        # Fit the GGM model.
         model.fit <- estimator.ggm(data$data)
-        result <- list(
+        
+        # Store the estimated paramaters.
+        result$fit <- list(
             weights = model.fit$graph,
-            model = data$model,
-            thresholds = 'n.a.'
+            thresholds = NULL
         )
     
     # Unrecognized model type.
