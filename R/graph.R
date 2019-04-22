@@ -99,24 +99,24 @@ print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
     # Details about the graph.
     if (details) {
         cat("\n")
-        cat("Graph details:")
+        cat(crayon::black$bgGreen$bold("Graph details:"))
         cat("\n")
-        cat("  - class(es):", paste(shQuote(class(object)), collapse = ", "))
+        cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
         cat("\n")
-        cat("  - type:", shQuote(object$type))
-        cat("\n")
-        cat("  - options:", paste(shQuote(names(unlist(object$options))), object$options, sep = " = ", collapse = " | "))
+        cat("  - type:", shQuote(crayon::yellow(object$type)))
         cat("\n")
         cat("  - dimensions:", paste(dim(object$graph), collapse = "x"))
         cat("\n")
         cat("  - density:", round(get.graph.density(object$graph), 3))
+        cat("\n")
+        cat("  - generation options:", paste(object$generation.options, crayon::yellow(paste("(", names(unlist(object$generation.options)), ")", sep = "")), collapse = crayon::silver(" | ")))
         cat("\n")      
     }
 
     # The graph matrix.
     if (graph) {
         cat("\n")
-        cat("Graph matrix:")
+        cat(crayon::black$bgGreen$bold("Graph matrix:"))
         cat("\n\n")
         print(object$graph)
         cat("\n")
