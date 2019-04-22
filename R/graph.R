@@ -10,9 +10,9 @@ graph.random <- function(nodes, p) {
     
     # Return graph.
     return(list(
-        graph = graph,
         type = "random",
-        options = list(
+        graph = graph,
+        generation.options = list(
             p = p
         )
     ))
@@ -26,9 +26,9 @@ graph.small.world <- function(nodes, neighborhood, p) {
     
     # Return graph.
     return(list(
-        graph = graph,
         type = "smallworld",
-        options = list(
+        graph = graph,
+        generation.options = list(
             p = p,
             neighborhood = neighborhood
         )
@@ -44,9 +44,9 @@ graph.scale.free <- function(nodes, attachment, edges) {
     # Return graph.
     # Return graph.
     return(list(
-        graph = graph,
         type = "scalefree",
-        options = list(
+        graph = graph,
+        generation.options = list(
             attachment = attachment,
             edges = edges
         )
