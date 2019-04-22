@@ -18,6 +18,3 @@
 #' @docType package
 #' @name netpaw
 "_PACKAGE"
-
-
-
