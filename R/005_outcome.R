@@ -1,5 +1,9 @@
 # This file contains functions for comparing the true and estimated models.
 
+# TODO: Add multiple plots for the replicated cells.
+# - corrplot
+# - network graphs for individually replicated cells
+# - ggplot2 sensitvity graphs with boxplots
 
 
 # Exported wrapper --------------------------------------------------------
@@ -29,13 +33,13 @@ extract.results <- function(true.model, estimated.model) {
         # Set the true model parameters.
         true.model = list(
             weights = true.model$weights[upper.tri(true.model$weights)],
-            thresholds = true.model$tresholds
+            thresholds = true.model$thresholds
         ),
 
         # Set the estimated model parameters.
         fit = list(
             weights = estimated.model$fit$weights[upper.tri(estimated.model$fit$weights)],
-            thresholds = estimated.model$fit$tresholds
+            thresholds = estimated.model$fit$thresholds
         ),
 
         # Set some information about the data.
@@ -47,6 +51,8 @@ extract.results <- function(true.model, estimated.model) {
 
     # Set the correct class.
     class(result) <- c("npcell", "list")
+
+    return(result)
 }
 
 
@@ -58,10 +64,10 @@ compute.outcomes <- function(true.model.weights, estimated.model.weights) {
 	true = true.model.weights[upper.tri(true.model.weights)]
 	esti = estimated.model.weights[upper.tri(estimated.model.weights)]
 
-	# Check if perfect estimation.
+	# Check if perfect recovery in terms of presence/ absence of an edge.
 	perfect = all((true == 0) == (esti == 0))
 
-	# Check the size of both graphs (i.e., useful of nodes were dropped due to resampling problems).
+	# Check the size of both graphs (i.e., useful of nodes were dropped due to restamping issues).
 	equal.size = dim(true.model.weights)[1] == dim(estimated.model.weights)[1]
 
 	# True/ False Positive/ Negative rates.
@@ -75,6 +81,12 @@ compute.outcomes <- function(true.model.weights, estimated.model.weights) {
 	specificity <- TN / (TN + FP)
 	type.one 	<- FP / (FP + TN)
 	type.two 	<- FN / (TP + FN)
+
+    # Compute type S error rate.
+    # TODO: type S error.
+
+    # Compute type M error rate.
+    # TODO: type M error.
 
 	# Edge weights correlation.
 	correlation <- ifelse(equal.size, cor(true, esti), NA)
