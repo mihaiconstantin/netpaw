@@ -1,9 +1,9 @@
 # This file contains functions for comparing the true and estimated models.
 
 # TODO: Add multiple plots for the replicated cells.
-# - corrplot
+# - `corrplot`
 # - network graphs for individually replicated cells
-# - ggplot2 sensitvity graphs with boxplots
+# - `ggplot2` sensitivity graphs with box plots
 
 
 # Exported wrapper --------------------------------------------------------
@@ -43,7 +43,7 @@ extract.results <- function(true.model, estimated.model) {
         ),
 
         # Set some information about the data.
-        data = fit$data,
+        data = estimated.model$data,
 
         # Set the outcomes.
         outcomes = outcomes
