@@ -2,12 +2,6 @@
 
 
 
-# Constants ---------------------------------------------------------------
-POSITIVE.EDGE.COLOR = "#3F51B5"
-NEGATIVE.EDGE.COLOR = "#F44336"
-
-
-
 # Get the number of nodes from a graph or weighted matrix.
 get.number.nodes <- function(graph) {
     # Determine the dimensions.
@@ -90,3 +84,28 @@ get.pcor <- function(nvars) {
     
     return(pcor.mat)
 }
+
+
+
+# Flatten wierd nested lists.
+# Copyright Michael (https://stackoverflow.com/a/41882883/5252007).
+flatten.nested.list <- function(nested.list) {
+    
+    more.lists <- sapply(nested.list, function(x) is.list(x))
+    
+    output <- c(nested.list[!more.lists], unlist(nested.list[more.lists], recursive=FALSE))
+    
+    if(sum(more.lists)) 
+        Recall(output)
+    else
+        return(output)
+}
+
+
+
+
+
+
+
+
+
