@@ -43,7 +43,7 @@ model.ising <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, mean 
 
 
 
-model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range = c(0.5, 1), constant = 1.5) {
+model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, min = 0.5, max = 1, constant = 1.5) {
     # Undirected, unweighted network structure.
     graph <- gen.graph(graph.type, nodes, ...)
 
@@ -57,7 +57,7 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range =
     ratio <- sample.positive.parameter.ratio(number.parameters, 1 - positive.edge.ratio)
 
     # Sample the parameters.
-    parameters <- runif(number.parameters, min(range), max(range)) * ratio
+    parameters <- runif(number.parameters, min, max) * ratio
 
     # Apply the parameters to the network structure.
     weights[upper.tri(weights)] <- weights[upper.tri(weights)] * parameters
@@ -81,8 +81,8 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, range =
         thresholds = NULL,
         generation.options = list(
             positive.edge.ratio = positive.edge.ratio,
-            min = min(range), 
-            max = max(range), 
+            min = min, 
+            max = max, 
             constant = constant
         )
     ))
