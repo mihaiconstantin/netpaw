@@ -20,16 +20,16 @@ graph.random <- function(nodes, p) {
 
 
 
-graph.small.world <- function(nodes, neighborhood, p) {
+graph.small.world <- function(nodes, neighborhood, p.rewire) {
     # Graph.
-    graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p)))
+    graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p.rewire)))
     
     # Return graph.
     return(list(
         type = "smallworld",
         graph = graph,
         generation.options = list(
-            p = p,
+            p.rewire = p.rewire,
             neighborhood = neighborhood
         )
     ))
@@ -74,8 +74,8 @@ gen.graph <- function(type, nodes, ...) {
         graph = graph.random(nodes, .[["p"]])
 
     } else if(type == "smallworld") {
-        if(is.null(.[["neighborhood"]]) || is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = graph.small.world(nodes, .[["neighborhood"]], .[["p"]])
+        if(is.null(.[["neighborhood"]]) || is.null(.[["p.rewire"]])) stop("Missing expected argument(s). See the documentation.")
+        graph = graph.small.world(nodes, .[["neighborhood"]], .[["p.rewire"]])
 
     } else if(type == "scalefree") {
         if(is.null(.[["attachment"]]) || is.null(.[["edges"]])) stop("Missing expected argument(s). See the documentation.")
