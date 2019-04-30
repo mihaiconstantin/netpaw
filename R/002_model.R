@@ -69,7 +69,7 @@ model.ggm <- function(graph.type, nodes, ..., positive.edge.ratio = 0.5, min = 0
     weights <- weights / diag(weights)[row(weights)]
     weights <- (weights + t(weights)) / 2
 
-    # Create the partial corelation matrix from the precision matrix as qgraph::wi2net.
+    # Create the partial correlation matrix from the precision matrix as `qgraph::wi2net`.
     weights <- -cov2cor(weights)
     diag(weights) <- 0
 
@@ -157,7 +157,7 @@ print.npmodel <- function(object, graph = TRUE, ...) {
         print(object$weights, digits = 3)
         cat("\n")
         
-        # The threhsold vector if applicable.
+        # The threshold vector if applicable.
         cat(crayon::black$bgGreen$bold("Thresholds:"))
         cat("\n\n")
         print(object$thresholds, digits = 3)
@@ -168,7 +168,7 @@ print.npmodel <- function(object, graph = TRUE, ...) {
 
 
 plot.npmodel <- function(object, ...) {
-    # Store the qgraph objects to compute the average layout.
+    # Store the `qgraph` objects to compute the average layout.
     qgraph.object.graph <- qgraph::qgraph(object$graph$graph, layout = "spring", DoNotPlot = TRUE)
     qgraph.object.weights <- qgraph::qgraph(object$weights, layout = "spring", DoNotPlot = TRUE)
     
