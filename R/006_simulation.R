@@ -1,19 +1,19 @@
 # This file contains the functions needed for running and replicating design cells.
 
 
-
-run.cell <- function(model) {
+# Run a single design cell (not available to the end users).
+run.cell <- function(sample.size, model.type, graph.type, nodes, ...) {
     
 	# Select the true model.
-    model <- gen.model("ggm", "random", 10, p = .5, positive.edge.ratio = .9)
+    model <- gen.model(model.type, graph.type, nodes, ...)
     
 	# Sample data based on the true model.
-    data <- gen.data(1e3, model)
+    data <- gen.data(sample.size, model)
 
 	# Estimate the observed network.
     fit <- estimate.model(data)
 
-    # Prepare the cell results.
+    # Prepare the cell results (i.e., of class `npcell`).
     result <- extract.results(model, fit)
 
     return(result)
@@ -22,41 +22,11 @@ run.cell <- function(model) {
 
 
 
-
-run_cell <- function(participants, nodes, model, architecture, ...) {
-	# User feedback at start.
-	cat('\t-> config:', participants, 'par |', nodes, 'nod |', architecture, 'arc |', model, 'mod. ')
-	
-    # Select the graph (i.e., architecture).
-    architecture <- get.architecture(architecture, nodes, ...)
-
-	# Select the true model.
-	# true_model <- select_true_model(nodes, architecture, model)
-    true_model <- get.model(model, architecture)
-
-	# Sample data based on the true model.
-	data <- sample_data(participants, true_model)
-
-	# Estimate the observed network.
-	estimated_model <- estimate_model(model, data$data)
-
-	# Prepare the results.
-	result <- prepare_cell_results(participants, nodes, architecture, model, data, true_model, estimated_model)
-	class(result) <- c('netPowerCell', 'list')
-
-	# User feedback at the end.
-	cat('Cell done. \u2713\n')
-
-	return(result)
-}
-
-
-
-#' @title .
+#' @title Run multiple design cell aka a `design` (not available to the end users).
 #' @export
-run_cells <- function(cells) {
+run.design <- function(design) {
 	# User feedback at start.
-	cat('-> Running simulation for', nrow(cells), 'cells:\n')
+	cat('-> Running simulation for', crayon::yellow(nrow(design)), 'cells:\n')
 
 	# Storing the results per cell.
 	results = list()
