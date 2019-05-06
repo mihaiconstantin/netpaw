@@ -109,14 +109,16 @@ build.design.matrix.from.specification <- function(specification) {
 
     # Set every opposite level to NA (e.g., for `random` graph set all `graph.options` that belong to `smallworld` to NA).
     for (level in levels(design$graph)) {
-        if(length(levels(design$model)) > 1) {
+        if(length(levels(design$graph)) > 1) {
             design[design$graph == level, grep(paste0("graph.options.", levels(design$graph)[-which(levels(design$graph) == level)], collapse = "|"), names(design))] <- NA
         }
     }
 
     # Set every opposite level to NA (e.g., for `ggm` model set all `model.options` that belong to `ising` to NA).
     for (level in levels(design$model)) {
-        design[design$model == level, grep(paste0("model.options.", levels(design$model)[-which(levels(design$model) == level)], collapse = "|"), names(design))] <- NA
+        if(length(levels(design$model)) > 1) {
+            design[design$model == level, grep(paste0("model.options.", levels(design$model)[-which(levels(design$model) == level)], collapse = "|"), names(design))] <- NA
+        }
     }
 
     # Remove redundant rows.
