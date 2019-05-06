@@ -3,7 +3,27 @@
 
 # Run a single design cell (not available to the end users).
 run.cell <- function(sample.size, model.type, graph.type, nodes, ...) {
+    # Start the timer time.
+    start = proc.time()
     
+    # User feedback at the before execution.
+    cat(
+        # The title.
+        crayon::black$bgYellow$bold("Cell config:"),         "\n",
+        
+        # The obvious arguments.
+        "  - sample size: ", crayon::yellow(sample.size),    "\n",
+        "  - model: ", crayon::yellow(model.type),           "\n",
+        "  - graph: ", crayon::yellow(graph.type),           "\n",
+        "  - nodes: ", crayon::yellow(nodes),                "\n",
+
+        # The not so obvious arguments.
+        paste(paste("  - ", gsub("\\.", " ", names(unlist(list(...)))), sep = ""), crayon::yellow(list(...)), sep = ": ", collapse = "\n"),  "\n",
+
+        # `cat` options.
+        sep = ""
+    )
+
 	# Select the true model.
     model <- gen.model(model.type, graph.type, nodes, ...)
     
@@ -15,6 +35,12 @@ run.cell <- function(sample.size, model.type, graph.type, nodes, ...) {
 
     # Prepare the cell results (i.e., of class `npcell`).
     result <- extract.results(model, fit)
+
+    # Stop the timer time.
+    duration = (proc.time() - start)[[3]]
+
+    # User feedback after execution.
+    cat("  - execution time: ", crayon::green(paste(round(duration, 3), "s", sep = "")), "\n", sep = "")
 
     return(result)
 }
