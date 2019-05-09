@@ -13,7 +13,7 @@ The version on this branch is currently under heavy development and many things 
 - ✅ estimate models
 - ✅ compare generated & estimated models 
 - ✅ expand combinations of simulation factors into a data frame
-- ❌ run and replicate combinations of design factors
+- ✅ run and replicate combinations of design factors
 - ❌ connect and store the results to a MySQL database
 - ❌ post the results to an API endpoint using encrypted pre-generated tokens
 
