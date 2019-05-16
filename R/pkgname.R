@@ -1,4 +1,4 @@
-#' \code{netpaw}: A package for corss-sectional network simulations.
+#' \code{netpaw}: A package for cross-sectional network simulations.
 #'
 #' The \code{netpaw} package provides three categories of functions...
 #' TODO: Add documentation.
@@ -42,3 +42,11 @@
 #     7. post.R -> allows to post the result of file 5 to whatever API endpoint
 #     8. utils.R -> contains useless functions that I once thought were useful
 #     9. externals.R -> contains code mostly copied---and simplified a bit---from other packages
+
+
+
+# To run before the package is loaded.
+.onAttach <- function(libname, pkgname) {
+    # Print the logo.
+    cat(LOGO)
+}
