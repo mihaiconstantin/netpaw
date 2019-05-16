@@ -1,100 +1,154 @@
-# In this file we are generating UNDIREGTED & UNWEIGHTED GRAPHS of various graphs.
+# In this file we are registering UNDIRECTED UNWEIGHTED GRAPHS.
 
 
 
-# Graph types -------------------------------------------------------------
+# Graphs ------------------------------------------------------------------
 
-graph.random <- function(nodes, p) {
-    # Graph.
-    graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
-    
-    # Return graph.
-    return(list(
-        type = "random",
-        graph = graph,
-        generation.options = list(
-            p = p
+
+
+# Random graph.
+UNDIRECTED.UNWEIGHTED.GRAPHS$random <- list(
+    # The name of the graph.
+    name = "random",
+
+    # The arguments with some predefined constraints. 
+    args = list(
+        nodes = list(
+            name = "nodes",
+            type = "int",
+            range = c(1, 100)
+        ),
+        p = list(
+            name = "p",
+            type = "double",
+            range = c(0, 1)
         )
-    ))
-}
+    ),
+
+    # The graph generator.
+    generator = function(nodes, p) {
+        # Generate the graph.
+        graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
+        
+        return(graph)
+    }
+)
 
 
 
-graph.small.world <- function(nodes, neighborhood, p.rewire) {
-    # Graph.
-    graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p.rewire)))
-    
-    # Return graph.
-    return(list(
-        type = "smallworld",
-        graph = graph,
-        generation.options = list(
-            p.rewire = p.rewire,
-            neighborhood = neighborhood
+# Smallworld graph.
+UNDIRECTED.UNWEIGHTED.GRAPHS$smallworld <- list(
+    # The name of the graph.
+    name = "smallworld",
+
+    # The arguments with some predefined constraints.
+    args = list(
+        nodes = list(
+            name = "nodes",
+            type = "int",
+            range = c(1, 100)
+        ),
+        neighborhood = list(
+            name = "neighborhood",
+            type = "int",
+            range = c(0, 3)
+        ),
+        p.rewire = list(
+            name = "p.rewire",
+            type = "double",
+            range = c(0, 1)
         )
-    ))
-}
+    ),
+
+    # The graph generator.
+    generator = function(nodes, neighborhood, p.rewire) {
+        # Generate the graph.
+        graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p.rewire)))
+
+        return(graph)
+    }
+)
 
 
 
-graph.scale.free <- function(nodes, attachment, edges) {
-    # Graph.
-    graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(nodes, power = attachment, m = edges, directed = F)))
+# Scalefree graph.
+UNDIRECTED.UNWEIGHTED.GRAPHS$scalefree <- list(
+    # The name of the graph.
+    name = "scalefree",
 
-    # Return graph.
-    # Return graph.
-    return(list(
-        type = "scalefree",
-        graph = graph,
-        generation.options = list(
-            attachment = attachment,
-            edges = edges
+    # The arguments with some predefined constraints.
+    args = list(
+        nodes = list(
+            name = "nodes",
+            type = "int",
+            range = c(1, 100)
+        ),
+        attachment = list(
+            name = "attachment",
+            type = "int",
+            range = c(0, 3)
+        ),
+        edges = list(
+            name = "edges",
+            type = "int",
+            range = c(0, 3)
         )
-    ))
-}
+    ),
+
+    # The graph generator.
+    generator = function(nodes, attachment, edges) {
+        # Generate the graph.
+        graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(nodes, power = attachment, m = edges, directed = F)))
+        
+        return(graph)
+    }
+)
 
 
 
 # Exported wrappers -------------------------------------------------------
 
-#' @title Generate an undirected unweighted graph.
+
+
+#' @title Generate an undirected unweighted graph of specified type.
 #' @export
-gen.graph <- function(type, nodes, ...) {
-    # Capture the dot arguments.
-    . <- list(...)
-    
-    # Make sure that the dots are not empty.
-    if(length(.) == 0) {
-        stop("Invalid `...` arguments. Please check the documentation.")
-    }
-    
-    # Providing the desired graph.
-    if(type == "random") {
-        if(is.null(.[["p"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = graph.random(nodes, .[["p"]])
-
-    } else if(type == "smallworld") {
-        if(is.null(.[["neighborhood"]]) || is.null(.[["p.rewire"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = graph.small.world(nodes, .[["neighborhood"]], .[["p.rewire"]])
-
-    } else if(type == "scalefree") {
-        if(is.null(.[["attachment"]]) || is.null(.[["edges"]])) stop("Missing expected argument(s). See the documentation.")
-        graph = graph.scale.free(nodes, .[["attachment"]], .[["edges"]])
-    
-    } else {
+gen.graph <- function(graph.type, ...) {
+    # Check if the requested graph is supported.
+    if(!(graph.type %in% UNDIRECTED.UNWEIGHTED.GRAPHS$supported)) {
         stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`.")
     }
     
-    # Set the class of the result.
-    class(graph) <- c('npgraph', 'list')
+    # Capture the `...` argument as a list.
+    . <- list(...)
     
-    return(graph)
+    # Check if the required arguments of the graph generator are present and respect the imposed constrains.
+    if(!check.arguments(UNDIRECTED.UNWEIGHTED.GRAPHS[[graph.type]][["args"]], .)) {
+        stop("Non-conformable argument(s) provided. See the documentation.")
+    }
+    
+    # Call the graph generator.
+    graph <- do.call(UNDIRECTED.UNWEIGHTED.GRAPHS[[graph.type]]$generator, .)
+    
+    # Set the name and the generation options.
+    result <- list(
+        type = graph.type,
+        graph = graph,
+        generation.options = .
+    )
+
+    # Set the class of the result.
+    class(result) <- c('npgraph', 'list')
+    
+    return(result)
 }
 
 
 
 # Object methods ----------------------------------------------------------
 
+
+
+# Print the graph.
 print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
     # Details about the graph.
     if (details) {
@@ -116,15 +170,16 @@ print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
     # The graph matrix.
     if (graph) {
         cat("\n")
-        cat(crayon::black$bgGreen$bold("Graph matrix:"))
+        cat(crayon::black$bgGreen$bold("Graph (i.e., upper triangle):"))
         cat("\n\n")
-        print(object$graph)
+        print(object$graph[upper.tri(object$graph)])
         cat("\n")
     }
 }
 
 
 
+# Plot the graph.
 plot.npgraph <- function(object, ...) {
     qgraph::qgraph(object$graph, ..., layout = "circle", edge.width = 1.5, title = paste("True model graph (", object$type, ")", sep = ""))
 }
