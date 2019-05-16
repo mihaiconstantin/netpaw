@@ -1,4 +1,4 @@
 library(testthat)
-library(netpower)
+library(netpaw)
 
-test_check("netpower")
+test_check("netpaw")
