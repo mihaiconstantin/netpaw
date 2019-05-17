@@ -7,7 +7,7 @@
 
 
 # Random graph.
-UNDIRECTED.UNWEIGHTED.GRAPHS$random <- list(
+GRAPHS$random <- list(
     # The name of the graph.
     name = "random",
 
@@ -37,7 +37,7 @@ UNDIRECTED.UNWEIGHTED.GRAPHS$random <- list(
 
 
 # Smallworld graph.
-UNDIRECTED.UNWEIGHTED.GRAPHS$smallworld <- list(
+GRAPHS$smallworld <- list(
     # The name of the graph.
     name = "smallworld",
 
@@ -72,7 +72,7 @@ UNDIRECTED.UNWEIGHTED.GRAPHS$smallworld <- list(
 
 
 # Scalefree graph.
-UNDIRECTED.UNWEIGHTED.GRAPHS$scalefree <- list(
+GRAPHS$scalefree <- list(
     # The name of the graph.
     name = "scalefree",
 
@@ -114,7 +114,7 @@ UNDIRECTED.UNWEIGHTED.GRAPHS$scalefree <- list(
 #' @export
 gen.graph <- function(graph.type, ...) {
     # Check if the requested graph is supported.
-    if(!(graph.type %in% UNDIRECTED.UNWEIGHTED.GRAPHS$supported)) {
+    if(!(graph.type %in% GRAPHS$supported)) {
         stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`.")
     }
     
@@ -122,12 +122,12 @@ gen.graph <- function(graph.type, ...) {
     . <- list(...)
     
     # Check if the required arguments of the graph generator are present and respect the imposed constrains.
-    if(!check.arguments(UNDIRECTED.UNWEIGHTED.GRAPHS[[graph.type]][["args"]], .)) {
+    if(!check.arguments(GRAPHS[[graph.type]][["args"]], .)) {
         stop("Non-conformable argument(s) provided. See the documentation.")
     }
     
     # Call the graph generator.
-    graph <- do.call(UNDIRECTED.UNWEIGHTED.GRAPHS[[graph.type]]$generator, .)
+    graph <- do.call(GRAPHS[[graph.type]]$generator, .)
     
     # Set the name and the generation options.
     result <- list(
