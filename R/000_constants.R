@@ -11,7 +11,7 @@ NEGATIVE.EDGE.COLOR = "#F44336"
 
 # Package graphs ----------------------------------------------------------
 
-UNDIRECTED.UNWEIGHTED.GRAPHS = list(
+GRAPHS = list(
     supported = c(
         "random", 
         "smallworld", 
