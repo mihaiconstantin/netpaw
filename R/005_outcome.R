@@ -79,9 +79,11 @@ compute.outcomes <- function(true.model.weights, estimated.model.weights) {
 
     # Compute type S error rate.
     # TODO: type S error.
+    type.s <- "not yet implemented"
 
     # Compute type M error rate.
     # TODO: type M error.
+    type.m <- "not yet implemented"
 
 	# Edge weights correlation.
 	correlation <- ifelse(equal.size, cor(true, esti), NA)
@@ -101,10 +103,12 @@ compute.outcomes <- function(true.model.weights, estimated.model.weights) {
 		specificity 			= specificity,
 		type.one 				= type.one,
 		type.two 				= type.two,
+		type.s 				    = type.s,
+		type.m 				    = type.m,
 		edge.correlation 		= correlation,
 		density.true.model 		= density.true,
 		density.estimated.model = density.esti,
-		equal.size 				= equal.size
+        equal.size 				= equal.size
 	)
 
 	return(results)
