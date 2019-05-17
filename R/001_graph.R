@@ -1,4 +1,4 @@
-# In this file we are registering UNDIRECTED UNWEIGHTED GRAPHS.
+# In this file we are registering UNWEIGHTED GRAPHS.
 
 
 
