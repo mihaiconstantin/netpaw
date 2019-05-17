@@ -26,9 +26,9 @@ GRAPHS$random <- list(
     ),
 
     # The graph generator.
-    generator = function(nodes, p) {
+    generator = function(nodes, p, directed = FALSE) {
         # Generate the graph.
-        graph <- as.matrix(igraph::get.adjacency(igraph::erdos.renyi.game(nodes, p)))
+        graph <- as.matrix(igraph::get.adjacency(igraph::sample_gnp(n = nodes, p = p, directed = directed)))
         
         return(graph)
     }
@@ -63,7 +63,7 @@ GRAPHS$smallworld <- list(
     # The graph generator.
     generator = function(nodes, neighborhood, p.rewire) {
         # Generate the graph.
-        graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(1, nodes, neighborhood, p.rewire)))
+        graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(dim = 1, size = nodes, nei = neighborhood, p = p.rewire)))
 
         return(graph)
     }
@@ -96,9 +96,9 @@ GRAPHS$scalefree <- list(
     ),
 
     # The graph generator.
-    generator = function(nodes, attachment, edges) {
+    generator = function(nodes, attachment, edges, directed = FALSE) {
         # Generate the graph.
-        graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(nodes, power = attachment, m = edges, directed = F)))
+        graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(n = nodes, power = attachment, m = edges, directed = directed)))
         
         return(graph)
     }
