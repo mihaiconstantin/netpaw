@@ -82,7 +82,10 @@ generate.arguments <- function(args.list) {
             
         } else if(arg$type == "double") {
             value <- runif(1, min(arg$range), max(arg$range))
-        }  
+        
+        } else if(arg$type == "bool") {
+            value <- sample(0:1, 1, TRUE, c(.5, .5)) == TRUE
+        }
         
         return(value)
     })
