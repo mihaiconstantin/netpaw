@@ -182,7 +182,7 @@ drop.invariant.nodes <- function(data, tolerance = 1) {
 
 # Object methods ----------------------------------------------------------
 
-print.npdata <- function(object, short = TRUE, ...) {
+print.npdata <- function(object, data = TRUE, short = TRUE, ...) {
     # Details about the data.
     cat("\n")
     cat(crayon::black$bgGreen$bold("Data details:"))
@@ -200,18 +200,21 @@ print.npdata <- function(object, short = TRUE, ...) {
     cat("  - generation status:", ifelse(object$status == 0, crayon::green("succeeded"), crayon::red("failed")))
     cat("\n")
     
-    # The data matrix.
-    cat("\n")
-    cat(crayon::black$bgGreen$bold("Dataset preview:"))
-    cat("\n\n")
+    # Should we show the data?
+    if(data) {
+        # The data matrix.
+        cat("\n")
+        cat(crayon::black$bgGreen$bold("Dataset preview:"))
+        cat("\n\n")
 
-    if(!short) {
-        print(object$data, ...)
-    } else {
-        print(head(object$data, ...))
-        cat("\n")
-        cat(crayon::green(". . ."))
-        cat("\n")
+        if(short) {
+            print(head(object$data, ...))
+            cat("\n")
+            cat(crayon::green(". . ."))
+            cat("\n")
+        } else {
+            print(object$data, ...)
+        }
     }
 
     cat("\n")
