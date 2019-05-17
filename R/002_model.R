@@ -120,7 +120,7 @@ gen.model <- function(model.type, graph.type, nodes, ...) {
 
 # Object methods ----------------------------------------------------------
 
-print.npmodel <- function(object, graph = TRUE, ...) {
+print.npmodel <- function(object, model = TRUE, ...) {
     # Details about the graph.
     print(object$graph, graph = FALSE)
     
@@ -141,18 +141,18 @@ print.npmodel <- function(object, graph = TRUE, ...) {
     cat("  - generation options:", paste(object$generation.options, crayon::yellow(paste("(", names(unlist(object$generation.options)), ")", sep = "")), collapse = crayon::silver(" | ")))
     cat("\n")
     
-    if (graph) {
-        # The graph matrix.
+    if (model) {
+        # The graph matrix (i.e., only upper triangle).
         print(object$graph, details = FALSE)
         
         # The weights matrix.
-        cat(crayon::black$bgGreen$bold("Weights matrix:"))
+        cat(crayon::black$bgGreen$bold("True weights (i.e., upper triangle):"))
         cat("\n\n")
-        print(object$weights, digits = 3)
+        print(object$weights[upper.tri(object$weights)], digits = 3)
         cat("\n")
         
         # The threshold vector if applicable.
-        cat(crayon::black$bgGreen$bold("Thresholds:"))
+        cat(crayon::black$bgGreen$bold("True thresholds:"))
         cat("\n\n")
         print(object$thresholds, digits = 3)
         cat("\n")
