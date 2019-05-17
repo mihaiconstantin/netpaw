@@ -138,3 +138,15 @@ print.npconfig <- function(object, ...) {
     cat("\n")
 }
 
+
+
+print.npoutcome <- function(object, ...) {
+    # Details about the cell outcomes.
+    cat("\n")
+    cat(crayon::black$bgGreen$bold("Outcomes:"))
+    cat("\n")
+    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
+    cat("\n")
+    cat(paste(paste("  - ", gsub("\\.", " ", names(unlist(object))), sep = ""), crayon::green(object), sep = ": ", collapse = "\n"))
+    cat("\n")
+}
