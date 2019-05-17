@@ -41,7 +41,7 @@ estimate.model <- function(data) {
         # Record the model type.
         type = data$model, 
 
-        # Store data and related infromation.
+        # Store data and related information.
         data = data
     )
 
@@ -50,7 +50,7 @@ estimate.model <- function(data) {
         # Fir the Ising model.
         model.fit <- estimator.ising(data$data)
         
-        # Store the estimated paramaters.
+        # Store the estimated parameters.
         result$fit <- list(
             weights = model.fit$weiadj,
             thresholds = model.fit$thresholds
@@ -61,7 +61,7 @@ estimate.model <- function(data) {
         # Fit the GGM model.
         model.fit <- estimator.ggm(data$data)
         
-        # Store the estimated paramaters.
+        # Store the estimated parameters.
         result$fit <- list(
             weights = model.fit$graph,
             thresholds = NULL
@@ -99,18 +99,18 @@ print.npfit <- function(object, weights = TRUE, ...) {
     cat("\n")
     
     # Details about the data.
-    print(object$data, short = TRUE)
+    print(object$data, ...)
 
     if (weights) {
-        # The weights matrix.
+        # The weights matrix (i.e., only upper triangle).
         cat("\n")
-        cat(crayon::black$bgGreen$bold("Weights matrix:"))
+        cat(crayon::black$bgGreen$bold("Estimated weights (i.e., upper triangle):"))
         cat("\n\n")
-        print(object$fit$weights, digits = 3)
+        print(object$fit$weights[upper.tri(object$fit$weights)], digits = 3)
         cat("\n")
         
         # The threhsold vector if applicable.
-        cat(crayon::black$bgGreen$bold("Thresholds:"))
+        cat(crayon::black$bgGreen$bold("Estimated thresholds:"))
         cat("\n\n")
         print(object$fit$thresholds, digits = 3)
         cat("\n")
