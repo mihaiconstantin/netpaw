@@ -114,3 +114,27 @@ compute.outcomes <- function(true.model.weights, estimated.model.weights) {
 
 	return(results)
 }
+
+
+
+# Object methods ----------------------------------------------------------
+
+
+print.npconfig <- function(object, ...) {
+    # Format the object for easier printing.
+    config <- flatten.nested.list(object)
+
+    # Remove name prefixes.
+    names(config) <- gsub("graph.generation.options.", "", names(config))
+    names(config) <- gsub("model.generation.options.", "", names(config))
+
+    # Details about the cell configuration.
+    cat("\n")
+    cat(crayon::black$bgGreen$bold("Requested configuration:"))
+    cat("\n")
+    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
+    cat("\n")
+    cat(paste(paste("  - ", gsub("\\.", " ", names(unlist(config))), sep = ""), crayon::yellow(config), sep = ": ", collapse = "\n"))
+    cat("\n")
+}
+
