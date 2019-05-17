@@ -150,3 +150,19 @@ print.npoutcome <- function(object, ...) {
     cat(paste(paste("  - ", gsub("\\.", " ", names(unlist(object))), sep = ""), crayon::green(object), sep = ": ", collapse = "\n"))
     cat("\n")
 }
+
+
+# Maybe move to 006?
+print.npsimulatedcell <- function(object, ...) {
+    # Details about the graph.
+    print(object$config, ...)
+
+    # Details about the true model.
+    print(object$true.model, ...)
+
+    # Details about the estimated model.
+    print(object$fit, ...)
+
+    # Details about the outcomes.
+    print(object$outcomes, ...)
+}
