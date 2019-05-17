@@ -95,6 +95,15 @@ generate.arguments <- function(args.list) {
 
 
 
+# Sample a vector of positive and negative integers according to a ratio. 
+sample.positive.parameter.ratio <- function(number.parameters, ratio) {
+    positive.ratio <- sample(c(-1, 1), number.parameters, TRUE, prob = c(1 - ratio, ratio))
+
+    return(positive.ratio)    
+}
+
+
+
 # Generic functions (i.e., may be exported) -------------------------------
 
 
