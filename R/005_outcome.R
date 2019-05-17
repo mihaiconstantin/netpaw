@@ -31,26 +31,21 @@ extract.results <- function(true.model, estimated.model) {
         config = config,
 
         # Set the true model parameters.
-        true.model = list(
-            weights = true.model$weights[upper.tri(true.model$weights)],
-            thresholds = true.model$thresholds
-        ),
+        true.model = true.model,
 
         # Set the estimated model parameters.
-        fit = list(
-            weights = estimated.model$fit$weights[upper.tri(estimated.model$fit$weights)],
-            thresholds = estimated.model$fit$thresholds
-        ),
-
-        # Set some information about the data.
-        data = estimated.model$data,
+        fit = estimated.model,
 
         # Set the outcomes.
         outcomes = outcomes
     )
 
-    # Set the correct class.
-    class(result) <- c("npcell", "list")
+    # Set the correct classes for the list objects. Maybe move to 006?
+    class(result$config) <- c("npconfig", "list")
+    class(result$outcomes) <- c("npoutcome", "list")
+    
+    # Set the class for the cell results.
+    class(result) <- c("npsimulatedcell", "list")
 
     return(result)
 }
