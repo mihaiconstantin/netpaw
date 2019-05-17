@@ -39,14 +39,19 @@ CLASSES <- list(
 
 # Metadata ----------------------------------------------------------------
 
-POSITIVE.EDGE.COLOR = "#3F51B5"
-NEGATIVE.EDGE.COLOR = "#F44336"
+
+
+POSITIVE.EDGE.COLOR <- "#3F51B5"
+
+NEGATIVE.EDGE.COLOR <- "#F44336"
 
 
 
 # Package graphs ----------------------------------------------------------
 
-GRAPHS = list(
+
+
+GRAPHS <- list(
     supported = c(
         "random", 
         "smallworld", 
@@ -58,13 +63,15 @@ GRAPHS = list(
 
 # Package models ----------------------------------------------------------
 
-CROSS.SECTIONAL.MODELS = list(
+
+
+CROSS.SECTIONAL.MODELS <- list(
     supported = c(
         "ggm", 
         "ising"
     )
 )
 
-TIME.SERIES.MODELS = list(
+TIME.SERIES.MODELS <- list(
     supported = c()
 )
