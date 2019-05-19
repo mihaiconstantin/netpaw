@@ -97,14 +97,27 @@ conformity.check <- function(value, arg) {
     
     return(is.conformable)
 }
-        # What conclusion do we draw?
-        conclusion <- (!is.missing && is.conformable)
-        
-        # Return the check conclusion.
-        return(conclusion)
-    })
+
+
+
+# Combine arguments from a function definition and a target list (e.g., '...' object).
+combine.arguments <- function(fun, target.list) {
+    # Get the arguments the definition arguments as a list.
+    definition.args <- as.list(args(fun))
     
-    return(all(result))
+    # Remove the last redundant element.
+    definition.args <- definition.args[-length(definition.args)]
+    
+    overwritten.args <- sapply(names(definition.args), function(arg.name) {
+        if(!is.symbol(definition.args[[arg.name]]) && is.null(target.list[[arg.name]])) {
+            return(definition.args[[arg.name]])
+            
+        } else {
+            return(target.list[[arg.name]])
+        }
+    }, simplify = FALSE)
+    
+    return(overwritten.args)
 }
 
 
