@@ -7,15 +7,15 @@ test_that("`gen.graph` result inherits from the correct class", {
     true.graph <- gen.graph("random", nodes = 5, p = .5)
     
     # Expectation.
-    expect_is(true.graph, "npgraph")
+    expect_is(true.graph, "np.graph")
 })
 
 
 
 test_that("all implemented graphs are supported", {
     # Preparation.
-    for(graph in UNDIRECTED.UNWEIGHTED.GRAPHS[-1]) {
-        test <- graph$name %in% UNDIRECTED.UNWEIGHTED.GRAPHS$supported
+    for(graph in GRAPHS[-1]) {
+        test <- graph$name %in% GRAPHS$supported
 
         # Expectation.
         expect_equal(test, TRUE)
@@ -26,8 +26,8 @@ test_that("all implemented graphs are supported", {
 
 test_that("all supported graphs are implemented", {
     # Preparation.
-    for(graph.type in UNDIRECTED.UNWEIGHTED.GRAPHS$supported) {
-        test <- is.null(UNDIRECTED.UNWEIGHTED.GRAPHS[[graph.type]])
+    for(graph.type in GRAPHS$supported) {
+        test <- is.null(GRAPHS[[graph.type]])
 
         # Expectation.
         expect_equal(test, FALSE)
@@ -36,11 +36,11 @@ test_that("all supported graphs are implemented", {
 
 
 
-test_that("all registered graphs return a symmetric matrix", {
+test_that("all undirected registered graphs return a symmetric matrix", {
     # Preparation.
-    for(graph in UNDIRECTED.UNWEIGHTED.GRAPHS[-1]) {
+    for(graph in GRAPHS[-1]) {
         # Generate some suitable parameters.
-        parameters <- generate.arguments(graph$args)
+        parameters <- generate.arguments(graph$args, directed = FALSE)
 
         # Generate true graph.
         true.graph <- do.call(graph$generator, parameters)
@@ -56,7 +56,7 @@ test_that("all registered graphs return a symmetric matrix", {
 
 test_that("all registered graphs have 0 on main diagonal", {
     # Preparation.
-    for(graph in UNDIRECTED.UNWEIGHTED.GRAPHS[-1]) {
+    for(graph in GRAPHS[-1]) {
         # Generate some suitable parameters.
         parameters <- generate.arguments(graph$args)
 
