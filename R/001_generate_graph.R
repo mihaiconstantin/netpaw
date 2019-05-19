@@ -33,7 +33,7 @@ gen.graph <- function(graph.type, ...) {
     result <- list(
         type = graph.type,
         graph = graph,
-        generation.options = .
+        generation.options = combine.arguments(GRAPHS[[graph.type]]$generator, .)
     )
 
     # Set the class of the result.
