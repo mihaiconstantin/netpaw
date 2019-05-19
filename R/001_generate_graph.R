@@ -22,7 +22,7 @@ gen.graph <- function(graph.type, ...) {
     . <- list(...)
     
     # Check if the required arguments of the graph generator are present and respect the imposed constrains.
-    if(!check.arguments(GRAPHS[[graph.type]][["args"]], .)) {
+    if(!validate.arguments(GRAPHS[[graph.type]][["args"]], GRAPHS[[graph.type]]$generator, .)) {
         stop("Non-conformable argument(s) provided. See the documentation.")
     }
     
