@@ -37,7 +37,7 @@ gen.graph <- function(graph.type, ...) {
     )
 
     # Set the class of the result.
-    class(result) <- c('npgraph', 'list')
+    class(result) <- c('np.graph', 'list')
     
     return(result)
 }
@@ -49,7 +49,7 @@ gen.graph <- function(graph.type, ...) {
 
 
 # Print the graph.
-print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
+print.np.graph <- function(object, details = TRUE, graph = TRUE, ...) {
     # Details about the graph.
     if (details) {
         cat("\n")
@@ -70,16 +70,24 @@ print.npgraph <- function(object, details = TRUE, graph = TRUE, ...) {
     # The graph matrix.
     if (graph) {
         cat("\n")
-        cat(crayon::black$bgGreen$bold("Graph (i.e., upper triangle):"))
+        cat(crayon::black$bgGreen$bold("Graph upper triangle:"))
         cat("\n\n")
         print(object$graph[upper.tri(object$graph)])
         cat("\n")
+
+        # If the graph is directed also plot the lower triangle.
+        if(!is.null(object$generation.options$directed) && object$generation.options$directed == TRUE) {
+            cat(crayon::black$bgGreen$bold("Graph lower triangle:"))
+            cat("\n\n")
+            print(object$graph[lower.tri(object$graph)])
+            cat("\n")
+        }
     }
 }
 
 
 
 # Plot the graph.
-plot.npgraph <- function(object, ...) {
+plot.np.graph <- function(object, ...) {
     qgraph::qgraph(object$graph, ..., layout = "circle", edge.width = 1.5, title = paste("True model graph (", object$type, ")", sep = ""))
 }
