@@ -2,7 +2,43 @@
 
 
 
+# Package graphs ----------------------------------------------------------
+
+
+
+GRAPHS <- list(
+    supported = c(
+        "random", 
+        "smallworld", 
+        "scalefree"
+    )
+)
+
+
+
+# Package models ----------------------------------------------------------
+
+
+
+MODELS.CROSS.SECTIONAL <- list(
+    supported = c(
+        "ggm", 
+        "ising"
+    )
+)
+
+
+
+MODELS.TIME.SERIES <- list(
+    supported = c()
+)
+
+
+
 # Package classes  --------------------------------------------------------
+
+
+
 CLASSES <- list(
     graph = c(
         "np.graph" # Information about the generated unweighted graph.
@@ -44,34 +80,3 @@ CLASSES <- list(
 POSITIVE.EDGE.COLOR <- "#3F51B5"
 
 NEGATIVE.EDGE.COLOR <- "#F44336"
-
-
-
-# Package graphs ----------------------------------------------------------
-
-
-
-GRAPHS <- list(
-    supported = c(
-        "random", 
-        "smallworld", 
-        "scalefree"
-    )
-)
-
-
-
-# Package models ----------------------------------------------------------
-
-
-
-CROSS.SECTIONAL.MODELS <- list(
-    supported = c(
-        "ggm", 
-        "ising"
-    )
-)
-
-TIME.SERIES.MODELS <- list(
-    supported = c()
-)
