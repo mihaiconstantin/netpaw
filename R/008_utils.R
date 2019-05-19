@@ -37,29 +37,66 @@ flatten.nested.list <- function(nested.list) {
 
 
 
-# Check whether a list of arguments exists in the `...` and it conforms.
-check.arguments <- function(args, target.list) {
+# Validate a list of arguments associated with a function against the `...` object.
+validate.arguments <- function(args, fun, target.list) {
+    # The arguments as specified in the function definition.
+    definition.args <- as.list(args(fun))
+    
     result <- sapply(args, function(arg) {
+        # Does the argument have a default value?
+        has.default <- !is.symbol(definition.args[[arg$name]])
+        
         # Is the argument present in the target list?
         is.missing <- is.null(target.list[[arg$name]])
         
-        # Since the argument is missing, it is by default non-conformable.
-        if(is.missing) {
+        # The argument has a default value, but that value is being overwritten by the user.
+        # The argument doesn't have a default value and it not missing.
+        if((has.default && !is.missing) || (!has.default && !is.missing)) {
+            is.conformable <- conformity.check(target.list[[arg$name]], arg)
+        
+        # The argument doesn't have an default value and it's also missing.
+        } else if(!has.default && is.missing) {
+            # Since the argument is missing and no default exists, it is by default non-conformable.
             is.conformable = FALSE
             
             # Some user feedback.
             message(paste("Missing expected argument '", arg$name ,"'. Code: M.GR#001.", sep = ""))
         
-        # Is the argument conformable?
         } else {
-            is.conformable <- ((target.list[[arg$name]] >= min(arg$range)) && (target.list[[arg$name]] <= max(arg$range)))
-            
-            if(!is.conformable) {
-                # Some user feedback.
-                message(paste("Argument '", arg$name, " = ", target.list[[arg$name]] ,"' is non-conformable. Code: M.GR#002.", sep = ""))
-            }
+            # If argument has a default value that is not overwritten by the user we are good.
+            is.conformable = TRUE    
         }
         
+        return(is.conformable)
+    })
+    
+    return(all(result))
+}
+
+
+
+# Argument conformity check.
+conformity.check <- function(value, arg) {
+    if(arg$type == "int" || arg$type == "double") {
+        # If the argument value is integer or double check the bounds.
+        is.conformable <- ((value >= min(arg$range)) && (value <= max(arg$range)))
+        
+    } else if(arg$type == "bool") {
+        # If the argument value is logical check that only logical values are passed.
+        is.conformable <- is.logical(value) && !is.na(value)
+        
+    } else {
+        # Safety net in case I add new argument types and I forget to add conformity checks.
+        stop("Unrecognized argument type; currently supported: 'int', 'double', and 'bool'. CODE: E.UT#001")
+    }
+    
+    # Some user feedback.
+    if(!is.conformable) {
+        message(paste("Argument '", arg$name, " = ", value ,"' is non-conformable. Code: M.GR#002.", sep = ""))
+    }
+    
+    return(is.conformable)
+}
         # What conclusion do we draw?
         conclusion <- (!is.missing && is.conformable)
         
