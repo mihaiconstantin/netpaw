@@ -2,7 +2,11 @@
 
 
 
-# SCOPE: can be modified by external developers.
+# SCOPE: can be modified by collaborators.
+
+
+
+# MODIFICATION INSTRUCTIONS: to be added...
 
 
 
@@ -25,7 +29,12 @@ GRAPHS$random <- list(
         p = list(
             name = "p",
             type = "double",
-            range = c(0, 1)
+            range = c(0, 1) 
+        ),
+        directed = list(
+            name = "directed",
+            type = "bool",
+            range = c(FALSE, TRUE)
         )
     ),
 
@@ -96,6 +105,11 @@ GRAPHS$scalefree <- list(
             name = "edges",
             type = "int",
             range = c(0, 3)
+        ),
+        directed = list(
+            name = "directed",
+            type = "bool",
+            range = c(FALSE, TRUE)
         )
     ),
 
