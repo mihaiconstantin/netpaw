@@ -123,18 +123,27 @@ combine.arguments <- function(fun, target.list) {
 
 
 # Give a list of arguments (i.e., as defined in the context of `netpaw`) generate numeric values.
-generate.arguments <- function(args.list) {
-    # Generate arguments accordingly.
+generate.arguments <- function(args.list, ...) {
+    # Capture the `...` overwrites as a list.
+    . <- list(...)
+
+    # Generate or overwrite arguments accordingly.
     parameters <- lapply(args.list, function(arg) {
-        # Choose the correct type.
-        if(arg$type == "int") {
-            value <- floor(runif(1, min(arg$range), max(arg$range) + 1))
+        # First check to see if we desire to overwrite the generation with specific values.
+        if(!is.null(.[[arg$name]])) {
+            value <- .[[arg$name]]
+
+        } else {
+            # Choose the correct type.
+            if(arg$type == "int") {
+                value <- floor(runif(1, min(arg$range), max(arg$range) + 1))
+                
+            } else if(arg$type == "double") {
+                value <- runif(1, min(arg$range), max(arg$range))
             
-        } else if(arg$type == "double") {
-            value <- runif(1, min(arg$range), max(arg$range))
-        
-        } else if(arg$type == "bool") {
-            value <- sample(0:1, 1, TRUE, c(.5, .5)) == TRUE
+            } else if(arg$type == "bool") {
+                value <- sample(0:1, 1, TRUE, c(.5, .5)) == TRUE
+            }
         }
         
         return(value)
