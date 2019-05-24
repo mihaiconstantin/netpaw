@@ -6,6 +6,15 @@
 
 
 
+# Assert something or fail with custom error message.
+assert.condition <- function(truth, error.message) {
+    if(!truth) {
+        stop(error.message)
+    }
+}
+
+
+
 # Get the number of nodes from a graph or weighted matrix.
 get.number.nodes <- function(graph) {
     # Determine the dimensions.
