@@ -49,9 +49,6 @@ RandomGraph <- R6::R6Class("RandomGraph",
     
     public = list(
         generator = function(nodes, p, directed = FALSE) {
-            # Match the options intelligently. Ideally I should abstract this in the parent class. Not sure how to go about it...
-            private$..options <- as.list(match.call())[-1]
-            
             # Generate the graph.
             graph <- as.matrix(igraph::get.adjacency(igraph::sample_gnp(n = nodes, p = p, directed = directed)))
             
@@ -82,9 +79,6 @@ SmallWorldGraph <- R6::R6Class("SmallWorldGraph",
     
     public = list(
         generator = function(nodes, neighborhood, p.rewire) {
-            # Match the options intelligently. Ideally I should abstract this in the parent class. Not sure how to go about it...
-            private$..options <- as.list(match.call())[-1]
-
             # Generate the graph.
             graph <- as.matrix(igraph::get.adjacency(igraph::sample_smallworld(dim = 1, size = nodes, nei = neighborhood, p = p.rewire)))
 
@@ -115,9 +109,6 @@ ScaleFreeGraph <- R6::R6Class("ScaleFreeGraph",
     
     public = list(
         generator = function(nodes, attachment, edges, directed = FALSE) {
-            # Match the options intelligently. Ideally I should abstract this in the parent class. Not sure how to go about it...
-            private$..options <- as.list(match.call())[-1]
-
             # Generate the graph.
             graph <- as.matrix(igraph::get.adjacency(igraph::sample_pa(n = nodes, power = attachment, m = edges, directed = directed)))
             
