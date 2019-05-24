@@ -67,19 +67,19 @@ Graph <- R6::R6Class("Graph",
         # Regular public fields.
         type = NULL,
         graph = NULL,
-        
-        
+
+
+        # Constructor
         initialize = function(...) {
             # Record the timestamp.
             private$..timestamp <- Sys.time()
-            
-            # Store the options intended for the generator.
-            # This is a fail-safe in case I or you forget to add the match call to the overwritten generator.
-            private$..options <- list(...)
-            
+
+            # Patch the generator to store the options used during the generator call.
+            private$..match.arguments()
+
             # Set the type of graph based on the class name.
             self$type <- class(self)[1]
-            
+
             # Generate the graph and update the public member `graph`.
             self$graph <- self$generator(...)
         },
