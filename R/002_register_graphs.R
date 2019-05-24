@@ -98,7 +98,7 @@ SmallWorldGraph <- R6::R6Class("SmallWorldGraph",
 Graph$..ALIASES..$smallworld <- list(
     name = "smallworld",
     class = SmallWorldGraph,
-    args = list(
+    example.args = list(
         nodes = 10, neighborhood = 2, p.rewire = .5
     )
 )
@@ -129,9 +129,9 @@ ScaleFreeGraph <- R6::R6Class("ScaleFreeGraph",
 # Register alias.
 
 Graph$..ALIASES..$scalefree <- list(
-    name = "smallworld",
+    name = "scalefree",
     class = ScaleFreeGraph,
-    args = list(
+    example.args = list(
         nodes = 10, attachment = 2, edges = 2, directed = FALSE
     )
 )
