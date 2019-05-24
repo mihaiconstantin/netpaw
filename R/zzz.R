@@ -1,4 +1,4 @@
-#' \code{netpaw}: A package for cross-sectional network simulations.
+#' \code{netpaw}: A package for cross-sectional and time series network simulations.
 #'
 #' The \code{netpaw} package provides three categories of functions...
 #' TODO: Add documentation.
@@ -24,15 +24,8 @@
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# Notes for my future self and my future self alone.
+# Notes for my future self.
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# Preamble:
-#     - let's get this straight: building R packages is not the nicest thing, but it can be rewarding in a sense
-#     - to avoid endless moments of frustration just grab a pen and paper and write down the tree diagram representation of the package
-#     - I know you know how things are organized, but for God's sake just grab the damn pen and paper and don't be a moron!
-
-# In it's current form (i.e., April 22nd, 2019) this package deals only with GGM and Ising models.
 
 # The order in which you want to open the files in the `R/` is the following:
 #     1. graph.R -> generates unweighted undirected graphs
