@@ -200,7 +200,7 @@ gen.graph <- function(graph.type, ...) {
     generator <- Graph$..ALIASES..[[graph.type]]$class
 
     # Start the factory.
-    graph.factory <- GraphFactory$new(generator, ...)
+    graph.factory <- Factory$new(generator, ...)
 
     return(graph.factory)
 }
