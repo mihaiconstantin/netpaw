@@ -1,21 +1,22 @@
-context("True graph generation (001_graph.R)")
+context("True graph generation")
 
 
 
-test_that("`gen.graph` result inherits from the correct class", {
-    # Preparation.
-    true.graph <- gen.graph("random", nodes = 5, p = .5)
-    
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# Tests related to the `Graph` class --------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+test_that("`Graph` class is not instantiable", {
     # Expectation.
-    expect_is(true.graph, "np.graph")
+    expect_error(Graph$new(), ..ERRORS..$non.instantiable.class)
 })
 
 
 
-test_that("all implemented graphs are supported", {
+test_that("graph aliases inherit from `Graph` class", {
     # Preparation.
-    for(graph in GRAPHS[-1]) {
-        test <- graph$name %in% GRAPHS$supported
+    for(alias in Graph$..ALIASES..) {
+        test <- "Graph" %in% alias$class$get_inherit()$classname
 
         # Expectation.
         expect_equal(test, TRUE)
@@ -24,10 +25,10 @@ test_that("all implemented graphs are supported", {
 
 
 
-test_that("all supported graphs are implemented", {
+test_that("graph aliases have implementation", {
     # Preparation.
-    for(graph.type in GRAPHS$supported) {
-        test <- is.null(GRAPHS[[graph.type]])
+    for(alias in Graph$..ALIASES..) {
+        test <- is.null(alias$class$public_methods$generator)
 
         # Expectation.
         expect_equal(test, FALSE)
@@ -36,16 +37,18 @@ test_that("all supported graphs are implemented", {
 
 
 
-test_that("all undirected registered graphs return a symmetric matrix", {
+test_that("undirected graph aliases return a symmetric matrix", {
     # Preparation.
-    for(graph in GRAPHS[-1]) {
-        # Generate some suitable parameters.
-        parameters <- generate.arguments(graph$args, directed = FALSE)
-
-        # Generate true graph.
-        true.graph <- do.call(graph$generator, parameters)
+    for(alias in Graph$..ALIASES..) {
+        # If present ensure that the `directed` argument is set to `FALSE`.
+        if(!is.null(alias$example.args$directed)) {
+            alias$example.args$directed <- FALSE
+        }
         
-        test <- isSymmetric(true.graph)
+        # Generate true graph.
+        graph <- do.call(alias$class$new, alias$example.args)
+        
+        test <- isSymmetric(graph$graph)
 
         # Expectation.
         expect_equal(test, TRUE)
@@ -54,16 +57,13 @@ test_that("all undirected registered graphs return a symmetric matrix", {
 
 
 
-test_that("all registered graphs have 0 on main diagonal", {
+test_that("graph aliases have 0 on main diagonal", {
     # Preparation.
-    for(graph in GRAPHS[-1]) {
-        # Generate some suitable parameters.
-        parameters <- generate.arguments(graph$args)
-
+    for(alias in Graph$..ALIASES..) {
         # Generate true graph.
-        true.graph <- do.call(graph$generator, parameters)
+        graph <- do.call(alias$class$new, alias$example.args)
         
-        test <- sum(diag(true.graph))
+        test <- sum(diag(graph$graph))
 
         # Expectation.
         expect_equal(test, 0)
@@ -72,22 +72,25 @@ test_that("all registered graphs have 0 on main diagonal", {
 
 
 
-test_that("`gen.graph` uses the correct graph generator", {
-    expect_equal(gen.graph("random", nodes = 5, p = .5)$type, "random")
+test_that("`gen.graph` can start the factory for all graph aliases", {
+    # Preparation.
+    for(alias in Graph$..ALIASES..) {
+        # Prepare arguments.
+        args <- c(graph.type = alias$name, alias$example.args)
 
-    expect_equal(gen.graph("smallworld", nodes = 5, neighborhood = 2, p.rewire = .5)$type, "smallworld")
-    
-    expect_equal(gen.graph("scalefree", nodes = 5, edges = 2, attachment = 2)$type, "scalefree")
-    
-    expect_error(gen.graph("unknown", nodes = 5, p = .5)$type, "Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`.")
+        # True graph.
+        factory <- do.call(gen.graph, args)
+
+        test <- is.matrix(factory$first$graph)
+
+        # Expectation.
+        expect_equal(test, TRUE)
+    }
 })
 
 
 
-test_that("`gen.graph` catches non-conformable argument(s)", {
-    # With missing argument.
-    expect_error(gen.graph("random", p = .5), "Non-conformable argument\\(s\\) provided. See the documentation.")
-
-    # With argument out of bounds.
-    expect_error(gen.graph("random", nodes = 5, p = -1), "Non-conformable argument\\(s\\) provided. See the documentation.")
+test_that("`gen.graph` fails on unsupported graph type", {
+    # Expectation.
+    expect_error(gen.graph("unknown"), ..ERRORS..$unsupported.type)
 })
