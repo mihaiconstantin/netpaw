@@ -184,41 +184,6 @@ Graph <- R6::R6Class("Graph",
 Graph$..ALIASES.. <- list()
 
 
- 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# Graph factory class -----------------------------------------------------
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-GraphFactory <- R6::R6Class("GraphFactory",
-    private = list(
-        ..warehouse = list()
-    ),
-
-
-    public = list(
-        initialize = function(graph, ..., amount = 1) {
-            stopifnot(class(graph) == "R6ClassGenerator")
-            
-            for(i in 1:amount) {
-                private$..warehouse[[i]] <- graph$new(...)
-            }
-        }
-    ),
-
-
-    active = list(
-        warehouse = function() {
-            return(private$..warehouse)
-        },
-
-
-        size = function() {
-            return(length(private$..warehouse))
-        }
-    )
-)
-
-
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Exported wrapper for generating graphs ----------------------------------
