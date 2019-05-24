@@ -42,7 +42,24 @@ Graph <- R6::R6Class("Graph",
 
     private = list(
         ..timestamp = NULL,
-        ..options = NULL
+        ..options = NULL,
+
+
+        # Match arguments intelligently even when names are missing.
+        ..match.arguments = function() {
+            # Unlock the binding in the `self` environment.
+            unlockBinding("generator", self)
+            
+            # Alter the function.
+            # body(self$generator) <- patch.function(self$generator, "private$..options <- as.list(match.call())[-1]")
+            body(self$generator) <- patch.function(
+                self$generator, 
+                quote(private$..options <- combine.arguments(self$generator, as.list(match.call())[-1]))
+            )
+            
+            # Lock the binding in the `self` environment.
+            lockBinding("generator", self)
+        }
     ),
     
     
