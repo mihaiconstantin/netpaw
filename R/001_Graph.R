@@ -84,9 +84,10 @@ Graph <- R6::R6Class("Graph",
             self$graph <- self$generator(...)
         },
         
-    
+
+        # Graph generator.
         generator = function(...) {
-            stop("Unimplemented graph generator.")
+            stop(..ERRORS..$non.instantiable.class)
         },
 
 
@@ -147,7 +148,7 @@ Graph <- R6::R6Class("Graph",
 
         nodes = function() {
             # Determine the dimensions.
-            dimensions = dim(self$graph)
+            dimensions <- dim(self$graph)
             
             # Check the dimensions.
             if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
@@ -223,9 +224,9 @@ GraphFactory <- R6::R6Class("GraphFactory",
 
 #' @export
 gen.graph <- function(graph.type, ...) {
-    # Make sure the graph type requests is known.    
+    # Make sure the graph type requests is known.
     if(!graph.type %in% names(Graph$..ALIASES..)) {
-        stop("Unsupported graph type. Please request it at `m.a.constantin@uvt.nl`.")
+        stop(..ERRORS..$unsupported.type)
     }
     
     # Match the pretty names to the generators.
