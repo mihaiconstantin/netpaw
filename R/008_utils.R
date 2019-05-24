@@ -235,3 +235,22 @@ get.pcor <- function(nvars) {
     
     return(pcor.mat)
 }
+
+
+
+# Conveniently patch function bodies.
+patch.function <- function(fun, patch, position = 1) {
+    # Deparse the body.
+    fun.body <- deparse(body(fun))
+    
+    # Append the patch to function body where intended.
+    patched.fun.body <- paste0(
+        c(fun.body[1:position], patch, fun.body[(position + 1):length(fun.body)]),
+        collapse = "\n"
+    )
+
+    # Parse and treat as an expression.
+    expr <- as.expression(parse(text = patched.fun.body))
+
+    return(expr)
+}
