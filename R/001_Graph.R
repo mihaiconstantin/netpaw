@@ -1,23 +1,36 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                             _                                                                           #
+#                                                            | |                                                                          #
+#                                                _ __    ___ | |_  _ __    __ _ __      __                                                #
+#                                               | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                                                #
+#                                               | | | ||  __/| |_ | |_) || (_| | \ V  V /                                                 #
+#                                               |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                                                  #
+#                                                                 | |                                                                     #
+#                                                                 |_|                                                                     #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                                                                                                                                         #
-# In this file we are registering UNWEIGHTED GRAPHS.                                                                                      #
+# File contributors:                                                                                                                      #
+#   - M.A. Constantin                                                                                                                     #
 #                                                                                                                                         #
-# The structure of the file is as follows:                                                                                                #
-#   a. starts with a generic prototype of what a graph represents -> aka parent class (i.e., `Graph` in `001_Graph.R`)                    #
-#   b. specific graph implementations inherit and respect the parent -> aka child class (e.g., `RandomGraph` in `002_register_graphs.R`)  #
-#   c. a factory abstracts away the generation of specific graph implementation -> aka factory class (i.e., `GraphFactory`)               #
-#   d. a wrapper around the factory allows users to generate graphs -> aka exported wrapper (i.e., `gen.graph`)                           #
+# File description:                                                                                                                       #
+#   - this file contains an abstract class used to define the structure of a graph object                                                 #
 #                                                                                                                                         #
-# Note for adding new graphs:                                                                                                             #
-#   1. add a new graph child class (i.e., see point b.)                                                                                   #
-#   2. overwrite the `generator` public method of parent class to return a matrix                                                         #
-#       a. on the top of the generator add the following line of code to ensure pretty argument names                                     #
-#           -> private$..options <- as.list(match.call())[-1]                                                                             #
-#   3. register the graph name and associated implementation under `Graph$..ALIASES...`                                                   #
-#   4. add example of named arguments so the new implementation can be automatically tested                                               #
-#   5. run the tests                                                                                                                      #
+# Classes/ functions/ methods:                                                                                                            #
+#   - Graph (R6 class)                                                                                                                    #
+#   - gen.graph (function)                                                                                                                #
 #                                                                                                                                         #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# Additional information:                                                                                                                 #
+#   - architecture:                                                                                                                       #
+#       - abstract`Graph` class (i.e., a very general definition of a graph)                                                              #
+#       - specific implementations inherit from `Graph` and override the `generator` method (e.g., `RandomGraph` class)                   #
+#   - wrapper:                                                                                                                            #
+#       - `gen.graph` makes use of an internal `Factory` class to generate graphs                                                         #
+#       - the factory uses aliases registered within the `Graph$..ALIASES..` list                                                         #
+#       - each alias maps to a class that explicitly inherits from `Graph` (i.e., specific implementation)                                #
+#   - implementing graphs:                                                                                                                #
+#       - see file `register_graphs.R` for details on how to inherit from `Graph` and implement specific graphs                           #
+#                                                                                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
