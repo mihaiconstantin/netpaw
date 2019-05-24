@@ -91,13 +91,15 @@ Graph <- R6::R6Class("Graph",
         },
 
 
-        print = function(with.details = TRUE, with.graph = TRUE, ...) {
+        print = function(with.details = TRUE, with.graph = TRUE, with.object = TRUE, ...) {
             # Details about the `R6` object.
-            cat("\n")
-            cat(crayon::black$bgGreen$bold("Object details:"))
-            cat("\n")
-            cat(crayon::silver(format(self, ...)), sep = "\n")
-
+            if(with.object) {
+                cat("\n")
+                cat(crayon::black$bgGreen$bold("Object details:"))
+                cat("\n")
+                cat(crayon::silver(format(self, ...)), sep = "\n")
+            }
+            
             # Details about the graph.
             if (with.details) {
                 cat("\n")
