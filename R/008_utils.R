@@ -1,8 +1,50 @@
-# In this file we store general util functions.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                             _                                                                           #
+#                                                            | |                                                                          #
+#                                                _ __    ___ | |_  _ __    __ _ __      __                                                #
+#                                               | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                                                #
+#                                               | | | ||  __/| |_ | |_) || (_| | \ V  V /                                                 #
+#                                               |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                                                  #
+#                                                                 | |                                                                     #
+#                                                                 |_|                                                                     #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                                                                                         #
+# File contributors:                                                                                                                      #
+#   - M.A. Constantin                                                                                                                     #
+#                                                                                                                                         #
+# File description:                                                                                                                       #
+#   - this file contains various utilities used throughout the package                                                                    #
+#                                                                                                                                         #
+# Classes/ functions/ methods:                                                                                                            #
+#   - many small functions                                                                                                                #
+#                                                                                                                                         #
+# Additional information:                                                                                                                 #
+#   - n.a.                                                                                                                                #
+#                                                                                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Package specific functions ----------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Conveniently patch function bodies.
+patch.function <- function(fun, patch, position = 1) {
+    # Deparse the body.
+    fun.body <- deparse(body(fun))
+    
+    # Append the patch to function body where intended.
+    patched.fun.body <- paste0(
+        c(fun.body[1:position], patch, fun.body[(position + 1):length(fun.body)]),
+        collapse = "\n"
+    )
+
+    # Parse and treat as an expression.
+    expr <- as.expression(parse(text = patched.fun.body))
+
+    return(expr)
+}
 
 
 
@@ -15,26 +57,12 @@ assert.condition <- function(truth, error.message) {
 
 
 
-# Get the number of nodes from a graph or weighted matrix.
-get.number.nodes <- function(graph) {
-    # Determine the dimensions.
-    dimensions = dim(graph)
-    
-    # Check the dimensions.
-    if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
-    
-    # Return the number of nodes.
-    return(dimensions[1])
-}
-
-
-
 # Flatten wierd nested lists.
 # Copyright Michael (https://stackoverflow.com/a/41882883/5252007).
 flatten.nested.list <- function(nested.list) {
     more.lists <- sapply(nested.list, function(x) is.list(x))
     
-    output <- c(nested.list[!more.lists], unlist(nested.list[more.lists], recursive=FALSE))
+    output <- c(nested.list[!more.lists], unlist(nested.list[more.lists], recursive = FALSE))
     
     if(sum(more.lists)) {
         Recall(output)
@@ -172,7 +200,21 @@ sample.positive.parameter.ratio <- function(number.parameters, ratio) {
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Generic functions (i.e., may be exported) -------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Get the number of nodes from a graph or weighted matrix.
+get.number.nodes <- function(graph) {
+    # Determine the dimensions.
+    dimensions = dim(graph)
+    
+    # Check the dimensions.
+    if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
+    
+    # Return the number of nodes.
+    return(dimensions[1])
+}
 
 
 
@@ -243,23 +285,4 @@ get.pcor <- function(nvars) {
     diag(pcormat) <- 0
     
     return(pcor.mat)
-}
-
-
-
-# Conveniently patch function bodies.
-patch.function <- function(fun, patch, position = 1) {
-    # Deparse the body.
-    fun.body <- deparse(body(fun))
-    
-    # Append the patch to function body where intended.
-    patched.fun.body <- paste0(
-        c(fun.body[1:position], patch, fun.body[(position + 1):length(fun.body)]),
-        collapse = "\n"
-    )
-
-    # Parse and treat as an expression.
-    expr <- as.expression(parse(text = patched.fun.body))
-
-    return(expr)
 }
