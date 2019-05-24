@@ -11,6 +11,7 @@
         "ifelse",
         "netpaw",
         "qgraph",
-        "runif"
+        "runif",
+        "stopifnot"
     ]
 }
