@@ -46,23 +46,7 @@ Model <- R6::R6Class("Model",
     
     private = list(
         ..timestamp = NULL,
-        ..options = NULL,
-
-
-        # Match arguments intelligently even when names are missing.
-        ..match.arguments = function() {
-            # Unlock the binding in the `self` environment.
-            unlockBinding("generator", self)
-            
-            # Alter the function at runtime.
-            body(self$generator) <- patch.function(
-                self$generator, 
-                quote(private$..options <- combine.arguments(self$generator, as.list(match.call())[-1]))
-            )
-            
-            # Lock the binding in the `self` environment.
-            lockBinding("generator", self)
-        }
+        ..options = NULL
     ),
 
 
@@ -81,7 +65,7 @@ Model <- R6::R6Class("Model",
             private$..timestamp = Sys.time()
 
             # Patch the generator to store the options used during the generator call.
-            private$..match.arguments()
+            patch.function.within.environment("generator", self, quote(private$..options <- combine.arguments(self$generator, as.list(match.call())[-1])))
 
             # Set the type of model based on class name.
             self$type = class(self)[1]
