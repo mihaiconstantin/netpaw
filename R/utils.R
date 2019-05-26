@@ -48,6 +48,23 @@ patch.function <- function(fun, patch, position = 1) {
 
 
 
+# Patch a function binding within an environment (i.e., by reference). 
+patch.function.within.environment <- function(binding, environment, patch) {
+    # Unlock the binding in the environment.
+    unlockBinding(binding, environment)
+    
+    # Alter the function.
+    body(environment[[binding]]) <- patch.function(environment[[binding]], patch)
+    
+    # Lock the binding in the `self` environment.
+    lockBinding(binding, environment)
+
+    # Prevent return printing NULL.
+    invisible() 
+}
+
+
+
 # Assert something or fail with custom error message.
 assert.condition <- function(truth, error.message) {
     if(!truth) {
