@@ -217,6 +217,31 @@ sample.positive.parameter.ratio <- function(number.parameters, ratio) {
 
 
 
+# Determine if a column is invariant.
+is.invariant = function(column, tolerance = 1) {
+    column <- as.factor(column)
+    frequencies <- table(column)
+    categories <- length(frequencies)
+    
+    if(categories <= 2)
+    {
+        nobs <- length(column)
+        min.frequency <- min(frequencies)
+        max.frequency <- max(frequencies)
+        
+        if(min.frequency <= tolerance || max.frequency >= nobs - tolerance) {
+            return(TRUE) 
+        }
+        else {
+            return(FALSE)
+        }
+    } else {
+        return(FALSE)
+    }
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Generic functions (i.e., may be exported) -------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
