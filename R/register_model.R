@@ -44,7 +44,6 @@
 # Ising model child class -------------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-
 IsingModel <- R6::R6Class("IsingModel",
     inherit = ModelCrossSectional,
 
@@ -124,6 +123,26 @@ GgmModel <- R6::R6Class("GgmModel",
             return(list(
                 weights = weights
             ))
+        },
+
+
+        # Convert from partial correlations to correlations.
+        to.correlation = function() {
+            # Make sure we have a positive definite matrix. 
+            assert.condition(TRUE, "Weights matrix is not positive definite.")
+
+            # Get the covariance (correlation perhaps) matrix.
+            corr.matrix <- cov2cor(solve(diag(ncol(self$model$weights)) - self$model$weights))
+
+            return(corr.matrix)
+        }
+    ),
+
+
+    active = list(
+        # Check whether the partial correlation matrix is positive definite.
+        is.positive.definite = function() {
+            return(!any(eigen(diag(ncol(self$model$weights)) - self$model$weights)$values < 0))
         }
     )
 )
