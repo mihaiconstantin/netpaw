@@ -16,6 +16,7 @@
 #' @import crayon
 #' @import audio
 #' @import R6
+#' @import progress
 #'
 #' @docType package
 #' @name netpaw
