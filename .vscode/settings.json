@@ -9,8 +9,13 @@
         "dput",
         "gsub",
         "ifelse",
+        "ncol",
         "netpaw",
+        "nrow",
         "qgraph",
+        "resample",
+        "resampler",
+        "resampling",
         "runif",
         "stopifnot"
     ]

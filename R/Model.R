@@ -128,7 +128,7 @@ ModelCrossSectional <- R6::R6Class("ModelCrossSectional",
             # Call the parent constructor.
             super$initialize()
 
-            # Enforce a type R since R misses strong typed arguments.
+            # Enforce type `Graph` since R misses strong typed arguments.
             assert.condition("Graph" %in% class(graph), ..ERRORS..$incorrect.object.type)
 
             # Set the graph via dependency injection.
