@@ -76,10 +76,10 @@ Sampler <- R6::R6Class("Sampler",
             # Record the timestamp.
             private$..timestamp <- Sys.time()
 
-            # Enforce type` Model` since R misses strong typed arguments.
+            # Enforce type` Model` since R misses strongly typed arguments.
             assert.condition("Model" %in% class(model), ..ERRORS..$incorrect.object.type)
 
-            # Patch the sampler to store the options used during the sampler call.
+            # Patch the sampler to store the options used during the call.
             patch.function.within.environment("sampler", self, quote(private$..options <- combine.arguments(self$sampler, as.list(match.call())[-1])))
 
             # Record the tolerance.
@@ -91,7 +91,7 @@ Sampler <- R6::R6Class("Sampler",
             # Set the type of graph based on the class name.
             self$type <- class(self)[1]
 
-            # Generate the graph and update the public member `graph`.
+            # Generate the data and update the public member `data`.
             self$data <- self$sampler(...)
 
             # If necessary, attempt resampling.
