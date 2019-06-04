@@ -66,7 +66,7 @@ patch.function.within.environment <- function(binding, environment, patch) {
 
 
 # Assert something or fail with custom error message.
-assert.condition <- function(truth, error.message) {
+assert <- function(truth, error.message) {
     if(!truth) {
         stop(error.message)
     }
@@ -218,7 +218,7 @@ sample.positive.parameter.ratio <- function(number.parameters, ratio) {
 
 
 # Determine if a column is invariant.
-is.invariant = function(column, tolerance = 1) {
+is.invariant <- function(column, tolerance = 1) {
     column <- as.factor(column)
     frequencies <- table(column)
     categories <- length(frequencies)
