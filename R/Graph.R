@@ -1,36 +1,22 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                             _                                                                           #
-#                                                            | |                                                                          #
-#                                                _ __    ___ | |_  _ __    __ _ __      __                                                #
-#                                               | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                                                #
-#                                               | | | ||  __/| |_ | |_) || (_| | \ V  V /                                                 #
-#                                               |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                                                  #
-#                                                                 | |                                                                     #
-#                                                                 |_|                                                                     #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                                                                                                         #
-# File contributors:                                                                                                                      #
-#   - M.A. Constantin                                                                                                                     #
-#                                                                                                                                         #
-# File description:                                                                                                                       #
-#   - this file contains an abstract class used to define the structure of a graph object                                                 #
-#                                                                                                                                         #
-# Classes/ functions/ methods:                                                                                                            #
-#   - Graph (R6 class)                                                                                                                    #
-#   - gen.graph (function)                                                                                                                #
-#                                                                                                                                         #
-# Additional information:                                                                                                                 #
-#   - architecture:                                                                                                                       #
-#       - abstract`Graph` class (i.e., a very general definition of a graph)                                                              #
-#       - specific implementations inherit from `Graph` and override the `generator` method (e.g., `RandomGraph` class)                   #
-#   - wrapper:                                                                                                                            #
-#       - `gen.graph` makes use of an internal `Factory` class to generate graphs                                                         #
-#       - the factory uses aliases registered within the `Graph$..ALIASES..` list                                                         #
-#       - each alias maps to a class that explicitly inherits from `Graph` (i.e., specific implementation)                                #
-#   - implementing graphs:                                                                                                                #
-#       - see file `register_graphs.R` for details on how to inherit from `Graph` and implement specific graphs                           #
-#                                                                                                                                         #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                           #
+#                             | |                                          #
+#                 _ __    ___ | |_  _ __    __ _ __      __                #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
+#                                  | |                                     #
+#                                  |_|                                     #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                          #
+# File contributors:                                                       #
+#   - M.A. Constantin                                                      #
+#                                                                          #
+# File description:                                                        #
+#   - contains an abstract R6 class that defines a graph and its           #
+#     generation and a wrapper that starts a factory                       #
+#                                                                          #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
@@ -41,99 +27,53 @@
 Graph <- R6::R6Class("Graph",
 
     private = list(
-        ..timestamp = NULL,
-        ..options = NULL
-    ),
-    
-    
-    public = list(
-        # Regular public fields.
-        type = NULL,
-        graph = NULL,
+        ..options = NULL,
+        ..graph = NULL,
 
 
-        # Constructor
-        initialize = function(...) {
-            # Record the timestamp.
-            private$..timestamp <- Sys.time()
+        # Graph generation.
+        ..generate = function(...) {
+            # Prepare the Option object and set the meta field.
+            private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
-            # Patch the generator to store the options used during the generator call.
-            patch.function.within.environment("generator", self, quote(private$..options <- combine.arguments(self$generator, as.list(match.call())[-1])))
+            # Set the values field on the options at runtime.
+            patch.function.within.environment("..generator", private, "private$..options$values <- combine.arguments(private$..generator, as.list(match.call())[-1])")
 
-            # Set the type of graph based on the class name.
-            self$type <- class(self)[1]
-
-            # Generate the graph and update the public member `graph`.
-            self$graph <- self$generator(...)
+            # Generate the graph.
+            private$..graph <- private$..generator(...)
         },
-        
+
 
         # Graph generator.
-        generator = function(...) {
+        ..generator = function(...) {
             stop(..ERRORS..$non.instantiable.class)
-        },
+        }
+    ),
 
 
-        print = function(with.details = TRUE, with.graph = TRUE, with.object = TRUE, ...) {
-            # Details about the `R6` object.
-            if(with.object) {
-                cat("\n")
-                cat(crayon::black$bgGreen$bold("Object details:"))
-                cat("\n")
-                cat(crayon::silver(format(self, ...)), sep = "\n")
-            }
-            
-            # Details about the graph.
-            if (with.details) {
-                cat("\n")
-                cat(crayon::black$bgGreen$bold("Graph details:"))
-                cat("\n")
-                cat(crayon::silver("  - class(es):", paste(shQuote(class(self)), collapse = ", ")))
-                cat("\n")
-                cat("  - type:", shQuote(crayon::yellow(self$type)))
-                cat("\n")
-                cat("  - dimensions:", paste(dim(self$graph), collapse = "x"))
-                cat("\n")
-                cat("  - density:", round(self$density, 3))
-                cat("\n")
-                cat("  - generation options:", paste(self$options, crayon::yellow(paste("(", names(unlist(self$options)), ")", sep = "")), collapse = crayon::silver(" | ")))
-                cat("\n")      
-            }
-
-            # The graph matrix.
-            if (with.graph) {
-                cat("\n")
-                cat(crayon::black$bgGreen$bold("Graph upper triangle:"))
-                cat("\n\n")
-                print(self$graph[upper.tri(self$graph)])
-                cat("\n")
-
-                # If the graph is directed also plot the lower triangle.
-                if(!is.null(self$options$directed) && self$options$directed == TRUE) {
-                    cat(crayon::black$bgGreen$bold("Graph lower triangle:"))
-                    cat("\n\n")
-                    print(self$graph[lower.tri(self$graph)])
-                    cat("\n")
-                }
-            }
-        },
-        
-        
-        plot = function(...) {
-            qgraph::qgraph(self$graph, ..., layout = "circle", edge.width = 1.5, title = paste("True model graph (", self$type, ")", sep = ""))
+    public = list(
+        # Constructor
+        initialize = function(...) {
+            # Generate.
+            private$..generate(...)
         }
     ),
 
 
     active = list(
         options = function() {
-            return(private$..options)           
+            return(private$..options)
+        },
+
+
+        graph = function() {
+            return(private$..graph)
         },
 
 
         nodes = function() {
             # Determine the dimensions.
-            dimensions <- dim(self$graph)
+            dimensions <- dim(private$..graph)
             
             # Check the dimensions.
             if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
@@ -148,7 +88,7 @@ Graph <- R6::R6Class("Graph",
             potential = (self$nodes * (self$nodes - 1)) / 2
             
             # Actual connections.
-            actual = sum(self$graph[upper.tri(self$graph)] != 0)
+            actual = sum(private$..graph[upper.tri(private$..graph)] != 0)
             
             # Density.
             density = actual / potential
@@ -173,17 +113,21 @@ Graph$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-gen.graph <- function(graph.type, ...) {
+generate.graph <- function(graph.type, ...) {
     # Make sure the graph type requests is known.
     if(!graph.type %in% names(Graph$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
     }
     
-    # Match the pretty names to the generators.
-    generator <- Graph$..ALIASES..[[graph.type]]$class
+    # Match the pretty names to the blueprints.
+    blueprint <- Graph$..ALIASES..[[graph.type]]$class
 
     # Start the factory.
-    graph.factory <- Factory$new(generator, ...)
+    graph.factory <- Factory$new(blueprint, ...)
 
     return(graph.factory)
 }
+
+
+
+# End of file.
