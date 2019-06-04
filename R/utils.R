@@ -242,6 +242,15 @@ is.invariant <- function(column, tolerance = 1) {
 
 
 
+# Capitalize a word.
+capitalize <- function(word) {
+    capitalized.word <- paste(toupper(substring(word, 1, 1)), substring(word, 2), sep = "")
+
+    return(capitalized.word)
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Generic functions (i.e., may be exported) -------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
