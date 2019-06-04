@@ -1,0 +1,60 @@
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                           #
+#                             | |                                          #
+#                 _ __    ___ | |_  _ __    __ _ __      __                #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
+#                                  | |                                     #
+#                                  |_|                                     #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                          #
+# File contributors:                                                       #
+#   - {{author}}                                                           #
+#                                                                          #
+# File description:                                                        #
+#   - generated from template on {{time}} by {{author}}                    #
+#   - you may add your description here                                    #
+#                                                                          #
+# Seminal paper:                                                           #
+#   - https://dx.doi.org/{{doi}}                                           #
+#                                                                          #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Generating {{name}} model parameters ------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+{{name}}Graph <- R6::R6Class("{{name}}Graph",
+    inherit = Graph,
+
+
+    private = list(
+        ..generator = function(a, b) {
+            # Implementation here -> must return a symmetric matrix.
+        }
+    )
+)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Alias for {{name}} graph ------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# "{{name}}" graph is known as "{{alias}}".
+
+Graph$..ALIASES..${{alias}} <- list(
+    name = "{{alias}}",
+    class = {{name}}Graph,
+    example.args = list(
+        a = 1, 
+        b = 2
+    )
+)
+
+
+
+# End of file.

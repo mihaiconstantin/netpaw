@@ -1,0 +1,155 @@
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                           #
+#                             | |                                          #
+#                 _ __    ___ | |_  _ __    __ _ __      __                #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
+#                                  | |                                     #
+#                                  |_|                                     #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                          #
+# File contributors:                                                       #
+#   - {{author}}                                                           #
+#                                                                          #
+# File description:                                                        #
+#   - generated from template on {{time}} by {{author}}                    #
+#   - you may add your description here                                    #
+#                                                                          #
+# Seminal paper:                                                           #
+#   - https://dx.doi.org/{{doi}}                                           #
+#                                                                          #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Generating {{name}} model parameters ------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+{{name}}Generator <- R6::R6Class("{{name}}Generator",
+    inherit = {{parent.generator}}Generator,
+
+
+    private = list(
+        ..generator = function(a, b) {
+            # Implementation here.
+        }
+    )
+)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Sampling data based on {{name}} model parameters ------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+{{name}}Sampler <- R6::R6Class("{{name}}Sampler",
+    inherit = Sampler,
+
+
+    private = list(
+        ..sampler = function(a, b) {
+            # Implementation here.
+        }
+    )
+)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Estimating {{name}} model from data -------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+{{name}}Estimator <- R6::R6Class("{{name}}Estimator",
+    inherit = Estimator,
+
+
+    private = list(
+        ..frequentist = function(a, b) {
+            # Implementation here.
+        },
+
+        ..bayesian = function(a, b) {
+            # Implementation here or throw the following error if you wish to leave unimplemented:
+            # stop(..ERRORS..$not.implemented)
+        }
+    )
+)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Comparing {{name}} models -----------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+{{name}}Comparator <- R6::R6Class("{{name}}Comparator",
+    inherit = Comparator,
+
+
+    private = list(
+        ..comparator = function(a, b) {
+            # Implementation here.
+        }
+    )
+)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Aliases for {{name}} model ----------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Generator alias.
+
+Generator$..ALIASES..${{alias}} <- list(
+    name = "{{alias}}",
+    class = {{name}}Generator,
+    example.args = list(
+        a = 1, 
+        b = 2
+    )
+)
+
+
+
+# Sampler alias.
+
+Sampler$..ALIASES..${{alias}} <- list(
+    name = "{{alias}}",
+    class = {{name}}Sampler,
+    example.args = list(
+        a = 1, 
+        b = 2
+    )
+)
+
+
+
+# Estimator alias.
+
+Estimator$..ALIASES..${{alias}} <- list(
+    name = "{{alias}}",
+    class = {{name}}Estimator,
+    example.args = list(
+        a = 1, 
+        b = 2
+    )
+)
+
+
+
+# Comparator alias.
+
+Comparator$..ALIASES..${{alias}} <- list(
+    name = "{{alias}}",
+    class = {{name}}Comparator,
+    example.args = list(
+        a = 1, 
+        b = 2
+    )
+)
+
+
+
+# End of file.
