@@ -1,3 +1,30 @@
+# File package header.
+
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                           #
+#                             | |                                          #
+#                 _ __    ___ | |_  _ __    __ _ __      __                #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
+#                                  | |                                     #
+#                                  |_|                                     #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                          #
+# File contributors:                                                       #
+#   - {{author}}                                                           #
+#                                                                          #
+# File description:                                                        #
+#   - generated from template on {{time}} by {{author}}                    #
+#   - you may add your description here                                    #
+#                                                                          #
+# Seminal paper:                                                           #
+#   - https://dx.doi.org/{{doi}}                                           #
+#                                                                          #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
 # Package logo.
 
 # . . . . . . . . . . . . . . . . . . . . . . . . . . . .
