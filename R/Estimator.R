@@ -78,7 +78,7 @@ Estimator <- R6::R6Class("Estimator",
 
 
         # Model estimator, bayesian.
-        ..bayesian <- function(...) {
+        ..bayesian = function(...) {
             stop(..ERRORS..$non.instantiable.class)
         }
     ),

@@ -34,7 +34,7 @@ Comparator <- R6::R6Class("Comparator",
 
         # Hooks.
         ..before = function() { invisible() },
-        ..after = function() { invisible() }
+        ..after = function() { invisible() },
 
 
         # Boilerplate.

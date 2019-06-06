@@ -33,7 +33,7 @@ Generator <- R6::R6Class("Generator",
 
         # Hooks.
         ..before = function() { invisible() },
-        ..after = function() { invisible() }
+        ..after = function() { invisible() },
 
 
         # Boilerplate.
