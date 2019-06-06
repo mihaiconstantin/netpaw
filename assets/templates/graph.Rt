@@ -33,7 +33,7 @@
 
     private = list(
         ..generator = function(a, b) {
-            # Implementation here -> must return a symmetric matrix.
+            # Implementation here.
         }
     )
 )
