@@ -48,7 +48,7 @@ CrossSectionalGenerator <- R6::R6Class("CrossSectionalGenerator",
     public = list(
         initialize = function(graph, ...) {
             # Type check.
-            assert.condition("Graph" %in% class(graph), ..ERRORS..$incorrect.object.type)
+            assert("Graph" %in% class(graph), ..ERRORS..$incorrect.object.type)
 
             # Set the graph via dependency injection.
             private$..graph <- graph
