@@ -62,7 +62,7 @@ CrossSectionalGenerator <- R6::R6Class("CrossSectionalGenerator",
     active = list(
         # Compute the number of parameters based on the injected graph object.
         number.parameters = function() {
-            number.parameters <- (private$..graph$nodes * (private$..graph$nodes - 1)) / 2
+            number.parameters <- (private$..graph$number.nodes * (private$..graph$number.nodes - 1)) / 2
 
             return(number.parameters)
         }
