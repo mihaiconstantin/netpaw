@@ -31,16 +31,31 @@ Graph <- R6::R6Class("Graph",
         ..graph = NULL,
 
 
-        # Graph generation.
-        ..generate = function(...) {
+        # Hooks.
+        ..before = function() { invisible() },
+        ..after = function() { invisible() },
+
+
+        # Boilerplate.
+        ..boot = function() {
             # Prepare the Option object and set the meta field.
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
             # Set the values field on the options at runtime.
             patch.function.within.environment("..generator", private, "private$..options$values <- combine.arguments(private$..generator, as.list(match.call())[-1])")
+        },
+
+
+        # Graph generation.
+        ..generate = function(...) {
+            # Run before the generator.
+            private$..before()
 
             # Generate the graph.
             private$..graph <- private$..generator(...)
+
+            # Run after the generator.
+            private$..after()
         },
 
 
@@ -54,6 +69,9 @@ Graph <- R6::R6Class("Graph",
     public = list(
         # Constructor
         initialize = function(...) {
+            # Boot.
+            private$..boot()
+
             # Generate.
             private$..generate(...)
         }
