@@ -35,7 +35,7 @@ RandomGraph <- R6::R6Class("RandomGraph",
         ..generator = function(nodes, p, directed = FALSE) {
             # Generate the graph.
             graph <- as.matrix(igraph::get.adjacency(igraph::sample_gnp(n = nodes, p = p, directed = directed)))
-            
+
             return(graph)
         }
     )
