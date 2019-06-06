@@ -45,13 +45,13 @@ Sampler <- R6::R6Class("Sampler",
 
         # Check each column in the data for at least `invariance.tolerance` responses on a given category.
         ..determine.invariant.columns = function() {
-            return(apply(private$..data, 2, is.invariant, private$..invariance.tolerance))
+            return(apply(private$..data$dataset, 2, is.invariant, private$..invariance.tolerance))
         },
 
 
         # Drop specified invariant columns from data.
         ..drop.invariant.columns = function() {
-            return(private$..data[, !private$..determine.invariant.columns(),  drop = FALSE])
+            return(private$..data$dataset[, !private$..determine.invariant.columns(),  drop = FALSE])
         },
 
 
@@ -88,8 +88,8 @@ Sampler <- R6::R6Class("Sampler",
         # Boilerplate.
         ..boot = function(model, max.resampling.attempts, invariance.tolerance) {
             # Type check and assertions.
-            assert.condition("Model" %in% class(model), ..ERRORS..$incorrect.object.type)
-            assert.condition(max.resampling.attempts > 0, "Argument `max.resampling.attempts` must be grater than 0.")
+            assert("Model" %in% class(model), ..ERRORS..$incorrect.object.type)
+            assert(max.resampling.attempts > 0, "Argument `max.resampling.attempts` must be grater than 0.")
 
             # Set the injected model.
             private$..model <- model
@@ -133,7 +133,7 @@ Sampler <- R6::R6Class("Sampler",
         # Constructor.
         initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1) {
             # Boot.
-            private$..boot()
+            private$..boot(model, max.resampling.attempts, invariance.tolerance)
 
             # Generate.
             private$..sample(...)
@@ -142,14 +142,11 @@ Sampler <- R6::R6Class("Sampler",
 
         # Determine if resampling is needed.
         needs.resampling = function() {
-            # Check that the data have the required number of columns.
-            columns.were.dropped <- ncol(private$..data) != ncol(private$..model$weights)
-
             # Check whether there is at least one invariant column.
             columns.are.invariant <- (sum(private$..determine.invariant.columns()) > 0)
 
-            # Resampling should occur if either of the two conditions is true.
-            return(columns.were.dropped || columns.are.invariant)
+            # Resampling should occur if there is at least one invariant column.
+            return(columns.are.invariant)
         }
     ),
 
@@ -191,17 +188,17 @@ Sampler <- R6::R6Class("Sampler",
 
 
         rows = function() {
-            return(nrow(private$..data))
+            return(nrow(private$..data$dataset))
         },
 
 
         cols = function() {
-            return(ncol(private$..data))
+            return(ncol(private$..data$dataset))
         },
 
 
         item.steps = function() {
-            return(sort(unique(c(private$..data))))
+            return(sort(unique(c(private$..data$dataset))))
         }
     )
 )
