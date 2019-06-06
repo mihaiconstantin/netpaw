@@ -1,130 +1,153 @@
-# This file contains functions related to estimating PMRF models.
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                           #
+#                             | |                                          #
+#                 _ __    ___ | |_  _ __    __ _ __      __                #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
+#                                  | |                                     #
+#                                  |_|                                     #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                          #
+# File contributors:                                                       #
+#   - M.A. Constantin                                                      #
+#                                                                          #
+# File description:                                                        #
+#   - contains an abstract R6 class that defines an estimator and its      #
+#     generation and a wrapper that starts a factory                       #
+#                                                                          #
+# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
-# Estimator types ---------------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Parent estimator class --------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-estimator.ising <- function(data) {
-    # Estimate the model.
-    result <- IsingFitEssential(data)
+Estimator <- R6::R6Class("Estimator",
 
-    return(result)
-}
-
-
-
-estimator.ggm <- function(data) {
-    # Estimate the model.
-    result <- bootnet::estimateNetwork(data, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE)
-    
-    # Remove the names, not needed.
-    rownames(result$graph) <- colnames(result$graph) <- NULL
-
-    return(result)
-}
+    private = list(
+        ..options = NULL,
+        ..model = NULL,
+        ..data = NULL,
+        ..thinking = NULL,
 
 
+        # Hooks.
+        ..before = function() { invisible() },
+        ..after = function() { invisible() },
 
-# Exported wrapper --------------------------------------------------------
 
-#' @title Estimated the model based on the type of data provided.
-#' @export
-estimate.model <- function(data) {
-    # Check that a `npdata` object is used.
-    if(!inherits(data, "npdata")) {
-        stop("Argument `data` must be an object of class `npdata`.")
-    }
+        # Boilerplate.
+        ..boot = function(data, thinking) {
+            # Initialize and store the data.
+            private$..data <- Data$new(dataset = data)
 
-    # Determine which estimator to use based on the model type. 
-    # Ensure that regardless of the estimation function, the result object looks the same.
-    result <- list(
-        # Record the model type.
-        type = data$model, 
+            # Set the thinking method.
+            private$..thinking = thinking
 
-        # Store data and related information.
-        data = data
+            # Initialize the Option object and set the meta field.
+            private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
+
+            # Set the values field on the options at runtime.
+            patch.function.within.environment("..generator", private, "private$..options$values <- combine.arguments(private$..generator, as.list(match.call())[-1])")
+        },
+
+
+        # Model estimation.
+        ..estimate = function(...) {
+            # Run before the estimator.
+            private$..before()
+
+            # Pick the right estimation type and run the estimator.
+            if(private$..thinking == "frequentist") {
+                private$..model <- Model$new(list = private$..frequentist(...))
+            } else { 
+                private$..model <- Model$new(list = private$..bayesian(...))
+            }
+
+            # Run after the estimator.
+            private$..after()
+        },
+
+
+        # Model estimator, frequentist.
+        ..frequentist = function(...) {
+            stop(..ERRORS..$non.instantiable.class)
+        },
+
+
+        # Model estimator, bayesian.
+        ..bayesian <- function(...) {
+            stop(..ERRORS..$non.instantiable.class)
+        }
+    ),
+
+
+    public = list(
+        # Constructor.
+        initialize = function(data, ..., thinking = "frequentist") {
+            # Boot.
+            private$..boot(data, thinking)
+
+            # Estimate.
+            private$..estimate(...)
+        }
+    ),
+
+
+    active = list(
+        options = function() {
+            return(private$..options)
+        },
+
+
+        model = function() {
+            return(private$..model)
+        },
+
+
+        data = function() {
+            return(private$..data)
+        },
+
+
+        thinking = function() {
+            return(private$..thinking)
+        }
     )
+)
 
-    # Estimating Ising.
-    if(data$model == "ising") {
-        # Fir the Ising model.
-        model.fit <- estimator.ising(data$data)
-        
-        # Store the estimated parameters.
-        result$fit <- list(
-            weights = model.fit$weiadj,
-            thresholds = model.fit$thresholds
-        )
 
-    # Estimating GGM.
-    } else if(data$model == "ggm") {
-        # Fit the GGM model.
-        model.fit <- estimator.ggm(data$data)
-        
-        # Store the estimated parameters.
-        result$fit <- list(
-            weights = model.fit$graph,
-            thresholds = NULL
-        )
-    
-    # Unrecognized model type.
-    } else {
-        stop("Unsupported model type during estimation. Please request it at `m.a.constantin@uvt.nl`.")
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# Storage for keeping track of supported estimators -----------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+Estimator$..ALIASES.. <- list()
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# Exported wrapper for estimating models ----------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+estimate.model <- function(estimator.type, ...) {
+    # Make sure the requested estimator type is known.
+    if(!estimator.type %in% names(Estimator$..ALIASES..)) {
+        stop(..ERRORS..$unsupported.type)
     }
-
-    # Set the class of the output.
-    class(result) <- c('npfit', 'list')
-
-    return(result)
-}
-
-
-
-# Object methods ----------------------------------------------------------
-
-print.npfit <- function(object, weights = TRUE, ...) {
-    # Details about the model.
-    cat("\n")
-    cat(crayon::black$bgGreen$bold("Fit details:"))
-    cat("\n")
-    cat(crayon::silver("  - class(es):", paste(shQuote(class(object)), collapse = ", ")))
-    cat("\n")
-    cat("  - type:", shQuote(crayon::yellow(object$type)))
-    cat("\n")
-    cat("  - mean absolute:", round(mean(abs(object$fit$weights[upper.tri(object$fit$weights)])), 3))
-    cat("\n")
-    cat("  - sd:", round(sd(object$fit$weights[upper.tri(object$fit$weights)]), 3))
-    cat("\n")
-    cat("  - range:", paste(round(c(min(object$fit$weights), max(object$fit$weights)), 3), crayon::yellow(paste("(", c("min", "max"), ")", sep = "")), collapse = crayon::silver(" | ")))
-    cat("\n")
     
-    # Details about the data.
-    print(object$data, ...)
+    # Match the pretty names to the blueprints.
+    blueprint <- Estimator$..ALIASES..[[estimator.type]]$class
 
-    if (weights) {
-        # The weights matrix (i.e., only upper triangle).
-        cat("\n")
-        cat(crayon::black$bgGreen$bold("Estimated weights (i.e., upper triangle):"))
-        cat("\n\n")
-        print(object$fit$weights[upper.tri(object$fit$weights)], digits = 3)
-        cat("\n")
-        
-        # The threhsold vector if applicable.
-        cat(crayon::black$bgGreen$bold("Estimated thresholds:"))
-        cat("\n\n")
-        print(object$fit$thresholds, digits = 3)
-        cat("\n")
-    }
+    # Start the factory.
+    estimator.factory <- Factory$new(blueprint, ...)
+
+    return(estimator.factory)
 }
 
 
 
-plot.npfit <- function(object, ...) {
-    # Color the edges.
-    colors <- matrix(NA, ncol(object$fit$weights), nrow(object$fit$weights))
-    colors[object$fit$weights > 0] <- POSITIVE.EDGE.COLOR
-    colors[object$fit$weights < 0] <- NEGATIVE.EDGE.COLOR
-        
-    # Plot the weights matrix (i.e., estimated model). 
-    qgraph::qgraph(object$fit$weights, layout = "spring", edge.color = colors, title = paste("Estimated model edge weights (", object$type, ")", sep = ""))    
-}
+# End of file.
