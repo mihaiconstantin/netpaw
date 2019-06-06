@@ -384,6 +384,10 @@ logger.decorator <- function(func) {
 
 
 
+# Combine multiple lines.
+combine.lines <- function(...) {
+  paste(chr(...), collapse = "\n")
+}
 
 
 
