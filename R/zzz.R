@@ -51,7 +51,7 @@
 
 # How to read the files in this package?
 #    1. start with the diagram in the `assets/plan/` folder
-#    2. all files that begin with `_` in the `R/` folder are files that contain regular `R` functions
+#    2. all files that begin with `0_` in the `R/` folder are files that contain regular `R` functions
 #    3. all other files (i.e., except this one) are `R6` classes, according to the UML class diagram within `assets/plan/` 
 
 
