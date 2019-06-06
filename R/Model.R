@@ -34,7 +34,7 @@ Model <- R6::R6Class("Model",
             if(missing(weights) && missing(details)) {
                 # Set fields from list.
                 if(length(list) > 0) self$weights <- list[[1]]
-                if(length(list) > 1) self$details <- list[[2]]
+                if(length(list) > 1) self$details <- list[2: length(list)]
             } else {
                 # Set the fields from values.
                 self$weights <- weights
