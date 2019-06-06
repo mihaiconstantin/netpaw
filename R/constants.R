@@ -43,7 +43,7 @@
 ..ERRORS.. <- list(
     # Occurrences:
     #   - when a parent class with generator is instantiated
-    non.instantiable.class = "Class not meant to be instantiable. Use it as an abstract class.",
+    non.instantiable.class = "Class not meant to be instantiated. Use it as an abstract class.",
 
     # Occurrences:
     #   - when a type is requested by string (i.e., graph or model alias) and no implementation exists.
@@ -55,7 +55,11 @@
 
     # Occurrences:
     #   - when running into things not yet implemented (e.g., time series models)
-    not.implemented = "Not yet implemented. Most likely it is under development."
+    not.implemented = "Not yet implemented. Most likely it is under development.",
+
+    # Occurrences:
+    #   - when running into things that must have an override (e.g., `generator` methods)
+    not.overwritten = "Pure virtual function is not overwritten."
 
     # Occurrences:
     #   - n.a.
