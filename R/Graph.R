@@ -28,7 +28,7 @@ Graph <- R6::R6Class("Graph",
 
     private = list(
         ..options = NULL,
-        ..graph = NULL,
+        ..adjacency = NULL,
 
 
         # Hooks.
@@ -52,7 +52,7 @@ Graph <- R6::R6Class("Graph",
             private$..before()
 
             # Generate the graph.
-            private$..graph <- private$..generator(...)
+            private$..adjacency <- private$..generator(...)
 
             # Run after the generator.
             private$..after()
@@ -84,14 +84,14 @@ Graph <- R6::R6Class("Graph",
         },
 
 
-        graph = function() {
-            return(private$..graph)
+        adjacency = function() {
+            return(private$..adjacency)
         },
 
 
-        nodes = function() {
+        number.nodes = function() {
             # Determine the dimensions.
-            dimensions <- dim(private$..graph)
+            dimensions <- dim(private$..adjacency)
             
             # Check the dimensions.
             if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
@@ -106,7 +106,7 @@ Graph <- R6::R6Class("Graph",
             potential = (self$nodes * (self$nodes - 1)) / 2
             
             # Actual connections.
-            actual = sum(private$..graph[upper.tri(private$..graph)] != 0)
+            actual = sum(private$..adjacency[upper.tri(private$..adjacency)] != 0)
             
             # Density.
             density = actual / potential
