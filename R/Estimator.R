@@ -1,22 +1,22 @@
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              _                                           #
-#                             | |                                          #
-#                 _ __    ___ | |_  _ __    __ _ __      __                #
-#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
-#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
-#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
-#                                  | |                                     #
-#                                  |_|                                     #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                                          #
-# File contributors:                                                       #
-#   - M.A. Constantin                                                      #
-#                                                                          #
-# File description:                                                        #
-#   - contains an abstract R6 class that defines an estimator and its      #
-#     generation and a wrapper that starts a factory                       #
-#                                                                          #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A. Constantin                                                     #
+#                                                                         #
+# File description:                                                       #
+#   - contains an abstract R6 class that defines an estimator and its     #
+#     generation and a wrapper that starts a factory                      #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
@@ -120,7 +120,7 @@ Estimator <- R6::R6Class("Estimator",
 
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Storage for keeping track of supported estimators -----------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -128,7 +128,7 @@ Estimator$..ALIASES.. <- list()
 
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Exported wrapper for estimating models ----------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 

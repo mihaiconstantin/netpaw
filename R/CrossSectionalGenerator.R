@@ -1,26 +1,26 @@
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              _                                           #
-#                             | |                                          #
-#                 _ __    ___ | |_  _ __    __ _ __      __                #
-#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
-#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
-#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
-#                                  | |                                     #
-#                                  |_|                                     #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                                          #
-# File contributors:                                                       #
-#   - M.A. Constantin                                                      #
-#                                                                          #
-# File description:                                                        #
-#   - contains an abstract R6 class that extends the generic Generator     #
-#     defines an abstract cross-sectional generator                        #
-#                                                                          #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A. Constantin                                                     #
+#                                                                         #
+# File description:                                                       #
+#   - contains an abstract R6 class that extends the generic Generator    #
+#     defines an abstract cross-sectional generator                       #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Specialized cross-sectional generator class -----------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 

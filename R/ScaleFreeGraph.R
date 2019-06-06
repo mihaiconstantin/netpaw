@@ -1,30 +1,30 @@
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                              _                                           #
-#                             | |                                          #
-#                 _ __    ___ | |_  _ __    __ _ __      __                #
-#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /                #
-#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                 #
-#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                  #
-#                                  | |                                     #
-#                                  |_|                                     #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#                                                                          #
-# File contributors:                                                       #
-#   - M.A Constantin                                                       #
-#                                                                          #
-# File description:                                                        #
-#   - generated from template on 2019-06-04 16:54:33 by M.A Constantin     #
-#   - you may add your description here                                    #
-#                                                                          #
-# Seminal paper:                                                           #
-#   - https://dx.doi.org/10.1126/science.1173299                           #
-#                                                                          #
-# # # # #  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A Constantin                                                      #
+#                                                                         #
+# File description:                                                       #
+#   - generated from template on 2019-06-04 16:54:33 by M.A Constantin    #
+#   - you may add your description here                                   #
+#                                                                         #
+# Seminal paper:                                                          #
+#   - https://dx.doi.org/10.1126/science.1173299                          #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Generating ScaleFree model parameters ------------------------------------
+# Generating ScaleFree model parameters -----------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 ScaleFreeGraph <- R6::R6Class("ScaleFreeGraph",
@@ -44,7 +44,7 @@ ScaleFreeGraph <- R6::R6Class("ScaleFreeGraph",
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Alias for ScaleFree graph ------------------------------------------------
+# Alias for ScaleFree graph -----------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # "ScaleFree" graph is known as "scalefree".

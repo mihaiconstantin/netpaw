@@ -1,3 +1,24 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A. Constantin                                                     #
+#                                                                         #
+# File description:                                                       #
+#   - contains package documentation and imports                          #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
 #' \code{netpaw}: A package for cross-sectional and time series network simulations.
 #'
 #' The \code{netpaw} package provides three categories of functions...
@@ -24,9 +45,9 @@
 
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# Notes for my future self.
-# # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Notes for my future self ------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # How to read the files in this package?
 #    1. start with the diagram in the `assets/plan/` folder
@@ -35,8 +56,15 @@
 
 
 
-# To run before the package is loaded.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# On package attach or load -----------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 .onAttach <- function(libname, pkgname) {
     # Print the logo.
     cat(LOGO)
 }
+
+
+
+# End of file.

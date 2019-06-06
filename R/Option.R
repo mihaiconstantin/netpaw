@@ -1,3 +1,28 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A. Constantin                                                     #
+#                                                                         #
+# File description:                                                       #
+#   - contains a class that defines an option                             #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Option class ------------------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 Option <- R6::R6Class("Option",
 
     public = list(
@@ -8,10 +33,14 @@ Option <- R6::R6Class("Option",
         initialize = function(values = NULL, meta = NULL) {
             # Check types.
             if(!is.null(meta)) assert("Meta" %in% class(meta), ..ERRORS..$incorrect.object.type)
-            
+
             # Set fields.
             self$values <- values
             self$meta <- meta
         }
     )
 )
+
+
+
+# End of file.
