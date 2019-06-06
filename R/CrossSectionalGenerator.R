@@ -54,7 +54,7 @@ CrossSectionalGenerator <- R6::R6Class("CrossSectionalGenerator",
             private$..graph <- graph
 
             # Call the parent constructor.
-            super$initialize()
+            super$initialize(...)
         }
     ),
 
