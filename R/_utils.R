@@ -244,6 +244,13 @@ capitalize <- function(word) {
 
 
 
+# Combine multiple lines.
+combine.lines <- function(...) {
+    paste(chr(...), collapse = "\n")
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Generic functions (i.e., may be exported) -------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -310,6 +317,7 @@ get.cov <- function(nvars, svec.min = 0, svec.max = 1, pmat = NA, svec = NA) {
     covmat <- crossprod(pmat, pmat * svec)
 
     return(covmat)
+}
 
 
 
@@ -380,13 +388,6 @@ logger.decorator <- function(func) {
 
         return(result)
     }
-}
-
-
-
-# Combine multiple lines.
-combine.lines <- function(...) {
-  paste(chr(...), collapse = "\n")
 }
 
 
