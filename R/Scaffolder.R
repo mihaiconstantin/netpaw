@@ -171,4 +171,16 @@ Scaffolder <- R6::R6Class("Scaffolder",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for adding files ---------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+make <- function(...) {
+    # Make the requested file.
+    return(Scaffolder$new(...))
+}
+
+
+
 # End of file.
