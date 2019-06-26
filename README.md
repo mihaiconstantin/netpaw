@@ -22,9 +22,6 @@
 
 ---
 
-## ⚠️ Notice:
-The version on this branch is currently under heavy development and many things will change.
-
 ## Authors
 
 - [Mihai A. Constantin](https://constantinmihai.com) | Tilburg University
@@ -37,8 +34,8 @@ An `R` tool for performing power simulations for cross-sectional and times serie
 ## Important links
 
 - this package is used in the following manuscripts:
-    - *Power for Cross-Sectional Networks* available on [GitHub](https://github.com/mihaiconstantin/paper-power-cross-sectional-networks) and [OSF](https://osf.io/nz7tc)
-    - *Power for Time Series Networks* available on [GitHub](https://github.com/mihaiconstantin) and [OSF](https://osf.io/eg5h8) 
+    - **Power for Cross-Sectional Networks** available on [GitHub](https://github.com/mihaiconstantin/paper-power-cross-sectional-networks) and [OSF](https://osf.io/nz7tc)
+    - **Power for Time Series Networks** available on [GitHub](https://github.com/mihaiconstantin) and [OSF](https://osf.io/eg5h8) 
 
 ## Example
 
@@ -155,7 +152,7 @@ replicated cells = replicate_cells(design[c(1, 97, 165), ], 2)
 
 ### Prerequisites
 
-- see [section 1.3](https://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-FAQ.pdf) from the `Rcpp` vignette
+- n.a.
 
 ### Installation steps
 
@@ -166,8 +163,6 @@ replicated cells = replicate_cells(design[c(1, 97, 165), ], 2)
 - feel free to email or send a PR request
 
 ## Road map:
-
-
 
 1. Features:
     - ✔️ generate graphs
@@ -187,3 +182,7 @@ replicated cells = replicate_cells(design[c(1, 97, 165), ], 2)
 ## License
 
 The code in this repository is licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## ⚠️ Notice:
+
+The version on this branch is currently under heavy development and many things will change.
