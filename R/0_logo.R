@@ -63,7 +63,7 @@
 
 
 # Load the ASCII logo.
-# logo <- readLines("assets/logo")
+# logo <- readLines("assets/logo/logo")
 # logo <- dput(logo)
 
 # # Add green color for "Sample size" and "Recommendations".
