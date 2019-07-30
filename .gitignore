@@ -3,3 +3,4 @@
 .RData
 R/__temp_*
 assets/music/*
+.vscode
