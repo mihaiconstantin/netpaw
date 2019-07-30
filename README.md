@@ -2,7 +2,7 @@
 <h1 align="center">netpaw</h1>
 
 <p align="center">
-    <img style = "width:auto; height: 100%;" src="./assets/logo.jpg" alt="Package logo"/>
+    <img style = "width:auto; height: 100%;" src="./assets/logo/logo.jpg" alt="Package logo"/>
 </p>
 
 <p align="center">
