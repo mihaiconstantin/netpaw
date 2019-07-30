@@ -70,6 +70,7 @@
             # Implementation here.
         },
 
+
         ..bayesian = function(a, b) {
             # Implementation here or throw the following error if you wish to leave unimplemented:
             # stop(..ERRORS..$not.implemented)
@@ -132,8 +133,14 @@ Estimator$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Estimator,
     example.args = list(
-        a = 1, 
-        b = 2
+        frequentist = list(
+            a = 1, 
+            b = 2
+        ),
+        bayesian = list(
+            a = 1, 
+            b = 2
+        )
     )
 )
 
