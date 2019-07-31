@@ -65,6 +65,11 @@ CrossSectionalGenerator <- R6::R6Class("CrossSectionalGenerator",
             number.parameters <- (private$..graph$number.nodes * (private$..graph$number.nodes - 1)) / 2
 
             return(number.parameters)
+        },
+
+
+        graph = function() {
+            return(private$..graph)
         }
     )
 )
