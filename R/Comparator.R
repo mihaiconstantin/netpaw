@@ -38,7 +38,14 @@ Comparator <- R6::R6Class("Comparator",
 
 
         # Boilerplate.
-        ..boot = function() { invisible() },
+        ..boot = function(true, estimated) {
+            # Type check.
+            assert(("Model" %in% class(true)) && ("Model" %in% class(estimated)), ..ERRORS..$incorrect.object.type)
+
+            # Assign the models.
+            private$..true <- true
+            private$..estimated <- estimated
+        },
 
 
         # Model comparison.
@@ -63,12 +70,12 @@ Comparator <- R6::R6Class("Comparator",
 
     public = list(
         # Constructor.
-        initialize = function() {
+        initialize = function(true, estimated, ...) {
             # Boot.
-            private$..boot()
+            private$..boot(true, estimated)
 
             # Compare.
-            private$..compare()
+            private$..compare(...)
         }
     ),
 
@@ -110,14 +117,14 @@ compare.models <- function(comparator.type, ...) {
     if(!comparator.type %in% names(Comparator$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
     }
-    
+
     # Match the pretty names to the blueprints.
     blueprint <- Comparator$..ALIASES..[[comparator.type]]$class
 
     # Start the factory.
     comparator.factory <- Factory$new(blueprint, ...)
 
-    return(model.factory)
+    return(comparator.factory)
 }
 
 
