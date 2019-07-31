@@ -19,6 +19,17 @@
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Notes for my future self ------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# How to read the files in this package?
+#    1. start with the diagram in the `assets/plan/` folder
+#    2. all lowercase files in the `R/` folder are files that contain regular `R` functions
+#    3. all other files (i.e., except this one) are `R6` classes, according to the UML class diagram within `assets/plan/` 
+
+
+
 #' \code{netpaw}: A package for cross-sectional and time series network simulations.
 #'
 #' The \code{netpaw} package provides three categories of functions...
@@ -43,17 +54,7 @@
 #' @name netpaw
 "_PACKAGE"
 
-
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Notes for my future self ------------------------------------------------
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# How to read the files in this package?
-#    1. start with the diagram in the `assets/plan/` folder
-#    2. all files that begin with `0_` in the `R/` folder are files that contain regular `R` functions
-#    3. all other files (i.e., except this one) are `R6` classes, according to the UML class diagram within `assets/plan/` 
-
+# @include logo.R constants.R utils.R externals.R ARandomGraph.R
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
