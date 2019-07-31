@@ -21,6 +21,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Graph.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -32,8 +35,8 @@
 
 
     private = list(
-        ..generator = function(a, b) {
-            # Implementation here.
+        ..generator = function(argument.1, argument.2) {
+            # Add your implementation here.
         }
     )
 )
@@ -49,9 +52,11 @@
 Graph$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Graph,
+    
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        a = 1, 
-        b = 2
+        argument.1 = 1, 
+        argument.2 = 2
     )
 )
 

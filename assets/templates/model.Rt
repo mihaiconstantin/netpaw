@@ -21,6 +21,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Generator.R Sampler.R Estimator.R Comparator.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -32,8 +35,8 @@
 
 
     private = list(
-        ..generator = function(a, b) {
-            # Implementation here.
+        ..generator = function(argument.1, argument.2) {
+            # Add your implementation here.
         }
     )
 )
@@ -49,8 +52,8 @@
 
 
     private = list(
-        ..sampler = function(a, b) {
-            # Implementation here.
+        ..sampler = function(argument.1, argument.2) {
+            # Add your implementation here.
         }
     )
 )
@@ -66,14 +69,14 @@
 
 
     private = list(
-        ..frequentist = function(a, b) {
-            # Implementation here.
+        ..frequentist = function(argument.1, argument.2) {
+            # Add your implementation here.
         },
 
 
-        ..bayesian = function(a, b) {
+        ..bayesian = function(argument.1, argument.2) {
             # Implementation here or throw the following error if you wish to leave unimplemented:
-            # stop(..ERRORS..$not.implemented)
+            stop(..ERRORS..$not.implemented)
         }
     )
 )
@@ -89,8 +92,8 @@
 
 
     private = list(
-        ..comparator = function(a, b) {
-            # Implementation here.
+        ..comparator = function(argument.1, argument.2) {
+            # Add your implementation here.
         }
     )
 )
@@ -106,9 +109,11 @@
 Generator$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Generator,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        a = 1, 
-        b = 2
+        argument.1 = 1, 
+        argument.2 = 2
     )
 )
 
@@ -119,9 +124,11 @@ Generator$..ALIASES..${{alias}} <- list(
 Sampler$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Sampler,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        a = 1, 
-        b = 2
+        argument.1 = 1, 
+        argument.2 = 2
     )
 )
 
@@ -132,14 +139,16 @@ Sampler$..ALIASES..${{alias}} <- list(
 Estimator$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Estimator,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
         frequentist = list(
-            a = 1, 
-            b = 2
+            argument.1 = 1, 
+            argument.2 = 2
         ),
         bayesian = list(
-            a = 1, 
-            b = 2
+            argument.1 = 1, 
+            argument.2 = 2
         )
     )
 )
@@ -151,9 +160,11 @@ Estimator$..ALIASES..${{alias}} <- list(
 Comparator$..ALIASES..${{alias}} <- list(
     name = "{{alias}}",
     class = {{name}}Comparator,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        a = 1, 
-        b = 2
+        argument.1 = 1, 
+        argument.2 = 2
     )
 )
 
