@@ -18,6 +18,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Meta.R Option.R Model.R Data.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -223,7 +226,7 @@ generate.data <- function(sampler.type, ...) {
     if(!sampler.type %in% names(Sampler$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
     }
-    
+
     # Match the pretty names to the blueprints.
     blueprint <- Sampler$..ALIASES..[[sampler.type]]$class
 
