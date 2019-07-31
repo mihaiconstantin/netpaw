@@ -186,7 +186,7 @@ Sampler <- R6::R6Class("Sampler",
 
 
         resampling.succeeded = function() {
-            return(private$..resampling.succeeded)
+            return(ifelse(is.null(private$..resampling.succeeded), TRUE, private$..resampling.succeeded))
         },
 
 
