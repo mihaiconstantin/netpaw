@@ -24,6 +24,11 @@
 # Parent comparator class -------------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Meta.R Option.R Model.R Factory.R
+
+
+
 Comparator <- R6::R6Class("Comparator",
 
     private = list(
@@ -112,7 +117,7 @@ Comparator$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-compare.models <- function(comparator.type, ...) {
+compare <- function(comparator.type, ...) {
     # Make sure the model type requests is known.
     if(!comparator.type %in% names(Comparator$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
