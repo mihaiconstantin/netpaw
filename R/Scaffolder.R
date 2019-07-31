@@ -176,7 +176,7 @@ Scaffolder <- R6::R6Class("Scaffolder",
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-make <- function(...) {
+scaffold <- function(...) {
     # Make the requested file.
     return(Scaffolder$new(...))
 }
