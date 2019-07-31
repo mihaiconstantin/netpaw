@@ -92,10 +92,10 @@ Graph <- R6::R6Class("Graph",
         number.nodes = function() {
             # Determine the dimensions.
             dimensions <- dim(private$..adjacency)
-            
+
             # Check the dimensions.
             if(dimensions[1] != dimensions[2]) stop('Wrong type of input: the graph dimensions do not match.')
-            
+
             # Return the number of nodes.
             return(dimensions[1])
         },
@@ -103,14 +103,14 @@ Graph <- R6::R6Class("Graph",
 
         density = function() {
             # Potential connections.
-            potential = (self$nodes * (self$nodes - 1)) / 2
-            
+            potential = (self$number.nodes * (self$number.nodes - 1)) / 2
+
             # Actual connections.
             actual = sum(private$..adjacency[upper.tri(private$..adjacency)] != 0)
-            
+
             # Density.
             density = actual / potential
-            
+
             return(density)
         }
     )
@@ -136,7 +136,7 @@ generate.graph <- function(graph.type, ...) {
     if(!graph.type %in% names(Graph$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
     }
-    
+
     # Match the pretty names to the blueprints.
     blueprint <- Graph$..ALIASES..[[graph.type]]$class
 
