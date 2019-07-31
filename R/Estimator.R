@@ -50,7 +50,11 @@ Estimator <- R6::R6Class("Estimator",
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
             # Set the values field on the options at runtime.
-            patch.function.within.environment("..generator", private, "private$..options$values <- combine.arguments(private$..generator, as.list(match.call())[-1])")
+            if(private$..thinking == "frequentist") {
+                patch.function.within.environment("..frequentist", private, "private$..options$values <- combine.arguments(private$..frequentist, as.list(match.call())[-1])")
+            } else {
+                patch.function.within.environment("..bayesian", private, "private$..options$values <- combine.arguments(private$..bayesian, as.list(match.call())[-1])")
+            }
         },
 
 
