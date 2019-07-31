@@ -21,6 +21,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Graph.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -52,6 +55,8 @@ RandomGraph <- R6::R6Class("RandomGraph",
 Graph$..ALIASES..$random <- list(
     name = "random",
     class = RandomGraph,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
         nodes = 10, 
         p = .5, 

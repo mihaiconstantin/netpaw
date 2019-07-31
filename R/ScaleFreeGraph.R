@@ -21,6 +21,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Graph.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -52,6 +55,8 @@ ScaleFreeGraph <- R6::R6Class("ScaleFreeGraph",
 Graph$..ALIASES..$scalefree <- list(
     name = "scalefree",
     class = ScaleFreeGraph,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
         nodes = 10,
         attachment = 2,

@@ -22,6 +22,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Graph.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -53,6 +56,8 @@ SmallWorldGraph <- R6::R6Class("SmallWorldGraph",
 Graph$..ALIASES..$smallworld <- list(
     name = "smallworld",
     class = SmallWorldGraph,
+
+    # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
         nodes = 10, 
         neighborhood = 2, 
