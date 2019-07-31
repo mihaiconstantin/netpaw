@@ -19,7 +19,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Includes.
-#' @include Meta.R Option.R Data.R Model.R
+#' @include Meta.R Option.R Data.R Model.R Factory.R
 
 
 
