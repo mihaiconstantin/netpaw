@@ -39,6 +39,12 @@ Factory <- R6::R6Class("Factory",
             for(i in 1:amount) {
                 private$..warehouse[[i]] <- object$new(...)
             }
+        },
+
+
+        # Randomly select an arbitrary amount of objects from the warehouse.
+        sample = function(amount, with.replacement = FALSE) {
+            return(sample(private$..warehouse, amount, replace = with.replacement))
         }
     ),
 
