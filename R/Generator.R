@@ -18,7 +18,8 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-#' @inlcude Option.R Meta.R Model.R Factory.R
+# Includes.
+#' @include Meta.R Option.R Model.R Factory.R
 
 
 

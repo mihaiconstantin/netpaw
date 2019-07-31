@@ -18,6 +18,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include Meta.R Option.R Data.R Model.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -66,7 +69,7 @@ Estimator <- R6::R6Class("Estimator",
             # Pick the right estimation type and run the estimator.
             if(private$..thinking == "frequentist") {
                 private$..model <- Model$new(list = private$..frequentist(...))
-            } else { 
+            } else {
                 private$..model <- Model$new(list = private$..bayesian(...))
             }
 
@@ -142,7 +145,7 @@ estimate.model <- function(estimator.type, ...) {
     if(!estimator.type %in% names(Estimator$..ALIASES..)) {
         stop(..ERRORS..$unsupported.type)
     }
-    
+
     # Match the pretty names to the blueprints.
     blueprint <- Estimator$..ALIASES..[[estimator.type]]$class
 
