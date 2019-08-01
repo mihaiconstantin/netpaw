@@ -19,7 +19,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Includes.
-#' @include Meta.R Option.R Data.R Model.R Factory.R
+#' @include Meta.R Option.R Model.R Factory.R
 
 
 
@@ -43,8 +43,11 @@ Estimator <- R6::R6Class("Estimator",
 
         # Boilerplate.
         ..boot = function(data, thinking) {
-            # Initialize and store the data.
-            private$..data <- Data$new(dataset = data)
+            # Type check and assertions.
+            assert("Data" %in% class(data), ..ERRORS..$incorrect.object.type)
+
+            # Set the injected data.
+            private$..data <- data
 
             # Set the thinking method.
             private$..thinking = thinking
