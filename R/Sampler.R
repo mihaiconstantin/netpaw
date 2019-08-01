@@ -43,6 +43,10 @@ Sampler <- R6::R6Class("Sampler",
         ..resampling.succeeded = NULL,
 
 
+        # Miscellaneous.
+        ..verbose = NULL,
+        ..progress.bar = NULL,
+
         # Support methods.
 
 
@@ -60,14 +64,23 @@ Sampler <- R6::R6Class("Sampler",
 
         # Data resampling.
         ..resample = function(...) {
+            # Announce that resampling must occur.
+            if(private$..verbose) cat("Invariant nodes detected. Attempting resampling", private$..max.resampling.attempts, "times.\n") 
+
             # Start the resampling procedure.
             while(self$needs.resampling() && (private$..resampling.attempts < private$..max.resampling.attempts)) {
+                # Tick the progress bar.
+                if(private$..verbose) private$..progress.bar$tick()
+
                 # Increment the resampling attempts.
                 private$..resampling.attempts <- private$..resampling.attempts + 1
 
                 # Call the sampler again.
                 private$..data$dataset <- private$..sampler(...)
             }
+
+            # Handle the progress bar completion to avoid printing issues (e.g., if finished earlier than expected ticks, mark it as terminated manually).
+            if(!private$..progress.bar$finished) private$..progress.bar$terminate() 
 
             # Evaluate the resampling outcome.
             if(self$needs.resampling()) {
@@ -80,6 +93,9 @@ Sampler <- R6::R6Class("Sampler",
                 # Indicate success.
                 private$..resampling.succeeded <- TRUE
             }
+
+            # Inform about the resampling conclusion.
+            if(private$..verbose) cat(ifelse(private$..resampling.succeeded, "Resampling succeeded.", "Resampling failed."), "\n")
         },
 
 
@@ -89,7 +105,7 @@ Sampler <- R6::R6Class("Sampler",
 
 
         # Boilerplate.
-        ..boot = function(model, max.resampling.attempts, invariance.tolerance) {
+        ..boot = function(model, max.resampling.attempts, invariance.tolerance, verbose) {
             # Type check and assertions.
             assert("Model" %in% class(model), ..ERRORS..$incorrect.object.type)
             assert(max.resampling.attempts > 0, "Argument `max.resampling.attempts` must be grater than 0.")
@@ -100,6 +116,10 @@ Sampler <- R6::R6Class("Sampler",
             # Set the primitive fields.
             private$..max.resampling.attempts <- max.resampling.attempts
             private$..invariance.tolerance <- invariance.tolerance
+
+            # Store the verbose setting and initiate the progress bar.
+            private$..verbose = verbose
+            private$..progress.bar = progress::progress_bar$new(total = max.resampling.attempts, format = "[:bar] attempt :current of :total (:elapsed)", clear = FALSE)
 
             # Prepare the Option object and set the meta field.
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
@@ -134,9 +154,9 @@ Sampler <- R6::R6Class("Sampler",
 
     public = list(
         # Constructor.
-        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1) {
+        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1, verbose = FALSE) {
             # Boot.
-            private$..boot(model, max.resampling.attempts, invariance.tolerance)
+            private$..boot(model, max.resampling.attempts, invariance.tolerance, verbose)
 
             # Generate.
             private$..sample(...)
