@@ -91,8 +91,11 @@ IsingEstimator <- R6::R6Class("IsingEstimator",
 
 
     private = list(
-        ..frequentist = function(argument.1, argument.2) {
-            # Add your implementation here.
+        ..frequentist = function(and = TRUE, gamma = 0.25, lower.bound.lambda = NA) {
+            # Estimate the model.
+            model <- IsingFitEssential(private$..data$dataset, AND = and, gamma = gamma, lowerbound.lambda = lower.bound.lambda)
+
+            return(model)
         },
 
 
