@@ -79,7 +79,7 @@ GgmSampler <- R6::R6Class("GgmSampler",
     private = list(
         ..sampler = function(n, levels = 5) {
             # Sample data.
-            data <- mvtnorm::rmvnorm(n, sigma = self$model$to.correlation())
+            data <- mvtnorm::rmvnorm(n, sigma = self$model$to.correlation)
 
             # Split the data into item steps.
             for (i in 1:ncol(data)) {
