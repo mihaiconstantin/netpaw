@@ -30,6 +30,7 @@ Model <- R6::R6Class("Model",
         details = NULL,
 
 
+        # Constructor.
         initialize = function(weights, details, list = NULL) {
             if(missing(weights) && missing(details)) {
                 # Set fields from list.
@@ -40,6 +41,26 @@ Model <- R6::R6Class("Model",
                 self$weights <- weights
                 self$details <- details
             }
+        }
+    ),
+
+
+    active = list(
+        # Check if the model weights matrix is positive definite.
+        is.positive.definite = function() {
+            return(!any(eigen(diag(ncol(self$weights)) - self$weights)$values < 0))
+        },
+
+
+        # Experimental! Convert from partial correlations to correlations.
+        to.correlation = function() {
+            # Make sure we have a positive definite matrix. 
+            assert(self$is.positive.definite, "Weights matrix is not positive definite.")
+
+            # Get the covariance (correlation perhaps) matrix.
+            corr.matrix <- cov2cor(solve(diag(ncol(self$weights)) - self$weights))
+
+            return(corr.matrix)
         }
     )
 )

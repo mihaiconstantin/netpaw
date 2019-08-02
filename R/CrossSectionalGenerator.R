@@ -60,24 +60,6 @@ CrossSectionalGenerator <- R6::R6Class("CrossSectionalGenerator",
 
 
     active = list(
-        # Check if the model weights matrix is positive definite.
-        is.positive.definite = function() {
-            return(!any(eigen(diag(ncol(self$model$weights)) - self$model$weights)$values < 0))
-        },
-
-
-        # Experimental! Convert from partial correlations to correlations.
-        to.correlation = function() {
-            # Make sure we have a positive definite matrix. 
-            assert.condition(self$is.positive.definite, "Weights matrix is not positive definite.")
-
-            # Get the covariance (correlation perhaps) matrix.
-            corr.matrix <- cov2cor(solve(diag(ncol(self$model$weights)) - self$model$weights))
-
-            return(corr.matrix)
-        },
-
-
         # Compute the number of parameters based on the injected graph object.
         number.parameters = function() {
             number.parameters <- (private$..graph$number.nodes * (private$..graph$number.nodes - 1)) / 2
