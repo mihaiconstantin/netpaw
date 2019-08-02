@@ -103,7 +103,7 @@ GgmEstimator <- R6::R6Class("GgmEstimator",
 
     private = list(
         ..frequentist = function() {
-            model = bootnet::estimateNetwork(private$..data$dataset, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE)
+            model = suppressMessages(bootnet::estimateNetwork(private$..data$dataset, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE))
 
             # Remove the names, not needed.
             rownames(model$graph) <- colnames(model$graph) <- NULL
