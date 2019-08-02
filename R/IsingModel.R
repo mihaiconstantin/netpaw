@@ -136,10 +136,7 @@ Generator$..ALIASES..$ising <- list(
     class = IsingGenerator,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        argument.1 = 1, 
-        argument.2 = 2
-    )
+    example.args = list(positive.edge.ratio = 1, mean = 0, sd = 1)
 )
 
 
@@ -151,10 +148,7 @@ Sampler$..ALIASES..$ising <- list(
     class = IsingSampler,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        argument.1 = 1, 
-        argument.2 = 2
-    )
+    example.args = list(n = 100, nIter = 100, method = "MH")
 )
 
 
@@ -167,14 +161,8 @@ Estimator$..ALIASES..$ising <- list(
 
     # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        frequentist = list(
-            argument.1 = 1, 
-            argument.2 = 2
-        ),
-        bayesian = list(
-            argument.1 = 1, 
-            argument.2 = 2
-        )
+        frequentist = list(and = TRUE, gamma = 0.25, lower.bound.lambda = NA),
+        bayesian = list(argument.1 = 1, argument.2 = 2)
     )
 )
 
@@ -187,10 +175,7 @@ Comparator$..ALIASES..$ising <- list(
     class = IsingComparator,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        argument.1 = 1, 
-        argument.2 = 2
-    )
+    example.args = list(argument.1 = 1, argument.2 = 2)
 )
 
 
