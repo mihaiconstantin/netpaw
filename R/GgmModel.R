@@ -161,7 +161,7 @@ Sampler$..ALIASES..$ggm <- list(
     class = GgmSampler,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(n, levels = 5)
+    example.args = list(n = 100, levels = 5)
 )
 
 
@@ -173,8 +173,8 @@ Estimator$..ALIASES..$ggm <- list(
     class = GgmEstimator,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args =(
-        frequentist = list(argument.1 = 1, argument.2 = 2), 
+    example.args = list(
+        frequentist = list(), 
         bayesian = list(argument.1 = 1, argument.2 = 2)
     )
 )
