@@ -75,4 +75,18 @@ Config <- R6::R6Class("Config",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for creating config objects ----------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+config <- function(...) {
+    # Start the factory and get the first instance.
+    result <- Factory$new(Config, ...)$first
+
+    return(result)
+}
+
+
+
 # End of file.
