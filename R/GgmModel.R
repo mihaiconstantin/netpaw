@@ -134,8 +134,11 @@ GgmComparator <- R6::R6Class("GgmComparator",
 
 
     private = list(
-        ..comparator = function(argument.1, argument.2) {
-            # Add your implementation here.
+        ..comparator = function() {
+            # Instantiate a `Result` class that will handle the computations.
+            result = Result$new(private$..true, private$..estimated)
+
+            return(result$result)
         }
     )
 )
@@ -192,7 +195,7 @@ Comparator$..ALIASES..$ggm <- list(
     class = GgmComparator,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(argument.1 = 1, argument.2 = 2)
+    example.args = list()
 )
 
 
