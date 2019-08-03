@@ -108,19 +108,17 @@ Generator$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-generate.model <- function(model.type, ...) {
-    # Make sure the model type requests is known.
-    if(!model.type %in% names(Generator$..ALIASES..)) {
-        stop(..ERRORS..$unsupported.type)
-    }
-    
+generate.model <- function(type, ...) {
+    # Make sure the graph type requests is known.
+    assert(type %in% names(Generator$..ALIASES..), ..ERRORS..$unsupported.type)
+
     # Match the pretty names to the blueprints.
-    blueprint <- Generator$..ALIASES..[[model.type]]$class
+    blueprint <- Generator$..ALIASES..[[type]]$class
 
-    # Start the factory.
-    model.factory <- Factory$new(blueprint, ...)
+    # Start the factory and get the first instance.
+    result <- Factory$new(blueprint, ...)$first
 
-    return(model.factory)
+    return(result)
 }
 
 

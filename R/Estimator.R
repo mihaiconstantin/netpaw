@@ -143,19 +143,17 @@ Estimator$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-estimate.model <- function(estimator.type, ...) {
-    # Make sure the requested estimator type is known.
-    if(!estimator.type %in% names(Estimator$..ALIASES..)) {
-        stop(..ERRORS..$unsupported.type)
-    }
+estimate <- function(type, ...) {
+    # Make sure the graph type requests is known.
+    assert(type %in% names(Estimator$..ALIASES..), ..ERRORS..$unsupported.type)
 
     # Match the pretty names to the blueprints.
-    blueprint <- Estimator$..ALIASES..[[estimator.type]]$class
+    blueprint <- Estimator$..ALIASES..[[type]]$class
 
-    # Start the factory.
-    estimator.factory <- Factory$new(blueprint, ...)
+    # Start the factory and get the first instance.
+    result <- Factory$new(blueprint, ...)$first
 
-    return(estimator.factory)
+    return(result)
 }
 
 

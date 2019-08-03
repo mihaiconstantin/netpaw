@@ -134,19 +134,17 @@ Graph$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-generate.graph <- function(graph.type, ...) {
+generate.graph <- function(type, ...) {
     # Make sure the graph type requests is known.
-    if(!graph.type %in% names(Graph$..ALIASES..)) {
-        stop(..ERRORS..$unsupported.type)
-    }
+    assert(type %in% names(Graph$..ALIASES..), ..ERRORS..$unsupported.type)
 
     # Match the pretty names to the blueprints.
-    blueprint <- Graph$..ALIASES..[[graph.type]]$class
+    blueprint <- Graph$..ALIASES..[[type]]$class
 
-    # Start the factory.
-    graph.factory <- Factory$new(blueprint, ...)
+    # Start the factory and get the first instance.
+    result <- Factory$new(blueprint, ...)$first
 
-    return(graph.factory)
+    return(result)
 }
 
 

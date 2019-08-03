@@ -241,19 +241,17 @@ Sampler$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-generate.data <- function(sampler.type, ...) {
-    # Make sure the sampler type requested is known.
-    if(!sampler.type %in% names(Sampler$..ALIASES..)) {
-        stop(..ERRORS..$unsupported.type)
-    }
+generate.data <- function(type, ...) {
+    # Make sure the graph type requests is known.
+    assert(type %in% names(Sampler$..ALIASES..), ..ERRORS..$unsupported.type)
 
     # Match the pretty names to the blueprints.
-    blueprint <- Sampler$..ALIASES..[[sampler.type]]$class
+    blueprint <- Sampler$..ALIASES..[[type]]$class
 
-    # Start the factory.
-    sampler.factory <- Factory$new(blueprint, ...)
+    # Start the factory and get the first instance.
+    result <- Factory$new(blueprint, ...)$first
 
-    return(sampler.factory)
+    return(result)
 }
 
 

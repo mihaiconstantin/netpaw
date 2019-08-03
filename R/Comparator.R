@@ -127,19 +127,17 @@ Comparator$..ALIASES.. <- list()
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-compare <- function(comparator.type, ...) {
-    # Make sure the model type requests is known.
-    if(!comparator.type %in% names(Comparator$..ALIASES..)) {
-        stop(..ERRORS..$unsupported.type)
-    }
+compare <- function(type, ...) {
+    # Make sure the graph type requests is known.
+    assert(type %in% names(Comparator$..ALIASES..), ..ERRORS..$unsupported.type)
 
     # Match the pretty names to the blueprints.
-    blueprint <- Comparator$..ALIASES..[[comparator.type]]$class
+    blueprint <- Comparator$..ALIASES..[[type]]$class
 
-    # Start the factory.
-    comparator.factory <- Factory$new(blueprint, ...)
+    # Start the factory and get the first instance.
+    result <- Factory$new(blueprint, ...)$first
 
-    return(comparator.factory)
+    return(result)
 }
 
 
