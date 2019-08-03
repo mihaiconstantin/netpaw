@@ -41,14 +41,6 @@ Model <- R6::R6Class("Model",
                 self$weights <- weights
                 self$details <- details
             }
-        }
-    ),
-
-
-    active = list(
-        # Check if the model weights matrix is positive definite.
-        is.positive.definite = function() {
-            return(!any(eigen(diag(ncol(self$weights)) - self$weights)$values < 0))
         },
 
 
@@ -61,6 +53,14 @@ Model <- R6::R6Class("Model",
             corr.matrix <- cov2cor(solve(diag(ncol(self$weights)) - self$weights))
 
             return(corr.matrix)
+        }
+    ),
+
+
+    active = list(
+        # Check if the model weights matrix is positive definite.
+        is.positive.definite = function() {
+            return(!any(eigen(diag(ncol(self$weights)) - self$weights)$values < 0))
         }
     )
 )
