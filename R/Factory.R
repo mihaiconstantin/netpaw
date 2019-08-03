@@ -68,4 +68,21 @@ Factory <- R6::R6Class("Factory",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for generating R6 objects ------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+make <- function(type, ...) {
+    # Issue the order.
+    blueprint <- eval(as.symbol(type))
+
+    # Start the factory.
+    factory <- Factory$new(blueprint, ...)
+
+    return(factory)
+}
+
+
+
 # End of file.
