@@ -79,7 +79,7 @@ GgmSampler <- R6::R6Class("GgmSampler",
     private = list(
         ..sampler = function(n, levels = 5) {
             # Sample data.
-            data <- mvtnorm::rmvnorm(n, sigma = self$model$to.correlation)
+            data <- mvtnorm::rmvnorm(n, sigma = self$model$to.correlation())
 
             # Split the data into item steps.
             for (i in 1:ncol(data)) {
@@ -102,8 +102,12 @@ GgmEstimator <- R6::R6Class("GgmEstimator",
 
 
     private = list(
-        ..frequentist = function() {
-            model = suppressMessages(bootnet::estimateNetwork(private$..data$dataset, default = 'EBICglasso', verbose = FALSE, memorysaver = TRUE))
+        ..frequentist = function(tuning = 0.5, lambda.min.ratio = 0.01) {
+            # Fit the model.
+            model = suppressMessages(suppressWarnings(
+                    bootnet::estimateNetwork(private$..data$dataset, default = 'EBICglasso', tuning = tuning, lambda.min.ratio = lambda.min.ratio, verbose = FALSE, memorysaver = TRUE)
+                )
+            )
 
             # Remove the names, not needed.
             rownames(model$graph) <- colnames(model$graph) <- NULL
@@ -174,7 +178,7 @@ Estimator$..ALIASES..$ggm <- list(
 
     # Add a set of example arguments used to automatically test your implementation.
     example.args = list(
-        frequentist = list(), 
+        frequentist = list(tuning = 0.5, lambda.min.ratio = 0.01), 
         bayesian = list(argument.1 = 1, argument.2 = 2)
     )
 )
