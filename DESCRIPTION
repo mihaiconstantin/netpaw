@@ -37,6 +37,7 @@ Collate:
     'Graph.R'
     'IsingModel.R'
     'RandomGraph.R'
+    'Result.R'
     'Scaffolder.R'
     'ScaleFreeGraph.R'
     'SmallWorldGraph.R'
