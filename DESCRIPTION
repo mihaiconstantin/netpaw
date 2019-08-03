@@ -22,10 +22,12 @@ LazyData: true
 RoxygenNote: 6.1.1
 Collate: 
     'Factory.R'
+    'Outcome.R'
     'Model.R'
     'Option.R'
     'Meta.R'
     'Comparator.R'
+    'Config.R'
     'CrossSectionalGenerator.R'
     'Data.R'
     'Estimator.R'
