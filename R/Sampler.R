@@ -154,7 +154,7 @@ Sampler <- R6::R6Class("Sampler",
 
     public = list(
         # Constructor.
-        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1, verbose = FALSE) {
+        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1, verbose = TRUE) {
             # Boot.
             private$..boot(model, max.resampling.attempts, invariance.tolerance, verbose)
 
