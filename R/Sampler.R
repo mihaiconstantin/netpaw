@@ -125,7 +125,7 @@ Sampler <- R6::R6Class("Sampler",
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
             # Set the values field on the options at runtime.
-            patch.function.within.environment("..sampler", private, "private$..options$values <- combine.arguments(private$..sampler, as.list(match.call())[-1])")
+            patch.function.within.environment("..sampler", private, "private$..options$set.values(combine.arguments(private$..sampler, as.list(match.call())[-1]))")
         },
 
 

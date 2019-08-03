@@ -57,9 +57,9 @@ Estimator <- R6::R6Class("Estimator",
 
             # Set the values field on the options at runtime.
             if(private$..thinking == "frequentist") {
-                patch.function.within.environment("..frequentist", private, "private$..options$values <- combine.arguments(private$..frequentist, as.list(match.call())[-1])")
+                patch.function.within.environment("..frequentist", private, "private$..options$set.values(combine.arguments(private$..frequentist, as.list(match.call())[-1]))")
             } else {
-                patch.function.within.environment("..bayesian", private, "private$..options$values <- combine.arguments(private$..bayesian, as.list(match.call())[-1])")
+                patch.function.within.environment("..bayesian", private, "private$..options$set.values(combine.arguments(private$..bayesian, as.list(match.call())[-1]))")
             }
         },
 

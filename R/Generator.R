@@ -45,7 +45,7 @@ Generator <- R6::R6Class("Generator",
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
             # Set the values field on the options at runtime.
-            patch.function.within.environment("..generator", private, "private$..options$values <- combine.arguments(private$..generator, as.list(match.call())[-1])")
+            patch.function.within.environment("..generator", private, "private$..options$set.values(combine.arguments(private$..generator, as.list(match.call())[-1]))")
         },
 
 
