@@ -25,7 +25,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Includes.
-#' @include Meta.R Option.R Model.R Factory.R
+#' @include Meta.R Option.R Model.R Outcome.R Factory.R
 
 
 
@@ -35,6 +35,7 @@ Comparator <- R6::R6Class("Comparator",
         ..true = NULL,
         ..estimated = NULL,
         ..outcome = NULL,
+        ..config = NULL,
 
 
         # Hooks.
@@ -43,13 +44,17 @@ Comparator <- R6::R6Class("Comparator",
 
 
         # Boilerplate.
-        ..boot = function(true, estimated) {
+        ..boot = function(true, estimated, config) {
             # Type check.
-            assert(("Model" %in% class(true)) && ("Model" %in% class(estimated)), ..ERRORS..$incorrect.object.type)
+            types.match.expected = ("Model" %in% class(true)) && ("Model" %in% class(estimated)) && ("Config" %in% class(config))
+            assert(types.match.expected, ..ERRORS..$incorrect.object.type)
 
             # Assign the models.
             private$..true <- true
             private$..estimated <- estimated
+
+            # Set the configuration.
+            private$..config = config
         },
 
 
@@ -58,8 +63,8 @@ Comparator <- R6::R6Class("Comparator",
             # Run before the generator.
             private$..before()
 
-            # Generate the model.
-            private$..outcome <- private$..comparator(...)
+            # Compare the models.
+            private$..outcome <- Outcome$new(private$..comparator(...))
             
             # Run after the generator.
             private$..after()
@@ -75,9 +80,9 @@ Comparator <- R6::R6Class("Comparator",
 
     public = list(
         # Constructor.
-        initialize = function(true, estimated, ...) {
+        initialize = function(true, estimated, config, ...) {
             # Boot.
-            private$..boot(true, estimated)
+            private$..boot(true, estimated, config)
 
             # Compare.
             private$..compare(...)
@@ -98,6 +103,11 @@ Comparator <- R6::R6Class("Comparator",
 
         outcome = function() {
             return(private$..outcome)
+        },
+
+
+        config = function() {
+            return(private$..config)
         }
     )
 )
