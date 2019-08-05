@@ -49,7 +49,6 @@
 #' @import audio
 #' @import R6
 #' @import progress
-#' @import parallel
 #' @import foreach
 #' @import doParallel
 #'
