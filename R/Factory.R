@@ -21,24 +21,80 @@
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Factory of object -------------------------------------------------------
+# Factory of R6 objects ---------------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 Factory <- R6::R6Class("Factory",
 
     private = list(
-        ..warehouse = list()
+        ..blueprint = NULL,
+        ..amount = NULL,
+        ..parallel = NULL,
+        ..time = NULL,
+        ..warehouse = list(),
+
+
+        # Run in a single-threaded fashion.
+        ..single.thread.implementation = function(...) {
+            for(i in 1:private$..amount) {
+                private$..warehouse[[i]] <- private$..blueprint$new(...)
+            }
+        },
+
+
+        # Run in a multi-threaded fashion.
+        ..multi.thread.implementation = function(...) {
+            # Create the cluster.
+            cluster <- parallel::makeCluster(parallel::detectCores() -  1)
+
+            # Configure the cluster.
+            doParallel::registerDoParallel(cluster)
+
+            # browser()
+
+            # Perform parallelized computations.
+            # # #
+            private$..warehouse <- foreach::foreach(1:private$..amount, .export = "private", .combine = c) %dopar% {
+                private$..blueprint$new(...)
+            }
+            # # #
+
+            # Stop the cluster.
+            parallel::stopCluster(cluster)
+        },
+
+
+        # Select which implementation to use and run.
+        ..run = function(...) {
+            # Start a counter.
+            start <- Sys.time()
+
+            # Select the approach.
+            if(private$..parallel && (private$..amount > 1)) { 
+                private$..multi.thread.implementation(...)
+            } else {
+                private$..single.thread.implementation(...)
+            }
+
+            # Stop and store the time.
+            private$..time <- Sys.time() - start
+        }
     ),
 
 
     public = list(
-        initialize = function(object, ..., amount = 1) {
-            # Enforce a type R since R misses strong typed arguments.
-            stopifnot(class(object) == "R6ClassGenerator")
-            
-            for(i in 1:amount) {
-                private$..warehouse[[i]] <- object$new(...)
-            }
+        # Constructor.
+        initialize = function(blueprint, ..., amount = 1, parallel = FALSE) {
+            # Enforce a type check.
+            assert(class(blueprint) == "R6ClassGenerator", ..ERRORS..$incorrect.object.type)
+
+            # Set the fields.
+            private$..blueprint <- blueprint
+            private$..amount <- amount
+            private$..parallel <- parallel
+
+            # Run the factory.
+            private$..run(...)
         },
 
 
@@ -62,6 +118,16 @@ Factory <- R6::R6Class("Factory",
 
         first = function() {
             return(private$..warehouse[[1]])
+        },
+
+
+        time = function() {
+            return(private$..time)
+        },
+
+
+        parallel = function() {
+            return(private$..parallel)
         }
     )
 )
