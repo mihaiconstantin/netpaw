@@ -49,18 +49,14 @@ Factory <- R6::R6Class("Factory",
 
             # Configure the cluster.
             doParallel::registerDoParallel(cluster)
-
-            # browser()
+            
+            # Stop the cluster no matter what.
+            on.exit(parallel::stopCluster(cluster))
 
             # Perform parallelized computations.
-            # # #
-            private$..warehouse <- foreach::foreach(1:private$..amount, .export = "private", .combine = c) %dopar% {
+            private$..warehouse <- foreach::foreach(1:private$..amount, .export = "private") %dopar% {
                 private$..blueprint$new(...)
             }
-            # # #
-
-            # Stop the cluster.
-            parallel::stopCluster(cluster)
         },
 
 
