@@ -65,7 +65,7 @@
 
 .onAttach <- function(libname, pkgname) {
     # Print the logo.
-    cat(LOGO)
+    cat(LOGO, "\n")
 }
 
 
