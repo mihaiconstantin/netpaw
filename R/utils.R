@@ -68,7 +68,7 @@ assert <- function(truth, error.message) {
 
 
 
-# Flatten wierd nested lists.
+# Flatten weird nested lists.
 # Copyright Michael (https://stackoverflow.com/a/41882883/5252007).
 flatten.nested.list <- function(nested.list) {
     more.lists <- sapply(nested.list, function(x) is.list(x))
@@ -336,6 +336,19 @@ get.pcor <- function(nvars) {
     diag(pcormat) <- 0
 
     return(pcor.mat)
+}
+
+
+
+# How many lines of R code are in a directory?
+how.many.lines <- function(path = "./R") {
+    files <- list.files(path = "./R", recursive = TRUE, full.names = TRUE)
+
+    lines <- sapply(files, function(file) {
+        file.lines <- length(readLines(file))
+    })
+
+    return(sum(lines))
 }
 
 
