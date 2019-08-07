@@ -57,11 +57,7 @@ Graph$..ALIASES..$random <- list(
     class = RandomGraph,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        nodes = 10, 
-        p = .5, 
-        directed = FALSE
-    )
+    example.args = list(nodes = 10, p = .5, directed = FALSE)
 )
 
 

@@ -58,11 +58,7 @@ Graph$..ALIASES..$smallworld <- list(
     class = SmallWorldGraph,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        nodes = 10, 
-        neighborhood = 2, 
-        p.rewire = .5
-    )
+    example.args = list(nodes = 10, neighborhood = 2, p.rewire = .5)
 )
 
 
