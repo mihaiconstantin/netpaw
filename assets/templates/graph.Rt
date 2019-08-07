@@ -54,10 +54,7 @@ Graph$..ALIASES..${{alias}} <- list(
     class = {{name}}Graph,
     
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(
-        argument.1 = 1, 
-        argument.2 = 2
-    )
+    example.args = list(argument.1 = 1, argument.2 = 2)
 )
 
 
