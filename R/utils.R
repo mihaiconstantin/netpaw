@@ -14,6 +14,7 @@
 #                                                                         #
 # File description:                                                       #
 #   - contains utilities used throughout the package                      #
+#   - it's a pity R6 doesn't support static class methods                 #
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -22,67 +23,6 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Package specific functions ----------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# Conveniently patch function bodies.
-patch.function <- function(fun, patch, position = 1) {
-    # Deparse the body.
-    fun.body <- deparse(body(fun))
-
-    # Append the patch to function body where intended.
-    patched.fun.body <- paste0(
-        c(fun.body[1:position], patch, fun.body[(position + 1):length(fun.body)]),
-        collapse = "\n"
-    )
-
-    # Parse and treat as an expression.
-    expr <- as.expression(parse(text = patched.fun.body))
-
-    return(expr)
-}
-
-
-
-# Patch a function binding within an environment (i.e., by reference).
-patch.function.within.environment <- function(binding, environment, patch) {
-    # Unlock the binding in the environment.
-    unlockBinding(binding, environment)
-
-    # Alter the function.
-    body(environment[[binding]]) <- patch.function(environment[[binding]], patch)
-
-    # Lock the binding in the `self` environment.
-    lockBinding(binding, environment)
-
-    # Prevent return printing NULL.
-    invisible() 
-}
-
-
-
-# Assert something or fail with custom error message.
-assert <- function(truth, error.message) {
-    if(!truth) {
-        stop(error.message)
-    }
-}
-
-
-
-# Flatten weird nested lists.
-# Copyright Michael (https://stackoverflow.com/a/41882883/5252007).
-flatten.nested.list <- function(nested.list) {
-    more.lists <- sapply(nested.list, function(x) is.list(x))
-
-    output <- c(nested.list[!more.lists], unlist(nested.list[more.lists], recursive = FALSE))
-
-    if(sum(more.lists)) {
-        Recall(output)
-    } else {
-        return(output)
-    }
-}
-
-
 
 # Validate a list of arguments associated with a function against the `...` object.
 validate.arguments <- function(args, fun, target.list) {
@@ -235,25 +175,87 @@ is.invariant <- function(column, tolerance = 1) {
 
 
 
-# Capitalize a word.
-capitalize <- function(word) {
-    capitalized.word <- paste(toupper(substring(word, 1, 1)), substring(word, 2), sep = "")
-
-    return(capitalized.word)
-}
-
-
-
-# Combine multiple lines.
-combine.lines <- function(...) {
-    paste(chr(...), collapse = "\n")
-}
-
-
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Generic functions (i.e., may be exported) -------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Conveniently patch function bodies.
+patch.function <- function(fun, patch, position = 1) {
+    # Deparse the body.
+    fun.body <- deparse(body(fun))
+
+    # Append the patch to function body where intended.
+    patched.fun.body <- paste0(
+        c(fun.body[1:position], patch, fun.body[(position + 1):length(fun.body)]),
+        collapse = "\n"
+    )
+
+    # Parse and treat as an expression.
+    expr <- as.expression(parse(text = patched.fun.body))
+
+    return(expr)
+}
+
+
+
+# Patch a function binding within an environment (i.e., by reference).
+patch.function.within.environment <- function(binding, environment, patch) {
+    # Unlock the binding in the environment.
+    unlockBinding(binding, environment)
+
+    # Alter the function.
+    body(environment[[binding]]) <- patch.function(environment[[binding]], patch)
+
+    # Lock the binding in the `self` environment.
+    lockBinding(binding, environment)
+
+    # Prevent return printing NULL.
+    invisible() 
+}
+
+
+
+# Bypass the lock and set a locked binding (i.e., by reference).
+set.locked.binding <- function(binding, environment, value) {
+    # Unlock the binding in the environment.
+    unlockBinding(binding, environment)
+
+    # Alter the function.
+    environment[[binding]] <- value
+
+    # Lock the binding in the `self` environment.
+    lockBinding(binding, environment)
+
+    # Prevent return printing NULL.
+    invisible() 
+}
+
+
+
+# Assert something or fail with custom error message.
+assert <- function(truth, error.message) {
+    if(!truth) {
+        stop(error.message)
+    }
+}
+
+
+
+# Flatten weird nested lists.
+# Copyright Michael (https://stackoverflow.com/a/41882883/5252007).
+flatten.nested.list <- function(nested.list) {
+    more.lists <- sapply(nested.list, function(x) is.list(x))
+
+    output <- c(nested.list[!more.lists], unlist(nested.list[more.lists], recursive = FALSE))
+
+    if(sum(more.lists)) {
+        Recall(output)
+    } else {
+        return(output)
+    }
+}
+
+
 
 # Get the number of nodes from a graph or weighted matrix.
 get.number.nodes <- function(graph) {
