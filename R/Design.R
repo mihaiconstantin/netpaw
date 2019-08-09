@@ -1,0 +1,76 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                              _                                          #
+#                             | |                                         #
+#                 _ __    ___ | |_  _ __    __ _ __      __               #
+#                | '_ \  / _ \| __|| '_ \  / _` |\ \ /\ / /               #
+#                | | | ||  __/| |_ | |_) || (_| | \ V  V /                #
+#                |_| |_| \___| \__|| .__/  \__,_|  \_/\_/                 #
+#                                  | |                                    #
+#                                  |_|                                    #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                         #
+# File contributors:                                                      #
+#   - M.A. Constantin                                                     #
+#                                                                         #
+# File description:                                                       #
+#   - contains a class that defines a simulation design                   #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Design class ------------------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+Design <- R6::R6Class("Design",
+
+    private = list(
+        ..options = NULL,
+        ..structure = list(),
+
+
+        # Boilerplate.
+        ..boot = function() {
+            # Prepare the Option object and set the meta field.
+            private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
+
+            # Set the values field on the options at runtime.
+            patch.function.within.environment("..set.structure", private, "private$..options$set.values(combine.arguments(private$..set.structure, as.list(match.call())[-1]))")
+        },
+
+
+        # Pure virtual function for setting the design structure
+        ..set.structure = function(...) {
+            stop(..ERRORS..$non.instantiable.class)
+        }
+    ),
+
+
+    public = list(
+        # Constructor.
+        initialize = function(...) {
+            # Boot.
+            private$..boot()
+
+            # Set the design structure.
+            private$..set.structure(...)
+        }
+    ),
+
+
+    active = list(
+        structure = function() {
+            return(private$..structure)
+        },
+
+
+        options = function() {
+            return(private$..options)
+        }
+    )
+)
+
+
+
+# End of file.
