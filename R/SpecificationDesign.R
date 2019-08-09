@@ -18,28 +18,27 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Includes.
-#' @include Question.R
+#' @include Design.R Question.R
 
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Specification class -----------------------------------------------------
+# SpecificationDesign class -----------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-Specification <- R6::R6Class("Specification",
+SpecificationDesign <- R6::R6Class("SpecificationDesign",
+    inherit = Design,
+
 
     private = list(
-        ..config = list(),
-
-
-        # What models to use?
-        ..what.models = function(multiple, separator) {
+        # Set the design using questions.
+        ..set.structure = function(multiple = TRUE, separator = " ") {
             # Capture the answer.
             models <- Question$new("select", "\nWhat model(s) do you want to simulate for?", names(Generator$..ALIASES..), multiple = multiple)$answer
 
             # For every model create an empty list where the options will be stored.
             for(model in models) {
-                private$..config[["model"]][[model]] <- c(alias = model, private$..gather.model.options(model = model, separator = separator))
+                private$..structure[["model"]][[model]] <- c(model = model, private$..gather.model.options(model = model, separator = separator))
 
                 # If the models makes use of a graph for its architecture.
                 if(private$..model.needs.graph(model)) {
@@ -48,7 +47,7 @@ Specification <- R6::R6Class("Specification",
 
                     # For every graph, get it's options for all the steps involved in creating a graph (i.e., currently only generating graphs).
                     for(graph in graphs) {
-                        private$..config[["model"]][[model]][["graph"]][[graph]] <- private$..gather.graph.options(graph = graph, separator = separator)
+                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(graph = graph, private$..gather.graph.options(graph = graph, separator = separator))
                     }
                 }
             }
@@ -184,19 +183,12 @@ Specification <- R6::R6Class("Specification",
 
 
     public = list(
-        initialize = function(multiple = TRUE, separator = " ") {
+        initialize = function(...) {
             # Print the instructions.
             private$..instructions()
 
-            # Ask about the models.
-            private$..what.models(multiple, separator)
-        }
-    ),
-
-
-    active = list(
-        config = function() {
-            return(private$..config)
+            # Call the parent constructor.
+            super$initialize(...)
         }
     )
 )
