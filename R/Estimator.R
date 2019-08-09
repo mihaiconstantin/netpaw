@@ -46,6 +46,9 @@ Estimator <- R6::R6Class("Estimator",
             # Type check and assertions.
             assert("Data" %in% class(data), ..ERRORS..$incorrect.object.type)
 
+            # Make sure the correct thinking argument is specified.
+            assert(thinking == "frequentist" || thinking == "bayesian", ..ERRORS..$unsupported.type)
+
             # Set the injected data.
             private$..data <- data
 
@@ -55,12 +58,11 @@ Estimator <- R6::R6Class("Estimator",
             # Initialize the Option object and set the meta field.
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
+            # Set the estimator.
+            set.locked.binding("..estimator", private, ifelse(private$..thinking == "frequentist", private$..frequentist, private$..bayesian))
+
             # Set the values field on the options at runtime.
-            if(private$..thinking == "frequentist") {
-                patch.function.within.environment("..frequentist", private, "private$..options$set.values(combine.arguments(private$..frequentist, as.list(match.call())[-1]))")
-            } else {
-                patch.function.within.environment("..bayesian", private, "private$..options$set.values(combine.arguments(private$..bayesian, as.list(match.call())[-1]))")
-            }
+            patch.function.within.environment("..estimator", private, "private$..options$set.values(combine.arguments(private$..estimator, as.list(match.call())[-1]))")
         },
 
 
@@ -70,15 +72,15 @@ Estimator <- R6::R6Class("Estimator",
             private$..before()
 
             # Pick the right estimation type and run the estimator.
-            if(private$..thinking == "frequentist") {
-                private$..model <- Model$new(list = private$..frequentist(...))
-            } else {
-                private$..model <- Model$new(list = private$..bayesian(...))
-            }
+            private$..model <- Model$new(list = private$..estimator(...))
 
             # Run after the estimator.
             private$..after()
         },
+
+
+        # Model estimator as implemented by the user. Set during boot-time based on the `thinking` field.
+        ..estimator = function() {},
 
 
         # Model estimator, frequentist.
