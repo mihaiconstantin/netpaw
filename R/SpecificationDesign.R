@@ -15,6 +15,10 @@
 # File description:                                                       #
 #   - contains a class that defines the simulation specification          #
 #                                                                         #
+# To do:                                                                  #
+#   - consider breaking Question into specific question types to          #
+#     avoid passing arguments all over the place                          #
+#                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Includes.
@@ -32,13 +36,13 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
     private = list(
         # Set the design using questions.
-        ..set.structure = function(multiple = TRUE, separator = " ") {
+        ..set.structure = function(multiple = TRUE, separator = " ", duplicates = FALSE) {
             # Capture the answer.
             models <- Question$new("select", "\nWhat model(s) do you want to simulate for?", names(Generator$..ALIASES..), multiple = multiple)$answer
 
             # For every model create an empty list where the options will be stored.
             for(model in models) {
-                private$..structure[["model"]][[model]] <- c(model = model, private$..gather.model.options(model = model, separator = separator))
+                private$..structure[["model"]][[model]] <- c(model = model, private$..gather.model.options(model = model, separator = separator, duplicates = duplicates))
 
                 # If the models makes use of a graph for its architecture.
                 if(private$..model.needs.graph(model)) {
@@ -47,7 +51,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
                     # For every graph, get it's options for all the steps involved in creating a graph (i.e., currently only generating graphs).
                     for(graph in graphs) {
-                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(graph = graph, private$..gather.graph.options(graph = graph, separator = separator))
+                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(graph = graph, private$..gather.graph.options(graph = graph, separator = separator, duplicates = duplicates))
                     }
                 }
             }
@@ -55,7 +59,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
 
         # Get all the options for all the major steps (i.e., Generator, Sampler and Estimator) for a model alias.
-        ..gather.model.options = function(model, separator) {
+        ..gather.model.options = function(model, separator, duplicates = duplicates) {
             # Announce him or her about what is coming next.
             cat("\nVary simulation options for the", shQuote(crayon::yellow(model)), "model.\n")
 
@@ -63,21 +67,21 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
             answer <- list()
             
             # Query the options of the generator.
-            answer$generator <- private$..query.blueprint.implementation(Generator, model, "..generator", separator = separator)
+            answer$generator <- private$..query.blueprint.implementation(Generator, model, "..generator", separator = separator, duplicates = duplicates)
 
             # Query the options of the sampler.
-            answer$sampler <- private$..query.blueprint.implementation(Sampler, model, "..sampler", separator = separator)
+            answer$sampler <- private$..query.blueprint.implementation(Sampler, model, "..sampler", separator = separator, duplicates = duplicates)
 
             # Query the options of the estimator. 
             # For my future self: I leave the challenge of handling bayesian estimation to you.
-            answer$estimator <- private$..query.blueprint.implementation(Estimator, model, "..frequentist", separator = separator)
+            answer$estimator <- private$..query.blueprint.implementation(Estimator, model, "..frequentist", separator = separator, duplicates = duplicates)
 
             return(answer)
         },
 
 
         # Get all the options for all the steps related to a graph (i.e., currently only the `Graph` with `..generator`).
-        ..gather.graph.options = function(graph, separator) {
+        ..gather.graph.options = function(graph, separator, duplicates) {
             # Announce him or her about what is coming next.
             cat("\nVary simulation options for the", shQuote(crayon::yellow(graph)), "graph.\n")
             
@@ -85,14 +89,14 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
             answer <- list()
 
             # Query the options of the generator.
-            answer$generator <- private$..query.blueprint.implementation(Graph, graph, "..generator", separator = separator)
+            answer$generator <- private$..query.blueprint.implementation(Graph, graph, "..generator", separator = separator, duplicates = duplicates)
 
             return(answer)
         },
 
 
         # Ask questions about the parameters of the implementation of the main simulation blueprints.
-        ..query.blueprint.implementation = function(blueprint, model, implementation, separator) {
+        ..query.blueprint.implementation = function(blueprint, model, implementation, separator, duplicates) {
             # Make sure that the blueprint provided is part of what makes up a simulation.
             assert(class(blueprint) == "R6ClassGenerator" && blueprint$classname %in% c("Graph", "Generator", "Sampler", "Estimator"), ..ERRORS..$incorrect.object.type)
 
@@ -116,7 +120,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
                 example.answer <- paste("default is", example.arg)
 
                 # Ask for the option in question and store it.
-                question <- Question$new(type = "open", question = question, example = example.answer, separator = separator)
+                question <- Question$new(type = "open", question = question, example = example.answer, separator = separator, duplicates = duplicates)
 
                 # If the answer is empty, provide the example argument.
                 if(length(question$answer) > 0) {
