@@ -340,6 +340,132 @@ get.pcor <- function(nvars) {
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# String manipulations ----------------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Convert a string input to a vector of values, breaking by separator.
+string.to.vector = function(string, separator = " ") {
+    # Store the input.
+    input <- string
+
+    # Split the string by space into numbers.
+    values <- unlist(strsplit(input, separator))
+
+    # Remove empty strings due to multiple spacing.
+    values <- values[values != ""] 
+
+    # If there is at least one element provided. Decide based on first element on what to convert to.
+    if(length(values) > 0) {
+        values <- sapply(values, function(value) {
+            return(ifelse(character.is.numeric(value), character.to.numeric(value), ifelse(character.is.logic(value), character.to.logic(value), value)))
+        })
+    }
+
+    # Remove the names.
+    names(values) <- NULL
+
+    return(values)
+}
+
+
+# Detect if character or group of characters can be expressed as a numerical value.
+character.is.numeric <- function(string) {
+    return(grepl("^(\\d+)?(\\.?)(\\d+)?$", string))
+}
+
+
+
+# Detect if character or group of characters can be expressed as a logical value.
+character.is.logic <- function(string) {
+    return(grepl("^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|[Tt]|[Ff])$", string))
+}
+
+
+
+# Character vector to numerical vector.
+character.to.numeric <- function(vector) {
+    # Convert elements to numeric and ignore warnings about NAs.
+    values <- suppressWarnings(as.numeric(vector))
+
+    # Remove the NAs.
+    values <- values[!is.na(values)]
+
+    return(values)
+}
+
+
+
+# Character vector to logical vector.
+character.to.logic <- function(vector) {
+    # Map the vector elements.
+    values <- sapply(tolower(vector), function(element) {
+        result <- switch(element, 
+            "t" = TRUE, 
+            "f" = FALSE, 
+            "true" = TRUE,
+            "false" = FALSE,
+            # Default value if nothing matches.
+            NA 
+        )
+
+        return(result)
+    })
+
+    # Remove missing values.
+    values <- values[!is.na(values)]
+
+    # Remove the names.
+    names(values) <- NULL
+
+    return(values)
+}
+
+
+
+# Convert a string input to a sequence of numbers.
+string.to.sequence = function(string) {
+    # Break the string by the standard keywords.
+    values <- unlist(strsplit(tolower(gsub(" ", "", string)), "from|to|by"))
+
+    # Keep only relevant values and assume everything else is noise.
+    values <- as.numeric(values[2:4])
+
+    # Create the sequence.
+    values <- seq(from = values[1], to = values[2], by = values[3])
+
+    return(values)
+}
+
+
+
+# Detect if a string input is suitable for conversion to sequence.
+matches.sequence.format = function(string) {
+    # Define the expected pattern.
+    expected.pattern = "from([0-9]+)?(\\.)?([0-9]+)to([0-9]+)?(\\.)?([0-9]+)by([0-9]+)?(\\.)?([0-9]+)"
+
+    # Check if the pattern exists in the string.
+    return(ifelse(grepl(expected.pattern, tolower(gsub(" ", "", string))), TRUE, FALSE))
+}
+
+
+
+# Capitalize a word.
+capitalize <- function(word) {
+    capitalized.word <- paste(toupper(substring(word, 1, 1)), substring(word, 2), sep = "")
+
+    return(capitalized.word)
+}
+
+
+
+# Combine multiple lines.
+vector.lines <- function(...) {
+    paste(crayon::chr(...), collapse = "\n")
+}
+
+
+
 # How many lines of R code are in a directory?
 how.many.lines <- function(path = "./R") {
     files <- list.files(path = "./R", recursive = TRUE, full.names = TRUE)
