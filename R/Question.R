@@ -17,6 +17,9 @@
 #   - makes use of utility functions                                      #
 #   - internal use only                                                   #
 #                                                                         #
+# To do:                                                                  #
+#   - break into child classes: open-ended and selection questions        #
+#                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
@@ -56,7 +59,7 @@ Question <- R6::R6Class("Question",
 
 
         # Ask for input in an open ended fashion.
-        ..ask.for.input = function(example, separator = " ") {
+        ..ask.for.input = function(example, separator = " ", duplicates = FALSE) {
             # Assume incorrect answer.
             correct <- FALSE
 
@@ -73,6 +76,11 @@ Question <- R6::R6Class("Question",
                     answer <- string.to.sequence(answer)
                 } else {
                     answer <- string.to.vector(answer, separator = separator)
+                }
+
+                # Should only unique values be kept?
+                if(!duplicates) {
+                    answer <- unique(answer)
                 }
 
                 # Determine if confirmation is needed to proceed.
