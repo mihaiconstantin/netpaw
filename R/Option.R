@@ -32,13 +32,13 @@ Option <- R6::R6Class("Option",
 
         # Try to guess which class has been inherited.
         ..guess.ancestor = function() {
-            # Get the last words that make up the camel case type.
-            words = strsplit(private$..meta$type, "([a-z])(?=[A-Z])", perl = TRUE)[[1]]
+            # Get the last words that make up the camel case type. The convention is that the last word refers to the parent (i.e., SmallWorld<<Graph>>).
+            words <- unlist(strsplit(private$..meta$type, "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", perl = TRUE))
 
-            # Get the last word which represents the inherited class.
-            word = tolower(words[length(words)])
+            # Get the words which represent the inherited class and the type.
+            ancestor <- tolower(words[length(words)])
 
-            return(word)
+            return(ancestor)
         }
     ),
 
