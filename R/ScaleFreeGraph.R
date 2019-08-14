@@ -57,7 +57,7 @@ Graph$..ALIASES..$scalefree <- list(
     class = ScaleFreeGraph,
 
     # Add a set of example arguments used to automatically test your implementation.
-    example.args = list(nodes = 10, attachment = 2, edges = .5, directed = FALSE)
+    example.args = list(nodes = 10, attachment = 2, edges = 2, directed = FALSE)
 )
 
 
