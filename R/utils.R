@@ -295,6 +295,44 @@ flatten.nested.list.order <- function(nested.list) {
 
 
 
+# Create all possible combinations for a list and preserve the order.
+list.combine <- function(input) {
+    # Create list skeleton.
+    skeleton <- rapply(input, head, n = 1, how = "list")
+
+    # Create all possible combinations from list elements.
+    combinations <- expand.grid(flatten.nested.list.order(input), stringsAsFactors = FALSE)
+
+    # Create list for storing the output.
+    output <- list()
+
+    # Relist and preserve original data type.
+    for (i in 1:nrow(combinations)) {
+        output[[i]] <- retain.element.type(relist(flesh = combinations[i, ], skeleton = skeleton))
+    }
+
+    return(output)
+}
+
+
+
+# Specific to `list.combine()`.
+retain.element.type <- function(input.list) {
+    for (name in names(input.list)) {
+        # If the element is a list, recall the function.
+        if(inherits(input.list[[name]], "list")) {
+            input.list[[name]] <- Recall(input.list[[name]])
+
+        # Else, get the first element and preserve the type.
+        } else {
+            input.list[[name]] <- input.list[[name]][, 1]
+        }
+    }
+    return(input.list)
+}
+
+
+
 # Get the number of nodes from a graph or weighted matrix.
 get.number.nodes <- function(graph) {
     # Determine the dimensions.
