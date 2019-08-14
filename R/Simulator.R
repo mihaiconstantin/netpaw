@@ -110,7 +110,7 @@ Simulator <- R6::R6Class("Simulator",
 
             # Create simulations from design.
             private$..create.simulations()
-        }
+        },
 
 
         # Run a range of simulations (i.e., the range is based on the `..simulations` field).
