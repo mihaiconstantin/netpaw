@@ -42,7 +42,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
             # For every model create an empty list where the options will be stored.
             for(model in models) {
-                private$..structure[["model"]][[model]] <- c(model = model, private$..gather.model.options(model = model, separator = separator, duplicates = duplicates))
+                private$..structure[["model"]][[model]] <- c(alias = model, private$..gather.model.options(model = model, separator = separator, duplicates = duplicates))
 
                 # If the models makes use of a graph for its architecture.
                 if(private$..model.needs.graph(model)) {
@@ -51,7 +51,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
                     # For every graph, get it's options for all the steps involved in creating a graph (i.e., currently only generating graphs).
                     for(graph in graphs) {
-                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(graph = graph, private$..gather.graph.options(graph = graph, separator = separator, duplicates = duplicates))
+                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(alias = graph, private$..gather.graph.options(graph = graph, separator = separator, duplicates = duplicates))
                     }
                 }
             }
@@ -95,8 +95,8 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
             # Temporary storage for all the answers.
             answer <- list()
 
-            # Query the options of the generator.
-            answer$generator <- private$..query.blueprint.implementation(Graph, graph, "..generator", separator = separator, duplicates = duplicates)
+            # Query the options of the generator. We can also do `answer$generator`, but let's keep it simple until we add sampling and estimation for the graphs.
+            answer <- private$..query.blueprint.implementation(Graph, graph, "..generator", separator = separator, duplicates = duplicates)
 
             return(answer)
         },
