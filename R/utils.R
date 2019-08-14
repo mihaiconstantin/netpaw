@@ -180,6 +180,23 @@ is.invariant <- function(column, tolerance = 1) {
 
 
 
+# Find ancestor of an `R6ClassGenerator`.
+find.ancestor = function(type) {
+    # Evaluate to type.
+    blueprint <- eval(as.symbol(type))
+
+    # Type check.
+    assert(class(blueprint) == "R6ClassGenerator", ..ERRORS..$incorrect.object.type)
+
+    # Get the parent class.
+    inherit <- as.character(blueprint$inherit)
+
+    # If more parents exist, recall, else return type.
+    if(length(inherit) > 0) { Recall(inherit) } else { return(type) }
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Generic functions (i.e., may be exported) -------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
