@@ -88,7 +88,7 @@ conformity.check <- function(value, arg) {
 
 
 # Combine arguments from a function definition and a target list (e.g., '...' object).
-combine.arguments <- function(fun, target.list) {
+combine.arguments <- function(fun, target.list, implementation = FALSE) {
     # Get the arguments the definition arguments as a list.
     definition.args <- as.list(args(fun))
 
@@ -103,6 +103,11 @@ combine.arguments <- function(fun, target.list) {
             return(target.list[[arg.name]])
         }
     }, simplify = FALSE)
+
+    # Should we store the implementation (i.e., aka the name of the function that parsed)?
+    if(implementation) {
+        overwritten.args[["implementation"]] <- sub(".*\\.\\.", "", toString(substitute(fun)))
+    }
 
     return(overwritten.args)
 }
