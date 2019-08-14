@@ -58,6 +58,13 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
         },
 
 
+        # Set the design replications using a question.
+        ..set.replications = function() {
+            # Capture the answer.
+            private$..replications <- Question$new("select", "\nHow many times should each cell be replicated?", c(100, 200, 300, 400, 500), multiple = FALSE)$answer
+        },
+
+
         # Get all the options for all the major steps (i.e., Generator, Sampler and Estimator) for a model alias.
         ..gather.model.options = function(model, separator, duplicates = duplicates) {
             # Announce him or her about what is coming next.
