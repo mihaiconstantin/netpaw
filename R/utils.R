@@ -279,6 +279,22 @@ flatten.nested.list <- function(nested.list) {
 
 
 
+# Flatten weird nested lists. Maintain order, but drop names.
+# See https://stackoverflow.com/questions/57448008.
+flatten.nested.list.order <- function(nested.list) {
+    # Create storage for the flattened list.
+    flattened = list()
+
+    # Flatten the list.
+    invisible(rapply(nested.list, function(x) {
+        flattened <<- c(flattened, list(x))
+    }))
+
+    return(flattened)
+}
+
+
+
 # Get the number of nodes from a graph or weighted matrix.
 get.number.nodes <- function(graph) {
     # Determine the dimensions.
