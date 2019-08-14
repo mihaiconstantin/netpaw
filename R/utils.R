@@ -436,6 +436,7 @@ string.to.vector = function(string, separator = " ") {
     # If there is at least one element provided. Decide based on first element on what to convert to.
     if(length(values) > 0) {
         values <- sapply(values, function(value) {
+            # Consider applying `type.convert()` on each element instead of my implementation.
             return(ifelse(character.is.numeric(value), character.to.numeric(value), ifelse(character.is.logic(value), character.to.logic(value), value)))
         })
     }
