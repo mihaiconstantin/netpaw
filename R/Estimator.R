@@ -58,11 +58,12 @@ Estimator <- R6::R6Class("Estimator",
             # Initialize the Option object and set the meta field.
             private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
-            # Set the estimator.
-            set.locked.binding("..estimator", private, ifelse(private$..thinking == "frequentist", private$..frequentist, private$..bayesian))
-
             # Set the values field on the options at runtime.
-            patch.function.within.environment("..estimator", private, "private$..options$set.values(combine.arguments(private$..estimator, as.list(match.call())[-1]))")
+            if(private$..thinking == "frequentist") {
+                patch.function.within.environment("..frequentist", private, "private$..options$set.values(combine.arguments(private$..frequentist, as.list(match.call())[-1], TRUE))")
+            } else {
+                patch.function.within.environment("..bayesian", private, "private$..options$set.values(combine.arguments(private$..bayesian, as.list(match.call())[-1], TRUE))")
+            }
         },
 
 
@@ -79,8 +80,14 @@ Estimator <- R6::R6Class("Estimator",
         },
 
 
-        # Model estimator as implemented by the user. Set during boot-time based on the `thinking` field.
-        ..estimator = function() {},
+        # Model estimator using the user's implementation.
+        ..estimator = function(...) {
+            if(private$..thinking == "frequentist") {
+                return(private$..frequentist(...))
+            } else {
+                return(private$..bayesian(...))
+            }
+        },
 
 
         # Model estimator, frequentist.
