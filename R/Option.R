@@ -27,19 +27,7 @@ Option <- R6::R6Class("Option",
 
     private = list(
         ..values = NULL,
-        ..meta = NULL,
-
-
-        # Try to guess which class has been inherited.
-        ..guess.ancestor = function() {
-            # Get the last words that make up the camel case type. The convention is that the last word refers to the parent (i.e., SmallWorld<<Graph>>).
-            words <- unlist(strsplit(private$..meta$type, "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", perl = TRUE))
-
-            # Get the words which represent the inherited class and the type.
-            ancestor <- tolower(words[length(words)])
-
-            return(ancestor)
-        }
+        ..meta = NULL
     ),
 
 
@@ -54,26 +42,17 @@ Option <- R6::R6Class("Option",
 
         # Flatten object to a named list.
         to.list = function() {
-            # Determine the name.
-            name = private$..guess.ancestor()
-
-            # Prepare the simplified list.
-            simple = list()
-
-            # Append option and meta values.
-            simple[[name]] = private$..values
-            simple[[name]]$timestamp = private$..meta$timestamp
-
-            return(simple)
+            return(c(private$..meta$to.list(), private$..values))
         },
 
 
-        # Setters.
+        # Set values.
         set.values = function(values) {
             private$..values <- values
         },
 
 
+        # Set meta.
         set.meta = function(meta) {
             # Check types.
             if(!is.null(meta)) assert("Meta" %in% class(meta), ..ERRORS..$incorrect.object.type)
