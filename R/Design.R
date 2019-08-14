@@ -27,6 +27,7 @@ Design <- R6::R6Class("Design",
 
     private = list(
         ..options = NULL,
+        ..replications = NULL,
         ..structure = list(),
 
 
@@ -43,6 +44,12 @@ Design <- R6::R6Class("Design",
         # Pure virtual function for setting the design structure
         ..set.structure = function(...) {
             stop(..ERRORS..$non.instantiable.class)
+        },
+
+
+        # Pure virtual function for setting the replications.
+        ..set.replications = function() {
+            stop(..ERRORS..$non.instantiable.class)
         }
     ),
 
@@ -55,6 +62,9 @@ Design <- R6::R6Class("Design",
 
             # Set the design structure.
             private$..set.structure(...)
+
+            # Set the replications.
+            private$..set.replications()
         }
     ),
 
@@ -67,6 +77,11 @@ Design <- R6::R6Class("Design",
 
         options = function() {
             return(private$..options)
+        },
+
+
+        replications = function() {
+            return(private$..replications)
         }
     )
 )
