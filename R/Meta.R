@@ -17,6 +17,9 @@
 #                                                                         #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Includes.
+#' @include TypeHandler.R
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -25,17 +28,63 @@
 
 Meta <- R6::R6Class("Meta",
 
+    private = list(
+        ..timestamp = NULL,
+        ..type = NULL,
+        ..ancestor = NULL,
+        ..alias = NULL
+    ),
+
+
     public = list(
-        timestamp = NULL,
-        type = NULL,
+        # Constructor.
+        initialize = function(type = NULL, handler = TypeHandler) {
+            # Type check.
+            assert(class(handler) == "R6ClassGenerator", ..ERRORS..$incorrect.object.type)
 
+            # Instantiate the handler.
+            handler <- handler$new(type)
 
-        initialize = function(type = NULL) {
             # Record timestamp.
-            self$timestamp <- Sys.time()
+            private$..timestamp <- Sys.time()
 
-            # Set fields.
-            self$type <- type
+            # Set the class fields from the handler.
+            private$..type <- type
+            private$..ancestor <- handler$ancestor
+            private$..alias <- handler$alias
+        },
+
+
+        # Flatten object to list.
+        to.list = function() {
+            return(list(
+                timestamp = private$..timestamp,
+                ancestor = private$..ancestor,
+                type = private$..type,
+                alias = private$..alias
+            ))
+        }
+    ),
+
+
+    active = list(
+        timestamp = function() {
+            return(private$..timestamp)
+        },
+
+
+        type = function() {
+            return(private$..type)
+        },
+
+
+        ancestor = function() {
+            return(private$..ancestor)
+        },
+
+
+        alias = function() {
+            return(private$..alias)
         }
     )
 )
