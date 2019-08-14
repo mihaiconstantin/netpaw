@@ -72,16 +72,18 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
             # Temporary storage for all the answers.
             answer <- list()
-            
+
             # Query the options of the generator.
             answer$generator <- private$..query.blueprint.implementation(Generator, model, "..generator", separator = separator, duplicates = duplicates)
 
             # Query the options of the sampler.
             answer$sampler <- private$..query.blueprint.implementation(Sampler, model, "..sampler", separator = separator, duplicates = duplicates)
 
+            # Before gathering the options for the implementation of the estimator, decide what implementation should be used.
+            implementation <- Question$new("select", "\nWhat estimation method should be used?", c("frequentist", "bayesian"), multiple = FALSE)$answer
+
             # Query the options of the estimator. 
-            # For my future self: I leave the challenge of handling bayesian estimation to you.
-            answer$estimator <- private$..query.blueprint.implementation(Estimator, model, "..frequentist", separator = separator, duplicates = duplicates)
+            answer$estimator <- c(implementation = implementation, private$..query.blueprint.implementation(Estimator, model, paste0("..", implementation), separator = separator, duplicates = duplicates))
 
             return(answer)
         },
@@ -120,8 +122,12 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
                 # Prepare the question body.
                 question <- paste0("What value(s) for '", crayon::yellow(arg) ,"' argument?")
 
-                # Get the example argument.
-                example.arg <- ifelse(is.symbol(args[[arg]]), blueprint$..ALIASES..[[model]]$example.args[[arg]], args[[arg]])
+                # If the blueprint is an estimator, then handle frequentist vs. bayesian when getting the example argument.
+                if(blueprint$classname == "Estimator") {
+                    example.arg <- ifelse(is.symbol(args[[arg]]), blueprint$..ALIASES..[[model]]$example.args[[gsub("..", "", implementation, fixed = TRUE)]][[arg]], args[[arg]])
+                } else {
+                    example.arg <- ifelse(is.symbol(args[[arg]]), blueprint$..ALIASES..[[model]]$example.args[[arg]], args[[arg]])
+                }
 
                 # Prepare a reasonable example answer.
                 example.answer <- paste("default is", example.arg)
