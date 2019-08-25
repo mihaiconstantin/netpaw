@@ -65,9 +65,9 @@ Result <- R6::R6Class("Result",
             type.m <- "not yet implemented"
 
             # Edge weights correlation.
-            correlation <- ifelse(equal.size && ((var(true) != 0) || (var(esti) != 0)), cor(true, esti), NA)
+            correlation <- ifelse(equal.size && ((var(true) != 0) && (var(esti) != 0)), cor(true, esti), NA)
 
-            # Density for true and estimated graphs. 
+            # Density for true and estimated graphs.
             density.true = sum(true != 0) / length(true)
             density.esti = sum(esti != 0) / length(esti)
 
