@@ -111,7 +111,18 @@ Simulator <- R6::R6Class("Simulator",
 
 
         # Run a range of simulations (i.e., the range is based on the `..simulations` field).
-        run.rage = function(range) {},
+        run.rage = function(start, end, ...) {
+            # Prevent range overflow.
+            assert((start > 0) && (end <= length(private$..simulations)), "Invalid simulation range.")
+
+            # Keep track of the things we've ran.
+            private$..targets <- c(private$..targets, list(range = start:end))
+
+            # Run simulations in specified range.
+            for (i in start:end) {
+               private$..simulations[[i]]$perform(...)
+            }
+        },
 
 
         # Run a custom selection of simulations (i.e., the subset is a list of specific simulations).
