@@ -125,18 +125,23 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
-        replications = function() {
-            return(private$..replications)
-        },
-
-
         simulations = function() {
             return(private$..simulations)
         },
 
 
+        targets = function() {
+            return(private$..targets)
+        },
+
+
         total = function() {
             return(length(private$..simulations))
+        },
+
+
+        completed = function() {
+            return(length(unlist(private$..targets)))
         }
     )
 )
