@@ -125,6 +125,7 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
+        # Run a subset of simulations.
         run.subset = function(subset, ...) {
             # Prevent subset overflow.
             assert((min(subset) > 0) && max(subset) <= length(private$..simulations), "Invalid simulation subset.")
