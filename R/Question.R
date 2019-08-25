@@ -49,7 +49,7 @@ Question <- R6::R6Class("Question",
             options <- c("Yes", "No", "Exit")
 
             # Ask for confirmation and store the answer.
-            answer <- menu(options, title = title)
+            answer <- menu(options, title = title, graphics = FALSE)
 
             # Parse the answer.
             answer <- ifelse(answer == 1, TRUE, ifelse(answer == 2, FALSE, NA))
@@ -114,7 +114,7 @@ Question <- R6::R6Class("Question",
                 if(is.na(correct)) { break }
 
                 # Capture the answer.
-                answer <- select.list(choices = choices, title = private$..question, multiple = multiple)
+                answer <- select.list(choices = choices, title = private$..question, multiple = multiple, graphics = FALSE)
 
                 # Determine if confirmation is needed to proceed.
                 if(private$..confirmation) {
