@@ -57,15 +57,15 @@ Result <- R6::R6Class("Result",
             type.two    <- FN / (TP + FN)
 
             # Compute type S error rate.
-            # TODO: type S error.
+            # TODO: Implement type S errors.
             type.s <- "not yet implemented"
 
             # Compute type M error rate.
-            # TODO: type M error.
+            # TODO: Implement type M errors.
             type.m <- "not yet implemented"
 
             # Edge weights correlation.
-            correlation <- ifelse(equal.size, cor(true, esti), NA)
+            correlation <- ifelse(equal.size && ((var(true) != 0) || (var(esti) != 0)), cor(true, esti), NA)
 
             # Density for true and estimated graphs. 
             density.true = sum(true != 0) / length(true)
