@@ -51,6 +51,7 @@
 #' @import progress
 #' @import foreach
 #' @import doParallel
+#' @import digest
 #'
 #' @docType package
 #' @name netpaw
