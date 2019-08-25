@@ -30,8 +30,8 @@ Simulator <- R6::R6Class("Simulator",
 
     private = list(
         ..design = NULL,
-        ..replications = NULL,
         ..simulations = NULL,
+        ..targets = list(),
 
 
         # Boilerplate.
@@ -41,9 +41,6 @@ Simulator <- R6::R6Class("Simulator",
 
             # Set the design.
             private$..design <- design
-
-            # Set the replications for faster access.
-            private$..replications <- design$replications
         },
 
 
