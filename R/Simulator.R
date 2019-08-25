@@ -125,8 +125,18 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
-        # Run a custom selection of simulations (i.e., the subset is a list of specific simulations).
-        run.subset = function(subset) {}
+        run.subset = function(subset, ...) {
+            # Prevent subset overflow.
+            assert((min(subset) > 0) && max(subset) <= length(private$..simulations), "Invalid simulation subset.")
+
+            # Keep track of the things we've ran.
+            private$..targets <- c(private$..targets, list(subset = subset))
+
+            # Run the simulations specified in the subset.
+            for (i in subset) {
+               private$..simulations[[i]]$perform(...)
+            }
+        }
     ),
 
 
