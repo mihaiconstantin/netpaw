@@ -36,7 +36,7 @@ SimulationRun <- R6::R6Class("SimulationRun",
         ..comparator = NULL,
 
         # Informative fields.
-        ..error = NULL,
+        # ..error = NULL,
         ..start = NULL,
         ..end = NULL,
 
@@ -62,11 +62,8 @@ SimulationRun <- R6::R6Class("SimulationRun",
             # Record the start.
             private$..start <- Sys.time()
 
-            # Try to run the simulation procedure.
-            tryCatch(private$..apply.procedure(), error = function(error) {
-                # Store the error.
-                private$..error <- error
-            })
+            # Apply the simulation procedure.
+            private$..apply.procedure()
 
             # Record the end.
             private$..end <- Sys.time()
@@ -173,9 +170,9 @@ SimulationRun <- R6::R6Class("SimulationRun",
         },
 
 
-        error = function() {
-            return(private$..error)
-        },
+        # error = function() {
+        #     return(private$..error)
+        # },
 
 
         start = function() {
