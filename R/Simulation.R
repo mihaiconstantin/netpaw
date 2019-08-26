@@ -33,6 +33,8 @@ Simulation <- R6::R6Class("Simulation",
         ..hash = NULL,
         ..replications = NULL,
         ..runs = list(),
+        ..errors = list(),
+        ..warnings = NULL,
 
 
         # Boilerplate.
@@ -77,6 +79,40 @@ Simulation <- R6::R6Class("Simulation",
                 # Perform the remainder of the replications.
                 private$..runs[[i]] <- SimulationRun$new(config = private$..config, generator = generator)
             }
+        },
+
+
+        # Perform and replicate in a safe manner.
+        perform.safe = function(vary.generator = FALSE) {
+            # Print warnings as they occur.
+            options(warn = 1)
+
+            # Create a variable that will serve as a mock file.
+            warns <- vector("character")
+
+            # Create a connection for the sink.
+            connection <- textConnection("warns", "wr", local = TRUE)
+
+            # Start collecting.
+            sink(connection, type = "message")
+
+            # Try to perform and replicate the simulation.
+            tryCatch(self$perform(vary.generator), error = function(error) {
+                # Catch the error.
+                private$..errors[[as.character(as.numeric(Sys.time()))]] <- error
+            })
+
+            # Reset the sink.
+            sink(type = "message")
+
+            # Close the connection.
+            close(connection)
+
+            # Restore default warning behavior.
+            options(warn = 0)
+
+            # Append the warnings to to class field.
+            private$..warnings <- warns
         }
     ),
 
@@ -99,6 +135,16 @@ Simulation <- R6::R6Class("Simulation",
 
         runs = function() {
             return(private$..runs)
+        },
+
+
+        errors = function() {
+            return(private$..errors)
+        },
+
+
+        warnings = function() {
+            return(private$..warnings)
         },
 
 
