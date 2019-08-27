@@ -95,7 +95,7 @@ Duration <- R6::R6Class("Duration",
             assert("Simulator" %in% class(simulator), ..ERRORS..$incorrect.object.type)
 
             # Boot.
-            private$..boot(simulation.samples, run.samples, replications)
+            private$..boot(simulation.samples, run.samples, replications = ifelse(is.null(replications), simulator$design$replications, replications))
 
             # Estimate the duration.
             private$..estimate.simulator.duration(simulator, ...)
