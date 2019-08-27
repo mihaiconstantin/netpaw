@@ -29,12 +29,14 @@
 Simulation <- R6::R6Class("Simulation",
 
     private = list(
+        # Input fields.
         ..config = NULL,
         ..hash = NULL,
         ..replications = NULL,
+
+
+        # Output fields.
         ..runs = list(),
-        ..errors = list(),
-        ..warnings = NULL,
 
 
         # Boilerplate.
@@ -64,9 +66,18 @@ Simulation <- R6::R6Class("Simulation",
 
         # Perform and replicate the simulation.
         # TODO: Allow to run chunks of replications (i.e., different processes) that can later be glued based on the simulation hash.
-        perform = function(vary.generator = FALSE) {
-            # If no replication ran has been performed, run for the first time. 
+        perform = function(vary.generator = FALSE, verbose = TRUE) {
+            # Initialize the progress bar.
+            progress.bar = progress::progress_bar$new(total = private$..replications, format = "[:bar] replication :current of :total (:elapsed)", clear = FALSE)
+
+            # Console feedback on start.
+            if(verbose) cat("Running simulation `", self$short.hash, "` (", as.character(Sys.time()) ,"):", "\n", sep = "")
+
+            # If no replication ran has been performed, run for the first time.
             if(!length(private$..runs)) {
+                # Tick the progress bar manually (i.e., because we loop from 2 onwards). Ew!
+                progress.bar$tick()
+
                 # Perform the first replication.
                 private$..runs[[1]] <- SimulationRun$new(private$..config)
             }
@@ -76,43 +87,18 @@ Simulation <- R6::R6Class("Simulation",
 
             # Run and replicate the remaining.
             for (i in 2:private$..replications) {
+                # Tick the progress bar.
+                if(verbose) progress.bar$tick()
+
                 # Perform the remainder of the replications.
                 private$..runs[[i]] <- SimulationRun$new(config = private$..config, generator = generator)
             }
-        },
 
+            # Handle the progress bar completion to avoid printing issues (e.g., if finished earlier than expected ticks, mark it as terminated manually).
+            if(!progress.bar$finished) progress.bar$terminate()
 
-        # Perform and replicate in a safe manner.
-        perform.safe = function(vary.generator = FALSE) {
-            # Print warnings as they occur.
-            options(warn = 1)
-
-            # Create a variable that will serve as a mock file.
-            warns <- vector("character")
-
-            # Create a connection for the sink.
-            connection <- textConnection("warns", "wr", local = TRUE)
-
-            # Start collecting.
-            sink(connection, type = "message")
-
-            # Try to perform and replicate the simulation.
-            tryCatch(self$perform(vary.generator), error = function(error) {
-                # Catch the error.
-                private$..errors[[as.character(as.numeric(Sys.time()))]] <- error
-            })
-
-            # Reset the sink.
-            sink(type = "message")
-
-            # Close the connection.
-            close(connection)
-
-            # Restore default warning behavior.
-            options(warn = 0)
-
-            # Append the warnings to to class field.
-            private$..warnings <- warns
+            # Console feedback on end.
+            if(verbose) cat("Simulation `", self$short.hash ,"` completed. Status: ", self$completed, " replications | ", self$warnings, " warnings | ", self$errors, " errors.", "\n\n", sep = "")
         }
     ),
 
@@ -128,6 +114,11 @@ Simulation <- R6::R6Class("Simulation",
         },
 
 
+        short.hash = function() {
+            return(substr(private$..hash, 1, 7))
+        },
+
+
         replications = function() {
             return(private$..replications)
         },
@@ -138,13 +129,25 @@ Simulation <- R6::R6Class("Simulation",
         },
 
 
-        errors = function() {
-            return(private$..errors)
+        warnings = function() {
+            if(length(private$..runs)) {
+                return(sum(sapply(private$..runs, function(run) {
+                    if(length(run)) { return(length(run$warnings)) }
+                })))
+            } else {
+                return(0)
+            }
         },
 
 
-        warnings = function() {
-            return(private$..warnings)
+        errors = function() {
+            if(length(private$..runs)) {
+                return(sum(sapply(private$..runs, function(run) {
+                    if(length(run)) { return(length(run$errors)) }
+                })))
+            } else {
+                return(0)
+            }
         },
 
 
