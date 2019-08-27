@@ -212,4 +212,16 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for specifying designs ---------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+specify.design <- function(multiple.selection = TRUE, duplicate.input = FALSE, input.separator = " ") {
+    # Build the design.
+    design <- SpecificationDesign$new(multiple = multiple.selection, separator = input.separator, duplicates = duplicate.input)
+
+    return(design)
+}
+
 # End of file.
