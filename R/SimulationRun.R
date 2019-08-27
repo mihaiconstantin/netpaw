@@ -29,16 +29,22 @@ SimulationRun <- R6::R6Class("SimulationRun",
         # Input.
         ..config = NULL,
 
+
         # Output.
         ..generator = NULL,
         ..sampler = NULL,
         ..estimator = NULL,
         ..comparator = NULL,
 
+
         # Informative fields.
-        # ..error = NULL,
         ..start = NULL,
         ..end = NULL,
+
+
+        # Error handling.
+        ..errors = list(),
+        ..warnings = list(),
 
 
         # Apply the procedure for the current simulation run.
@@ -67,6 +73,31 @@ SimulationRun <- R6::R6Class("SimulationRun",
 
             # Record the end.
             private$..end <- Sys.time()
+        },
+
+
+        # Run the procedure safely.
+        ..run.safe = function() {
+            # Try to run.
+            tryCatch(withCallingHandlers(
+                # The expression to evaluate.
+                expr = private$..run(),
+
+                # The warning handler.
+                warning = function(w) {
+                    # Store warning.
+                    private$..warnings <<- format.exceptions(w)
+
+                    # Prevent the warning from being printed.
+                    invokeRestart("muffleWarning")
+                }),
+
+                # The error handler.
+                error = function(e) {
+                    # Store error.
+                    private$..errors <<- format.exceptions(e)
+                }
+            )
         },
 
 
@@ -139,7 +170,7 @@ SimulationRun <- R6::R6Class("SimulationRun",
             private$..generator <- generator
 
             # Run.
-            private$..run()
+            private$..run.safe()
         }
     ),
 
@@ -170,9 +201,14 @@ SimulationRun <- R6::R6Class("SimulationRun",
         },
 
 
-        # error = function() {
-        #     return(private$..error)
-        # },
+        errors = function() {
+            return(private$..errors)
+        },
+
+
+        warnings = function() {
+            return(private$..warnings)
+        },
 
 
         start = function() {
