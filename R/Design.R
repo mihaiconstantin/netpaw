@@ -65,6 +65,44 @@ Design <- R6::R6Class("Design",
 
             # Set the replications.
             private$..set.replications()
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::black$bgGreen$bold("Simulation design details:"))
+            cat("\n")
+            cat("  - replications:", private$..replications)
+            cat("\n")
+
+            # Model details.
+            for (model in private$..structure$model) {
+                cat("  - model ", model$alias, ":", sep = "")
+                cat("\n")
+                
+                # Step details.
+                for(step in names(model)[names(model) != "alias" & names(model) != "graph"]) {
+                    cat("    -", step, "options:")
+                    cat("\n")
+
+                    for (option in names(model[[step]])) {
+                        cat("      - ", option, ": ", paste(crayon::yellow(model[[step]][[option]]), collapse = crayon::silver(" | ")), sep = "")
+                        cat("\n")
+                    }
+                }
+
+                # Graph details.
+                for(graph in names(model$graph)) {
+                    cat("    - graph ", graph, ":", sep = "")
+                    cat("\n")
+
+                    for(option in names(model$graph[[graph]])) {
+                        cat("      - ", option, ": ", paste(crayon::yellow(model$graph[[graph]][[option]]), collapse = crayon::silver(" | ")), sep = "")
+                        cat("\n")
+                    }
+                }
+            }
         }
     ),
 
