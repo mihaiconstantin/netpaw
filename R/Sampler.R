@@ -58,7 +58,7 @@ Sampler <- R6::R6Class("Sampler",
 
         # Drop specified invariant columns from data.
         ..drop.invariant.columns = function() {
-            return(private$..data$dataset[, !private$..determine.invariant.columns(),  drop = FALSE])
+            return(private$..data$dataset[, !private$..determine.invariant.columns(), drop = FALSE])
         },
 
 
@@ -154,7 +154,7 @@ Sampler <- R6::R6Class("Sampler",
 
     public = list(
         # Constructor.
-        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1, verbose = TRUE) {
+        initialize = function(model, ..., max.resampling.attempts = 10, invariance.tolerance = 1, verbose = FALSE) {
             # Boot.
             private$..boot(model, max.resampling.attempts, invariance.tolerance, verbose)
 
