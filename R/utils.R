@@ -558,6 +558,13 @@ how.many.lines <- function(path = "./R") {
 
 
 
+# Parse errors and warnings for logging.
+format.exceptions <- function(e) {
+    return(paste(as.character(Sys.time()), "|", "call:", paste0(deparse(e$call), sep = "", collapse = "#"), "|", "message:", e$message))
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Decorators --------------------------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
