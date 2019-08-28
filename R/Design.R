@@ -71,14 +71,14 @@ Design <- R6::R6Class("Design",
         # Print.
         print = function() {
             # General details.
-            cat(crayon::black$bgGreen$bold("Simulation design details:"))
+            cat(crayon::bold("Simulation design:"))
             cat("\n")
             cat("  - replications:", crayon::yellow(private$..replications))
             cat("\n")
 
             # Model details.
             for (model in private$..structure$model) {
-                cat("  - model ", model$alias, ":", sep = "")
+                cat("  - model ", crayon::yellow(model$alias), ":", sep = "")
                 cat("\n")
                 
                 # Step details.
@@ -94,7 +94,7 @@ Design <- R6::R6Class("Design",
 
                 # Graph details.
                 for(graph in names(model$graph)) {
-                    cat("    - graph ", graph, ":", sep = "")
+                    cat("    - graph ", crayon::yellow(graph), ":", sep = "")
                     cat("\n")
 
                     for(option in names(model$graph[[graph]])) {
@@ -103,6 +103,15 @@ Design <- R6::R6Class("Design",
                     }
                 }
             }
+
+            # API details.
+            cat("\n")
+            cat(crayon::bold("API:"))
+            cat("\n")
+            cat("  - fields:", paste(c("structure", "replications", "options"), collapse = " | "))
+            cat("\n")
+            cat("  - methods:", crayon::silver("n.a."))
+            cat("\n")
         }
     ),
 
