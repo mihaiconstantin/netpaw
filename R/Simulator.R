@@ -137,6 +137,33 @@ Simulator <- R6::R6Class("Simulator",
             for (i in subset) {
                private$..simulations[[i]]$perform(...)
             }
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Simulator:"))
+            cat("\n")
+            cat("  - conditions:", crayon::yellow(self$total))
+            cat("\n")
+            cat("  - completed:", crayon::yellow(self$completed))
+            cat("\n")
+            cat("  - targets:", paste(crayon::yellow(ifelse(length(self$targets), self$targets, 0)), collapse = crayon::silver(" | ")), sep = "")
+            cat("\n")
+
+            # API details.
+            cat("\n")
+            cat(crayon::bold("API:"))
+            cat("\n")
+            cat("  - fields:", paste(c("design", "simulations", "targets", "total", "completed"), collapse = " | "))
+            cat("\n")
+            cat("  - methods:")
+            cat("\n")
+            cat("    - ", paste("run.rage(", paste(formalArgs(self$run.rage), collapse = ", "), ")", sep = ""))
+            cat("\n")
+            cat("    - ", paste("run.subset(", paste(formalArgs(self$run.subset), collapse = ", "), ")", sep = ""))
+            cat("\n")
         }
     ),
 
