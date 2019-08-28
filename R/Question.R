@@ -40,7 +40,7 @@ Question <- R6::R6Class("Question",
         # Ask user for confirmation on his or her input or selection.
         ..ask.for.confirmation = function(answer) {
             # Format the answer for display.
-            pretty.answer <- ifelse(length(answer) == 0, "none", paste0(crayon::silver(" | "), paste(crayon::yellow(answer), collapse = crayon::silver(" | ")), crayon::silver(" | ")))
+            pretty.answer <- ifelse(length(answer) == 0, " none/ default ", paste0(crayon::silver(" | "), paste(crayon::yellow(answer), collapse = crayon::silver(" | ")), crayon::silver(" | ")))
 
             # Prepare the confirmation text.
             title <- paste0("Inferred values:", pretty.answer, "\n\n", "Do you accept these values?") 
