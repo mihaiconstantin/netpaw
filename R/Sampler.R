@@ -47,6 +47,7 @@ Sampler <- R6::R6Class("Sampler",
         ..verbose = NULL,
         ..progress.bar = NULL,
 
+
         # Support methods.
 
 

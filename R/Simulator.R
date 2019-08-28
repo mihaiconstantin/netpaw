@@ -170,4 +170,18 @@ Simulator <- R6::R6Class("Simulator",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for simulator API --------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+simulator <- function(design) {
+    # Build the design.
+    simulator <- Simulator$new(design)
+
+    return(simulator)
+}
+
+
+
 # End of file.
