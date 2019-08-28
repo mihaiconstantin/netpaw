@@ -35,23 +35,32 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
 
     private = list(
+        ..multiple = NULL,
+        ..separator = NULL,
+        ..duplicates = NULL,
+        ..confirmation = NULL,
+
+
+        # Pure virtual methods.
+
+
         # Set the design using questions.
-        ..set.structure = function(multiple = TRUE, separator = " ", duplicates = FALSE) {
+        ..set.structure = function() {
             # Capture the answer.
-            models <- Question$new("select", "\nWhat model(s) do you want to simulate for?", names(Generator$..ALIASES..), multiple = multiple)$answer
+            models <- Question$new("select", "\nWhat model(s) do you want to simulate for?", names(Generator$..ALIASES..), multiple = private$..multiple, confirmation = private$..confirmation)$answer
 
             # For every model create an empty list where the options will be stored.
             for(model in models) {
-                private$..structure[["model"]][[model]] <- c(alias = model, private$..gather.model.options(model = model, separator = separator, duplicates = duplicates))
+                private$..structure[["model"]][[model]] <- c(alias = model, private$..gather.model.options(model = model))
 
                 # If the models makes use of a graph for its architecture.
                 if(private$..model.needs.graph(model)) {
                     # What graphs does the user want?
-                    graphs <- Question$new("select", "\nWhat graph(s) do you want to use for generating true model parameters?", names(Graph$..ALIASES..), multiple = multiple)$answer
+                    graphs <- Question$new("select", "\nWhat graph(s) do you want to use for generating true model parameters?", names(Graph$..ALIASES..), multiple = private$..multiple, confirmation = private$..confirmation)$answer
 
                     # For every graph, get it's options for all the steps involved in creating a graph (i.e., currently only generating graphs).
                     for(graph in graphs) {
-                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(alias = graph, private$..gather.graph.options(graph = graph, separator = separator, duplicates = duplicates))
+                        private$..structure[["model"]][[model]][["graph"]][[graph]] <- c(alias = graph, private$..gather.graph.options(graph = graph))
                     }
                 }
             }
@@ -61,12 +70,15 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
         # Set the design replications using a question.
         ..set.replications = function() {
             # Capture the answer.
-            private$..replications <- Question$new("select", "\nHow many times should each cell be replicated?", c(100, 200, 300, 400, 500), multiple = FALSE)$answer
+            private$..replications <- Question$new("select", "\nHow many times should each cell be replicated?", c(100, 200, 300, 400, 500), multiple = FALSE, confirmation = private$..confirmation)$answer
         },
 
 
+        # Business logic.
+
+
         # Get all the options for all the major steps (i.e., Generator, Sampler and Estimator) for a model alias.
-        ..gather.model.options = function(model, separator, duplicates = duplicates) {
+        ..gather.model.options = function(model) {
             # Announce him or her about what is coming next.
             cat("\nVary simulation options for the", shQuote(crayon::yellow(model)), "model.\n")
 
@@ -74,23 +86,23 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
             answer <- list()
 
             # Query the options of the generator.
-            answer$generator <- private$..query.blueprint.implementation(Generator, model, "..generator", separator = separator, duplicates = duplicates)
+            answer$generator <- private$..query.blueprint.implementation(Generator, model, "..generator")
 
             # Query the options of the sampler.
-            answer$sampler <- private$..query.blueprint.implementation(Sampler, model, "..sampler", separator = separator, duplicates = duplicates)
+            answer$sampler <- private$..query.blueprint.implementation(Sampler, model, "..sampler")
 
             # Before gathering the options for the implementation of the estimator, decide what implementation should be used.
-            implementation <- Question$new("select", "\nWhat estimation method should be used?", c("frequentist", "bayesian"), multiple = FALSE)$answer
+            implementation <- Question$new("select", "\nWhat estimation method should be used?", c("frequentist", "bayesian"), multiple = FALSE, confirmation = private$..confirmation)$answer
 
             # Query the options of the estimator. 
-            answer$estimator <- c(implementation = implementation, private$..query.blueprint.implementation(Estimator, model, paste0("..", implementation), separator = separator, duplicates = duplicates))
+            answer$estimator <- c(implementation = implementation, private$..query.blueprint.implementation(Estimator, model, paste0("..", implementation)))
 
             return(answer)
         },
 
 
         # Get all the options for all the steps related to a graph (i.e., currently only the `Graph` with `..generator`).
-        ..gather.graph.options = function(graph, separator, duplicates) {
+        ..gather.graph.options = function(graph) {
             # Announce him or her about what is coming next.
             cat("\nVary simulation options for the", shQuote(crayon::yellow(graph)), "graph.\n")
             
@@ -98,14 +110,14 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
             answer <- list()
 
             # Query the options of the generator. We can also do `answer$generator`, but let's keep it simple until we add sampling and estimation for the graphs.
-            answer <- private$..query.blueprint.implementation(Graph, graph, "..generator", separator = separator, duplicates = duplicates)
+            answer <- private$..query.blueprint.implementation(Graph, graph, "..generator")
 
             return(answer)
         },
 
 
         # Ask questions about the parameters of the implementation of the main simulation blueprints.
-        ..query.blueprint.implementation = function(blueprint, model, implementation, separator, duplicates) {
+        ..query.blueprint.implementation = function(blueprint, model, implementation) {
             # Make sure that the blueprint provided is part of what makes up a simulation.
             assert(class(blueprint) == "R6ClassGenerator" && blueprint$classname %in% c("Graph", "Generator", "Sampler", "Estimator"), ..ERRORS..$incorrect.object.type)
 
@@ -133,7 +145,7 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
                 example.answer <- paste("default is", example.arg)
 
                 # Ask for the option in question and store it.
-                question <- Question$new(type = "open", question = question, example = example.answer, separator = separator, duplicates = duplicates)
+                question <- Question$new(type = "open", question = question, example = example.answer, separator = private$..separator, duplicates = private$..duplicates, confirmation = private$..confirmation)
 
                 # If the answer is empty, provide the example argument.
                 if(length(question$answer) > 0) {
@@ -177,6 +189,9 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
         },
 
 
+        # Helpers.
+
+
         # Check if a model needs a graph based on the function definition.
         ..model.needs.graph = function(model) {
             return("..graph" %in% names(Generator$..ALIASES..[[model]]$class$get_inherit()$private_fields))
@@ -200,12 +215,18 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 
 
     public = list(
-        initialize = function(...) {
+        initialize = function(multiple = TRUE, separator = " ", duplicates = TRUE, confirmation = FALSE) {
+            # Set the class fields.
+            private$..multiple = multiple
+            private$..separator = separator
+            private$..duplicates = duplicates
+            private$..confirmation = confirmation
+
             # Print the instructions.
             private$..instructions()
 
             # Call the parent constructor.
-            super$initialize(...)
+            super$initialize()
         }
     )
 )
@@ -217,11 +238,13 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-specify.design <- function(multiple.selection = TRUE, duplicate.input = FALSE, input.separator = " ") {
+specify.design <- function(multiple.selection = TRUE, duplicate.input = FALSE, input.separator = " ", confirmation = FALSE) {
     # Build the design.
-    design <- SpecificationDesign$new(multiple = multiple.selection, separator = input.separator, duplicates = duplicate.input)
+    design <- SpecificationDesign$new( multiple = multiple.selection, separator = input.separator, duplicates = duplicate.input, confirmation = confirmation)
 
     return(design)
 }
+
+
 
 # End of file.
