@@ -73,7 +73,7 @@ Design <- R6::R6Class("Design",
             # General details.
             cat(crayon::black$bgGreen$bold("Simulation design details:"))
             cat("\n")
-            cat("  - replications:", private$..replications)
+            cat("  - replications:", crayon::yellow(private$..replications))
             cat("\n")
 
             # Model details.
