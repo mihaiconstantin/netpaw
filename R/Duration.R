@@ -113,11 +113,11 @@ Duration <- R6::R6Class("Duration",
             cat("\n")
             cat("  - design replications:", crayon::yellow(private$..replications))
             cat("\n")
-            cat("  - seconds:", crayon::yellow(self$seconds))
+            cat("  - seconds:", crayon::yellow(round(self$seconds, 3)))
             cat("\n")
-            cat("  - minutes:", crayon::yellow(self$minutes))
+            cat("  - minutes:", crayon::yellow(round(self$minutes, 3)))
             cat("\n")
-            cat("  - hours:", crayon::yellow(self$hours))
+            cat("  - hours:", crayon::yellow(round(self$hours, 3)))
             cat("\n")
 
             # API details.
@@ -134,7 +134,7 @@ Duration <- R6::R6Class("Duration",
                 ggplot2::stat_summary(fun.y = mean, geom = "point", shape = 23, size = 3, fill = "blue") +
                 ggplot2::theme_bw() +
                 ggplot2::theme(axis.ticks.x = ggplot2::element_blank()) +
-                ggplot2::labs(x = paste("Simulation time (", private$..replications, " replications)", sep = ""), y = "Seconds") +
+                ggplot2::labs(x = paste("Average time for a simulation with ", private$..replications, " replications", sep = ""), y = "Seconds") +
                 ggplot2::annotate("text", x = 1.5, y = max(private$..durations), label = paste(round(self$hours, 2), "hours", "\n", "(total)"))
         }
     ),
