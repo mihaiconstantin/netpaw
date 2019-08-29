@@ -25,7 +25,8 @@
 
 ..GRAPHICS.. <- list(
     positive.edge.color = "#3F51B5",
-    negative.edge.color = "#F44336"
+    negative.edge.color = "#F44336",
+    node.color = "#F9F9F9"
 )
 
 
