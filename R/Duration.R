@@ -164,4 +164,18 @@ Duration <- R6::R6Class("Duration",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for duration API ---------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+duration <- function(simulator, simulation.samples = 50, replication.samples = 1, replications = NULL, ...) {
+    # Get the duration.
+    duration <- Duration$new(simulator, simulation.samples, run.samples = replication.samples, replications, ...)
+
+    return(duration)
+}
+
+
+
 # End of file.
