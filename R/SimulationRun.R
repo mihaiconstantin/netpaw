@@ -174,6 +174,7 @@ SimulationRun <- R6::R6Class("SimulationRun",
         },
 
 
+        # Print.
         print = function() {
             # General details.
             cat(crayon::bold("Replication:"))
