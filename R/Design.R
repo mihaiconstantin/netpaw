@@ -105,13 +105,7 @@ Design <- R6::R6Class("Design",
             }
 
             # API details.
-            cat("\n")
-            cat(crayon::bold("API:"))
-            cat("\n")
-            cat("  - fields:", paste(c("structure", "replications", "options"), collapse = " | "))
-            cat("\n")
-            cat("  - methods:", crayon::silver("n.a."))
-            cat("\n")
+            print.class.api(Design)
         }
     ),
 
