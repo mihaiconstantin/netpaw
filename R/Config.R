@@ -102,6 +102,35 @@ Config <- R6::R6Class("Config",
         initialize = function(..., supplementary = NULL, use.options = TRUE) {
             # Set the values.
             private$..set.values(..., supplementary = supplementary, use.options = use.options)
+        },
+
+
+        # Print.
+        print = function(api = TRUE) {
+            # General details.
+            cat(crayon::bold("Config:"))
+            cat("\n")
+            cat("  - alias:", crayon::yellow(private$..values$alias))
+            cat("\n")
+            cat("  - generator:")
+            cat("\n")
+            cat("    -", paste(paste(names(private$..values$generator), ":", sep = ""), crayon::yellow(private$..values$generator), collapse = "\n    - "))
+            cat("\n")
+            cat("  - sampler:")
+            cat("\n")
+            cat("    -", paste(paste(names(private$..values$sampler), ":", sep = ""), crayon::yellow(private$..values$sampler), collapse = "\n    - "))
+            cat("\n")
+            cat("  - estimator:")
+            cat("\n")
+            cat("    -", paste(paste(names(private$..values$estimator), ":", sep = ""), crayon::yellow(private$..values$estimator), collapse = "\n    - "))
+            cat("\n")
+            cat("  - graph:")
+            cat("\n")
+            cat("    -", paste(paste(names(private$..values$graph), ":", sep = ""), crayon::yellow(private$..values$graph), collapse = "\n    - "))
+            cat("\n")
+
+            # API details.
+            if(api) print.class.api(Config)
         }
     ),
 
