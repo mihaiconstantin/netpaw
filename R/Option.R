@@ -58,6 +58,19 @@ Option <- R6::R6Class("Option",
             if(!is.null(meta)) assert("Meta" %in% class(meta), ..ERRORS..$incorrect.object.type)
 
             private$..meta <- meta
+        },
+
+
+        # Print.
+        print = function(api = TRUE) {
+            # General details.
+            cat(crayon::bold("Option:"))
+            cat("\n")
+            cat("  -", paste(paste(names(self$to.list()), ":", sep = ""), crayon::yellow(self$to.list()), collapse = "\n  - "))
+            cat("\n")
+
+            # API details.
+            if(api) print.class.api(Option)
         }
     ),
 
