@@ -171,6 +171,27 @@ SimulationRun <- R6::R6Class("SimulationRun",
 
             # Run.
             private$..run.safe()
+        },
+
+
+        print = function() {
+            # General details.
+            cat(crayon::bold("Replication:"))
+            cat("\n")
+            cat("  - start:", crayon::yellow(private$..start))
+            cat("\n")
+            cat("  - end:", crayon::yellow(private$..end))
+            cat("\n")
+            cat("  - errors:", crayon::yellow(length(private$..errors)))
+            cat("\n")
+            cat("  - warnings:", crayon::yellow(length(private$..warnings)))
+            cat("\n")
+
+            # Config details.
+            print(private$..config, api = FALSE)
+
+            # API details.
+            print.class.api(SimulationRun)
         }
     ),
 
