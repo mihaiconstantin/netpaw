@@ -171,6 +171,32 @@ Sampler <- R6::R6Class("Sampler",
 
             # Resampling should occur if there is at least one invariant column.
             return(columns.are.invariant)
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Sampler:"))
+            cat("\n")
+            cat("  - wrapper:", crayon::yellow("generate.data(type, ...)"))
+            cat("\n")
+            cat("  - resampling attempts:", crayon::yellow(private$..resampling.attempts))
+            cat("\n")
+            cat("  - allowed resampling attempts:", crayon::yellow(private$..max.resampling.attempts))
+            cat("\n")
+            cat("  - invariance tolerance:", crayon::yellow(private$..invariance.tolerance))
+            cat("\n")
+            cat("  - resampling succeeded:", crayon::yellow(private$..resampling.succeeded))
+            cat("\n")
+            cat("  - dimensions:", crayon::yellow(paste0(self$rows, "x", self$cols)))
+            cat("\n")
+
+            # Option details.
+            print(private$..options, api = FALSE)
+
+            # API details.
+            print.class.api(eval(as.symbol(private$..options$meta$type)), parent = TRUE)
         }
     ),
 
