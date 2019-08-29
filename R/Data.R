@@ -29,9 +29,23 @@ Data <- R6::R6Class("Data",
         dataset = NULL,
 
 
+        # Constructor.
         initialize = function(dataset = NULL) {
             # Set fields.
             self$dataset <- dataset
+        },
+
+
+        # Print.
+        print = function(api = TRUE) {
+            # General details.
+            cat(crayon::bold("Data:"))
+            cat("\n")
+            cat("  - dimensions:", crayon::yellow(paste0(nrow(self$dataset), "x", ncol(self$dataset))))
+            cat("\n")
+
+            # API details.
+            if(api) print.class.api(Data)
         }
     )
 )
