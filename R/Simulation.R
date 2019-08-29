@@ -82,16 +82,19 @@ Simulation <- R6::R6Class("Simulation",
                 private$..runs[[1]] <- SimulationRun$new(private$..config)
             }
 
-            # Decide on what generator to use (i.e., reuse the first ever created or vary it for each run).
-            if(!vary.generator) { generator <- private$..runs[[1]]$generator } else { generator <- NULL }
+            # If there are subsequent replications, decide what generator to use and run them.
+            if(private$..replications > 1) {
+                # Decide on what generator to use (i.e., reuse the first ever created or vary it for each run).
+                if(!vary.generator) { generator <- private$..runs[[1]]$generator } else { generator <- NULL }
 
-            # Run and replicate the remaining.
-            for (i in 2:private$..replications) {
-                # Tick the progress bar.
-                if(verbose) progress.bar$tick()
+                # Run and replicate the remaining.
+                for (i in 2:private$..replications) {
+                    # Tick the progress bar.
+                    if(verbose) progress.bar$tick()
 
-                # Perform the remainder of the replications.
-                private$..runs[[i]] <- SimulationRun$new(config = private$..config, generator = generator)
+                    # Perform the remainder of the replications.
+                    private$..runs[[i]] <- SimulationRun$new(config = private$..config, generator = generator)
+                }
             }
 
             # Handle the progress bar completion to avoid printing issues (e.g., if finished earlier than expected ticks, mark it as terminated manually).
