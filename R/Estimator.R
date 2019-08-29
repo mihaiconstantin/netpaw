@@ -111,6 +111,27 @@ Estimator <- R6::R6Class("Estimator",
 
             # Estimate.
             private$..estimate(...)
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Estimator:"))
+            cat("\n")
+            cat("  - wrapper:", crayon::yellow("estimate(type, ...)"))
+            cat("\n")
+            cat("  - thinking:", crayon::yellow(private$..thinking))
+            cat("\n")
+
+            # Option details.
+            print(private$..options, api = FALSE)
+
+            # Model details.
+            print(private$..model, api = FALSE)
+
+            # API details.
+            print.class.api(eval(as.symbol(private$..options$meta$type)), parent = TRUE)
         }
     ),
 
