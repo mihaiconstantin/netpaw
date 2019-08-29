@@ -77,6 +77,25 @@ Generator <- R6::R6Class("Generator",
 
             # Generate.
             private$..generate(...)
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Generator:"))
+            cat("\n")
+            cat("  - wrapper:", crayon::yellow("generate.model(type, ...)"))
+            cat("\n")
+
+            # Option details.
+            print(private$..options, api = FALSE)
+
+            # Model details.
+            print(private$..model, api = FALSE)
+
+            # API details.
+            print.class.api(eval(as.symbol(private$..options$meta$type)), parent = TRUE)
         }
     ),
 
