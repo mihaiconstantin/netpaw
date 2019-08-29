@@ -53,6 +53,19 @@ Model <- R6::R6Class("Model",
             corr.matrix <- cov2cor(solve(diag(ncol(self$weights)) - self$weights))
 
             return(corr.matrix)
+        },
+
+
+        # Print.
+        print = function(api = TRUE) {
+            # General details.
+            cat(crayon::bold("Model:"))
+            cat("\n")
+            cat("  - positive definite:", crayon::yellow(self$is.positive.definite))
+            cat("\n")
+
+            # API details.
+            if(api) print.class.api(Model)
         }
     ),
 
