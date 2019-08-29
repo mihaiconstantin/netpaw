@@ -107,6 +107,36 @@ Simulation <- R6::R6Class("Simulation",
 
 
     active = list(
+        # Extract all outcomes from the `private$..runs` as a list.
+        outcome.list = function() {
+            if(self$completed > 0) {
+                return(lapply(private$..runs, function(run) {
+                    run$comparator$outcome$values[sapply(run$comparator$outcome$values, function(value) {
+                        is.numeric(value) || is.logical(value)
+                    })]
+                }))
+            } else {
+                return(NULL)
+            }
+        },
+
+
+        # Extract all outcomes from the `private$..runs` as a data frame.
+        outcome.frame = function() {
+            return(do.call(rbind, lapply(self$outcome.list, as.data.frame)))
+        },
+
+
+        # Average all outcomes extracted from `private$..runs`.
+        outcome.means = function() {
+            if(self$completed > 0) {
+                return(as.list(colMeans(self$outcome.frame, na.rm = TRUE)))
+            } else {
+                return(NULL)
+            }
+        },
+
+
         config = function() {
             return(private$..config)
         },
