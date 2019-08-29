@@ -102,6 +102,29 @@ Duration <- R6::R6Class("Duration",
         },
 
 
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Duration:"))
+            cat("\n")
+            cat("  - simulation samples:", crayon::yellow(private$..simulation.samples))
+            cat("\n")
+            cat("  - replication samples:", crayon::yellow(private$..run.samples))
+            cat("\n")
+            cat("  - design replications:", crayon::yellow(private$..replications))
+            cat("\n")
+            cat("  - seconds:", crayon::yellow(self$seconds))
+            cat("\n")
+            cat("  - minutes:", crayon::yellow(self$minutes))
+            cat("\n")
+            cat("  - hours:", crayon::yellow(self$hours))
+            cat("\n")
+
+            # API details.
+            print.class.api(Duration)
+        },
+
+
         # Plot method.
         plot = function() {
             # Create the ggplot.
