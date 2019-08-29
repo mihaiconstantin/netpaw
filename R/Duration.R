@@ -90,7 +90,7 @@ Duration <- R6::R6Class("Duration",
 
     public = list(
         # Constructor
-        initialize = function(simulator, simulation.samples = 100, run.samples = 10, replications = NULL, ...) {
+        initialize = function(simulator, simulation.samples = 50, run.samples = 1, replications = NULL, ...) {
             # Type check.
             assert("Simulator" %in% class(simulator), ..ERRORS..$incorrect.object.type)
 
@@ -111,7 +111,7 @@ Duration <- R6::R6Class("Duration",
                 ggplot2::stat_summary(fun.y = mean, geom = "point", shape = 23, size = 3, fill = "blue") +
                 ggplot2::theme_bw() +
                 ggplot2::theme(axis.ticks.x = ggplot2::element_blank()) +
-                ggplot2::labs(x = paste("Average time for replicating one simulation", private$..replications, "time(s)"), y = "Seconds") +
+                ggplot2::labs(x = paste("Simulation time (", private$..replications, " replications)", sep = ""), y = "Seconds") +
                 ggplot2::annotate("text", x = 1.5, y = max(private$..durations), label = paste(round(self$hours, 2), "hours", "\n", "(total)"))
         }
     ),
