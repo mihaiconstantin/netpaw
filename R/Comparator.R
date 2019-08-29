@@ -90,6 +90,28 @@ Comparator <- R6::R6Class("Comparator",
 
             # Compare.
             private$..compare(...)
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Comparator:"))
+            cat("\n")
+            cat("  - wrapper:", crayon::yellow("compare(type, ...)"))
+            cat("\n")
+
+            # Outcome details.
+            print(private$..outcome, api = FALSE)
+
+            # Config details.
+            print(private$..config, api = FALSE)
+
+            # Option details.
+            print(private$..options, api = FALSE)
+
+            # API details.
+            print.class.api(eval(as.symbol(private$..options$meta$type)), parent = TRUE)
         }
     ),
 
