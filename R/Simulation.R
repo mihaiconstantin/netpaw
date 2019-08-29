@@ -66,7 +66,7 @@ Simulation <- R6::R6Class("Simulation",
 
         # Perform and replicate the simulation.
         # TODO: Allow to run chunks of replications (i.e., different processes) that can later be glued based on the simulation hash.
-        perform = function(vary.generator = FALSE, verbose = TRUE) {
+        perform = function(vary.generator = FALSE, verbose = FALSE) {
             # Initialize the progress bar.
             progress.bar = progress::progress_bar$new(total = private$..replications, format = "[:bar] replication :current of :total (:elapsed)", clear = FALSE)
 
@@ -76,7 +76,7 @@ Simulation <- R6::R6Class("Simulation",
             # If no replication ran has been performed, run for the first time.
             if(!length(private$..runs)) {
                 # Tick the progress bar manually (i.e., because we loop from 2 onwards). Ew!
-                progress.bar$tick()
+                if(verbose) progress.bar$tick()
 
                 # Perform the first replication.
                 private$..runs[[1]] <- SimulationRun$new(private$..config)
