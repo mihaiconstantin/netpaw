@@ -33,6 +33,19 @@ Outcome <- R6::R6Class("Outcome",
         initialize = function(values) {
             # Set the values from passed values.
             self$values <- values
+        },
+
+
+        # Print.
+        print = function(api = TRUE) {
+            # General details.
+            cat(crayon::bold("Outcome:"))
+            cat("\n")
+            cat("  -", paste(paste(names(self$values), ":", sep = ""), crayon::yellow(self$values), collapse = "\n  - "))
+            cat("\n")
+
+            # API details.
+            if(api) print.class.api(Outcome)
         }
     )
 )
