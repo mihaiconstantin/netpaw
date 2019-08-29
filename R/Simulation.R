@@ -102,6 +102,36 @@ Simulation <- R6::R6Class("Simulation",
 
             # Console feedback on end.
             if(verbose) cat("Simulation `", self$short.hash ,"` completed. Status: ", self$completed, " replications | ", self$warnings, " warnings | ", self$errors, " errors.", "\n\n", sep = "")
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Simulation:"))
+            cat("\n")
+            cat("  - hash:", crayon::yellow(private$..hash))
+            cat("\n")
+            cat("  - replications:", crayon::yellow(private$..replications))
+            cat("\n")
+            cat("  - completed:", crayon::yellow(self$completed))
+            cat("\n")
+            cat("  - warnings:", crayon::yellow(self$warnings))
+            cat("\n")
+            cat("  - errors:", crayon::yellow(self$errors))
+            cat("\n")
+
+            # Config details.
+            print(private$..config, api = FALSE)
+
+            # Outcome average details.
+            cat(crayon::bold("Outcome means:"))
+            cat("\n")
+            if(self$completed == 0) { cat("  -", crayon::silver("no replications completed")) } else { cat("  -", paste(paste(names(self$outcome.means), ":", sep = ""), crayon::yellow(round(unlist(self$outcome.means), 3)), collapse = "\n  - ")) }
+            cat("\n")
+
+            # API details.
+            print.class.api(Simulation)
         }
     ),
 
