@@ -198,7 +198,7 @@ find.ancestor <- function(type) {
 
 
 # Print the API of an R6 class.
-print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods = c("initialize", "clone", "print"), parent = FALSE) {
+print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods = c("initialize", "clone", "print", "plot"), parent = FALSE) {
     # Determine the excluded fields.
     if(length(excluded.fields)) { excluded.fields <- paste0(excluded.fields, collapse = "|") } else { excluded.fields <- "!" }
 
