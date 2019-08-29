@@ -132,6 +132,58 @@ Simulation <- R6::R6Class("Simulation",
 
             # API details.
             print.class.api(Simulation)
+        },
+
+
+        # Plot.
+        plot = function(verbose = TRUE, start, end, device.width = 11.7, device.height = 8.3, adj = .98, line = 3.5) {
+            # If range not provided, print all replications.
+            if(missing(start)) start <- 1
+            if(missing(end)) end <- length(private$..runs)
+
+            # Prevent range overflow.
+            assert((start > 0) && (end <= length(private$..runs)), "Invalid replication range.")
+
+            # Figure the plot name.
+            path <- paste0(getwd(), "/", "Simulation_", self$short.hash, "_printed_at_", as.numeric(Sys.time()), ".pdf")
+
+            # Information that a printing process is occurring.
+            if(verbose) {
+                # Initialize the progress bar.
+                progress.bar <- progress::progress_bar$new(total = length(start:end), format = "[:bar] replication :current of :total (:elapsed)", clear = FALSE)
+
+                # Console feedback.
+                cat("Printing simulation `", crayon::yellow(self$short.hash), "` to `", crayon::yellow(path) , "`.", "\n", sep = "")
+            }
+
+            # Open the `pdf` device.
+            pdf(path, width = device.width , height = device.height)
+
+            # On exit, make sure you kill the connection.
+            on.exit(dev.off())
+
+            # Start plotting the replications.
+            for (i in start:end) {
+                if(!length(private$..runs[[i]]$errors)) {
+                    # Tick the progress bar.
+                    if(verbose) progress.bar$tick()
+
+                    # Plot the graphs.
+                    plot(private$..runs[[i]]$comparator)
+
+                    # Annotate the plot.
+                    mtext(paste("id:", self$short.hash, "| replication:", i), side = 1, adj = adj, line = line, cex = .7)
+                }
+            }
+
+            # Information that the printing process was completed.
+            if(verbose) {
+                # Terminate the progress bar.
+                if(!progress.bar$finished) progress.bar$terminate()
+
+                # Console feedback.
+                cat("Simulation `", crayon::yellow(self$short.hash), "` was printed.", "\n", sep = "")
+            }
         }
     ),
 
