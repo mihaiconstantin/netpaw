@@ -32,6 +32,7 @@
 Comparator <- R6::R6Class("Comparator",
 
     private = list(
+        ..options = NULL,
         ..true = NULL,
         ..estimated = NULL,
         ..outcome = NULL,
@@ -48,6 +49,9 @@ Comparator <- R6::R6Class("Comparator",
             # Type check.
             types.match.expected = ("Model" %in% class(true)) && ("Model" %in% class(estimated)) && ("Config" %in% class(config))
             assert(types.match.expected, ..ERRORS..$incorrect.object.type)
+
+            # Prepare the Option object and set the meta field.
+            private$..options <- Option$new(meta = Meta$new(type = class(self)[1]))
 
             # Assign the models.
             private$..true <- true
@@ -91,6 +95,11 @@ Comparator <- R6::R6Class("Comparator",
 
 
     active = list(
+        options = function() {
+            return(private$..options)
+        },
+
+
         true = function() { 
             return(private$..true) 
         },
