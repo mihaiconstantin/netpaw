@@ -95,6 +95,51 @@ Simulator <- R6::R6Class("Simulator",
             combinations <- c(combinations.with.graph, combinations.without.graph)
 
             return(combinations)
+        },
+
+
+        # Core logic for running a range of simulations (i.e., the range is based on the `..simulations` field).
+        ..run.rage = function(start, end, verbose, ...) {
+            # Prevent range overflow.
+            assert((start > 0) && (end <= length(private$..simulations)), "Invalid simulation range.")
+
+            # Keep track of the things we've ran.
+            private$..targets <- c(private$..targets, list(range = start:end))
+
+            # Run simulations in specified range.
+            for (i in start:end) {
+               private$..simulations[[i]]$perform(..., verbose = verbose)
+            }
+        },
+
+
+        # Core logic for running a subset of simulations.
+        ..run.subset = function(subset, verbose, ...) {
+            # Prevent subset overflow.
+            assert((min(subset) > 0) && max(subset) <= length(private$..simulations), "Invalid simulation subset.")
+
+            # Keep track of the things we've ran.
+            private$..targets <- c(private$..targets, list(subset = subset))
+
+            # Run the simulations specified in the subset.
+            for (i in subset) {
+               private$..simulations[[i]]$perform(..., verbose = verbose)
+            }
+        },
+
+
+        # Things to be done before the runners.
+        ..before = function(total) {
+            # Console feedback.
+            cat("Simulator engaged.", "\n")
+            cat("Replicating ", total, " simulation(s). Start time: ", as.character(Sys.time()), ".", "\n\n", sep = "")
+        },
+
+
+        # Things to be done after the runners.
+        ..after = function() {
+            # Console feedback.
+            cat("Simulator finished. End time: ",  as.character(Sys.time()), ".", sep = "")
         }
     ),
 
@@ -110,33 +155,29 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
-        # Run a range of simulations (i.e., the range is based on the `..simulations` field).
-        run.rage = function(start, end, ...) {
-            # Prevent range overflow.
-            assert((start > 0) && (end <= length(private$..simulations)), "Invalid simulation range.")
+        # Wrap the range runner with before and after actions.
+        run.range = function(start, end, verbose = TRUE, ...) {
+            # Actions before the run.
+            if(verbose) private$..before(length(start:end))
 
-            # Keep track of the things we've ran.
-            private$..targets <- c(private$..targets, list(range = start:end))
+            # Run.
+            private$..run.rage(start, end, verbose, ...)
 
-            # Run simulations in specified range.
-            for (i in start:end) {
-               private$..simulations[[i]]$perform(...)
-            }
+            # Actions after the run.
+            if(verbose) private$..after()
         },
 
 
-        # Run a subset of simulations.
-        run.subset = function(subset, ...) {
-            # Prevent subset overflow.
-            assert((min(subset) > 0) && max(subset) <= length(private$..simulations), "Invalid simulation subset.")
+        # Wrap the subset runner with before and after actions.
+        run.subset = function(subset, verbose = TRUE, ...) {
+            # Actions before the run.
+            if(verbose) private$..before(length(subset))
 
-            # Keep track of the things we've ran.
-            private$..targets <- c(private$..targets, list(subset = subset))
+            # Run.
+            private$..run.subset(subset, verbose, ...)
 
-            # Run the simulations specified in the subset.
-            for (i in subset) {
-               private$..simulations[[i]]$perform(...)
-            }
+            # Actions after the run.
+            if(verbose) private$..after()
         },
 
 
@@ -149,21 +190,11 @@ Simulator <- R6::R6Class("Simulator",
             cat("\n")
             cat("  - completed:", crayon::yellow(self$completed))
             cat("\n")
-            cat("  - targets:", paste(crayon::yellow(ifelse(length(self$targets), self$targets, 0)), collapse = crayon::silver(" | ")), sep = "")
+            cat("  - targets:", paste(crayon::yellow(if(length(self$targets)) unlist(self$targets)[order(unlist(self$targets))] else 0), collapse = crayon::silver(" | ")))
             cat("\n")
 
             # API details.
-            cat("\n")
-            cat(crayon::bold("API:"))
-            cat("\n")
-            cat("  - fields:", paste(c("design", "simulations", "targets", "total", "completed"), collapse = " | "))
-            cat("\n")
-            cat("  - methods:")
-            cat("\n")
-            cat("    - ", paste("run.rage(", paste(formalArgs(self$run.rage), collapse = ", "), ")", sep = ""))
-            cat("\n")
-            cat("    - ", paste("run.subset(", paste(formalArgs(self$run.subset), collapse = ", "), ")", sep = ""))
-            cat("\n")
+            print.class.api(Simulator)
         }
     ),
 
