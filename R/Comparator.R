@@ -112,6 +112,32 @@ Comparator <- R6::R6Class("Comparator",
 
             # API details.
             print.class.api(eval(as.symbol(private$..options$meta$type)), parent = TRUE)
+        },
+
+
+        # Plot.
+        plot = function() {
+            # Prepare `qgraph` arguments.
+            common.args <- list(
+                color = ..GRAPHICS..$node.color,
+                posCol = ..GRAPHICS..$positive.edge.color,
+                negCol = ..GRAPHICS..$negative.edge.color,
+                edge.labels = TRUE,
+                edge.label.cex = .8,
+                edge.label.bg = TRUE,
+                edge.label.color = 'black',
+                DoNotPlot = TRUE
+            )
+
+            # Create the graphs.
+            graph.true <- do.call(qgraph::qgraph, c(list(input = private$..true$weights, layout = "spring", title = "True model weights"), common.args))
+            graph.estimated <- do.call(qgraph::qgraph, c(list(input = private$..estimated$weights, layout = graph.true$layout, title = "Estimated model weights"), common.args))
+
+            # Plot the graphs.
+            layout(t(1:2))
+            plot(graph.true)
+            plot(graph.estimated)
+            layout(t(1:1))
         }
     ),
 
