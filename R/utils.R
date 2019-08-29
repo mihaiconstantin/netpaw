@@ -181,7 +181,7 @@ is.invariant <- function(column, tolerance = 1) {
 
 
 # Find ancestor of an `R6ClassGenerator`.
-find.ancestor = function(type) {
+find.ancestor <- function(type) {
     # Evaluate to type.
     blueprint <- eval(as.symbol(type))
 
@@ -193,6 +193,74 @@ find.ancestor = function(type) {
 
     # If more parents exist, recall, else return type.
     if(length(inherit) > 0) { Recall(inherit) } else { return(type) }
+}
+
+
+
+# Print the API of an R6 class.
+print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods = c("initialize", "clone", "print"), parent = FALSE) {
+    # Determine the excluded fields.
+    if(length(excluded.fields)) { excluded.fields <- paste0(excluded.fields, collapse = "|") } else { excluded.fields <- "!" }
+
+    # Determine the excluded methods.
+    if(length(excluded.methods)) { excluded.methods <- paste0(excluded.methods, collapse = "|") } else { excluded.methods <- "!" }
+
+    # What fields to print?
+    fields <- names(c(blueprint$active, blueprint$public_fields))[!grepl(excluded.fields, names(c(blueprint$active, blueprint$public_fields)))]
+
+    # What methods to print?
+    methods <- names(blueprint$public_methods)[!grepl(excluded.methods, names(blueprint$public_methods))]
+
+    # Start printing.
+    cat(crayon::bold("API:"))
+    cat("\n")
+
+    # Fields.
+    if(length(fields)) { cat("  - fields:", paste(fields, collapse = " | ")) } else { cat("  - fields:", crayon::silver("n.a.")) }
+    cat("\n")
+
+    # Methods.
+    if(length(methods)) {
+        cat("  - methods:")
+        cat("\n")
+
+        # Print methods.
+        for (name in methods) {
+            cat("    - ", paste(name ,"(", paste(formalArgs(blueprint$public_methods[[name]]), collapse = ", "), ")", sep = ""))
+            cat("\n")
+        }
+    } else {
+        cat("  - methods:", crayon::silver("n.a."))
+        cat("\n")
+    }
+
+    # Parent fields and methods.
+    if(parent) {
+        # Get parent fields.
+        parent.fields <- names(c(blueprint$get_inherit()$active, blueprint$get_inherit()$public_fields))[!grepl(excluded.fields, names(c(blueprint$get_inherit()$active, blueprint$get_inherit()$public_fields)))]
+
+        # Get parent methods.
+        parent.methods <- names(blueprint$get_inherit()$public_methods)[!grepl(excluded.methods, names(blueprint$get_inherit()$public_methods))]
+
+        # Print parent fields.
+        if(length(parent.fields)) { cat("  - inherited fields:", paste(parent.fields, collapse = " | ")) } else { cat("  - inherited fields:", crayon::silver("n.a.")) }
+        cat("\n")
+
+        # Print parent methods.
+        if(length(parent.methods)) {
+            cat("  - inherited methods:")
+            cat("\n")
+
+            # Print methods.
+            for (name in parent.methods) {
+                cat("    - ", paste(name ,"(", paste(formalArgs(blueprint$get_inherit()$public_methods[[name]]), collapse = ", "), ")", sep = ""))
+                cat("\n")
+            }
+        } else {
+            cat("  - inherited methods:", crayon::silver("n.a."))
+            cat("\n")
+        }
+    }
 }
 
 
