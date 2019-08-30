@@ -193,6 +193,12 @@ SimulationRun <- R6::R6Class("SimulationRun",
 
             # API details.
             print.class.api(SimulationRun)
+        },
+
+
+        # Plot.
+        plot = function() {
+            plot(private$..comparator)
         }
     ),
 
