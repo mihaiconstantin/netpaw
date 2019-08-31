@@ -45,7 +45,7 @@ Factory <- R6::R6Class("Factory",
         # Run in a multi-threaded fashion.
         ..multi.thread.implementation = function(...) {
             # Create the cluster.
-            cluster <- parallel::makeCluster(parallel::detectCores() -  1)
+            cluster <- parallel::makeCluster(parallel::detectCores() - 1)
 
             # Configure the cluster.
             doParallel::registerDoParallel(cluster)

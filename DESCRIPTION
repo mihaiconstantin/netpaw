@@ -45,6 +45,7 @@ Collate:
     'Result.R'
     'Scaffolder.R'
     'ScaleFreeGraph.R'
+    'Setup.R'
     'Simulation.R'
     'Simulator.R'
     'SmallWorldGraph.R'
