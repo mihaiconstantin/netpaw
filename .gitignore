@@ -2,5 +2,6 @@
 .Rhistory
 .RData
 R/__temp_*
+playground.R
 assets/music/*
 .vscode
