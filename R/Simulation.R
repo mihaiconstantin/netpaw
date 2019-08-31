@@ -66,7 +66,7 @@ Simulation <- R6::R6Class("Simulation",
 
         # Perform and replicate the simulation.
         # TODO: Allow to run chunks of replications (i.e., different processes) that can later be glued based on the simulation hash.
-        perform = function(vary.generator = FALSE, verbose = FALSE) {
+        perform = function(vary.generator = FALSE, verbose = FALSE, callback = NULL) {
             # Initialize the progress bar.
             progress.bar = progress::progress_bar$new(total = private$..replications, format = "[:bar] replication :current of :total (:elapsed)", clear = FALSE)
 
@@ -102,6 +102,9 @@ Simulation <- R6::R6Class("Simulation",
 
             # Console feedback on end.
             if(verbose) cat("Simulation `", self$short.hash ,"` completed. Status: ", self$completed, " replications | ", self$warnings, " warnings | ", self$errors, " errors.", "\n\n", sep = "")
+
+            # Post-simulation action in case callback is provided.
+            if(!is.null(callback)) callback(self)
         },
 
 
