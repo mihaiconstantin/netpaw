@@ -355,7 +355,7 @@ Setup <- R6::R6Class("Setup",
 #' @export
 setup <- function(simulator, cores = NULL, os = NULL, path = NULL, callback = NULL) {
     # Build the design.
-    setup <- Setup$new(simulator, cores = NULL, os = NULL, path = NULL, callback = NULL)
+    setup <- Setup$new(simulator, cores = cores, os = os, path = path, callback = callback)
 
     return(setup)
 }
