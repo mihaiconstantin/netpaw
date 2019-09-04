@@ -348,4 +348,18 @@ Setup <- R6::R6Class("Setup",
 
 
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Exported wrapper for setup API ------------------------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#' @export
+setup <- function(simulator, cores = NULL, os = NULL, path = NULL, callback = NULL) {
+    # Build the design.
+    setup <- Setup$new(simulator, cores = NULL, os = NULL, path = NULL, callback = NULL)
+
+    return(setup)
+}
+
+
+
 # End of file.
