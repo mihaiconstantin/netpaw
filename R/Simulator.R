@@ -205,6 +205,18 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
+        # Pop specified simulations.
+        pop = function(indices) {
+            private$..simulations <- private$..simulations[-indices]
+        },
+
+
+        # Keeps the specified simulations (i.e., by index) and drops all the others.
+        keep = function(indices) {
+            private$..simulations <- private$..simulations[indices]
+        },
+
+
         # Print.
         print = function() {
             # General details.
