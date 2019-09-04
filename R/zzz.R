@@ -46,7 +46,6 @@
 #' @import IsingSampler
 #' @import bootnet
 #' @import crayon
-#' @import audio
 #' @import R6
 #' @import progress
 #' @import foreach
