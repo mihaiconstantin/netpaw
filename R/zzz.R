@@ -56,7 +56,22 @@
 #' @name netpaw
 "_PACKAGE"
 
-# @include logo.R constants.R utils.R externals.R ARandomGraph.R
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Mechanism to change package specific options ----------------------------
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+..set.netpaw.option <- function(key, value) {
+    # Get the current package options.
+    package.options <- getOption("netpaw")
+
+    # Update the specified key.
+    package.options[[key]] <- value
+
+    # Store the updated options
+    options("netpaw" = package.options)
+}
+
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
