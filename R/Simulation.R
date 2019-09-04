@@ -66,6 +66,7 @@ Simulation <- R6::R6Class("Simulation",
 
         # Perform and replicate the simulation.
         # TODO: Allow to run chunks of replications (i.e., different processes) that can later be glued based on the simulation hash.
+        # TODO: Allow optional arguments to the callback.
         perform = function(vary.generator = FALSE, verbose = FALSE, callback = NULL) {
             # Initialize the progress bar.
             progress.bar = progress::progress_bar$new(total = private$..replications, format = "[:bar] replication :current of :total (:elapsed)", clear = FALSE)
@@ -139,7 +140,7 @@ Simulation <- R6::R6Class("Simulation",
 
 
         # Plot.
-        plot = function(verbose = TRUE, start, end, device.width = 11.7, device.height = 8.3, adj = .98, line = 3.5) {
+        plot = function(verbose = TRUE, start, end, device.width = 11.7, device.height = 8.3, adj = .98, line = 3.5, path = getwd()) {
             # If range not provided, print all replications.
             if(missing(start)) start <- 1
             if(missing(end)) end <- length(private$..runs)
@@ -148,7 +149,7 @@ Simulation <- R6::R6Class("Simulation",
             assert((start > 0) && (end <= length(private$..runs)), "Invalid replication range.")
 
             # Figure the plot name.
-            path <- paste0(getwd(), "/", "Simulation_", self$short.hash, "_printed_at_", as.numeric(Sys.time()), ".pdf")
+            path <- paste0(path, "/", "Simulation_", self$short.hash, "_printed_at_", as.numeric(Sys.time()), ".pdf")
 
             # Information that a printing process is occurring.
             if(verbose) {
@@ -185,7 +186,7 @@ Simulation <- R6::R6Class("Simulation",
                 if(!progress.bar$finished) progress.bar$terminate()
 
                 # Console feedback.
-                cat("Simulation `", crayon::yellow(self$short.hash), "` was printed.", "\n", sep = "")
+                cat("Simulation `", crayon::yellow(self$short.hash), "` was printed.", "\n\n", sep = "")
             }
         }
     ),
