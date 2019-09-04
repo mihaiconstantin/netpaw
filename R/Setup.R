@@ -97,20 +97,13 @@ Setup <- R6::R6Class("Setup",
 
         # Clone (i.e., not deep because we want to keep the pointer associated to each simulation instance) and split the simulator accordingly.
         ..set.splits = function() {
-            # If there are more ranges, create a simulator for each.
-            if(length(private$..ranges) > 1) {
-                # For each range create a clone of the simulator and pop the redundant simulations.
-                for (name in names(private$..ranges)) {
-                    # Shallow clone the simulator.
-                    private$..splits[[name]] <- private$..simulator$clone()
+            # For each range create a clone of the simulator and pop the redundant simulations.
+            for (name in names(private$..ranges)) {
+                # Shallow clone the simulator.
+                private$..splits[[name]] <- private$..simulator$clone()
 
-                    # Keep only the simulations in the current range.
-                    private$..splits[[name]]$keep(private$..ranges[[name]])
-                }
-
-            # If there is a single range, reuse the simulator.
-            } else {
-                private$..splits <- c(private$..splits, private$..simulator)
+                # Keep only the simulations in the current range.
+                private$..splits[[name]]$keep(private$..ranges[[name]])
             }
         },
 
@@ -126,7 +119,7 @@ Setup <- R6::R6Class("Setup",
                 try(remove.packages("netpaw")),
 
                 # Install most recent version.
-                devtools::install_github("mihaiconstantin/netpaw"),
+                devtools::install_github("mihaiconstantin/netpaw@dev"),
 
                 # Test that the package can be loaded.
                 library(netpaw),
