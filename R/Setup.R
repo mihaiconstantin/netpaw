@@ -118,8 +118,11 @@ Setup <- R6::R6Class("Setup",
         ..set.install.expression = function() {
             # Write the update expression. Note that `quote` with `{}` can be used instead of `expression`. See: https://stackoverflow.com/a/40164111/5252007.
             private$..expressions[["install"]] <- expression(
+                # Set package options.
+                options("netpaw" = list(logo.colors = FALSE)),
+
                 # Remove previous installation.
-                remove.packages("netpaw"),
+                try(remove.packages("netpaw")),
 
                 # Install most recent version.
                 devtools::install_github("mihaiconstantin/netpaw"),
@@ -128,7 +131,7 @@ Setup <- R6::R6Class("Setup",
                 library(netpaw),
 
                 # Inform about the update.
-                print("Installation successful.")
+                cat("Installation successful.", "\n\n")
             )
         },
 
@@ -138,6 +141,9 @@ Setup <- R6::R6Class("Setup",
             for(name in names(private$..ranges)) {
                 # Construct the function that will run the simulator.
                 simulate <- function(simulator.load.path, simulator.save.path, callback) {
+                    # Set package options.
+                    options("netpaw" = list(logo.colors = FALSE))
+
                     # Load the library.
                     library(netpaw)
 
