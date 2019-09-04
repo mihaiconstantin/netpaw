@@ -33,6 +33,7 @@ Setup <- R6::R6Class("Setup",
         ..os = NULL,
         ..path = NULL,
         ..callback = NULL,
+        ..shell = NULL,
         ..ranges = list(),
         ..splits = list(),
         ..expressions = list(),
@@ -131,7 +132,7 @@ Setup <- R6::R6Class("Setup",
                 library(netpaw),
 
                 # Inform about the update.
-                cat("Installation successful.", "\n\n")
+                cat("\n", "Installation successful.", "\n\n", sep = "")
             )
         },
 
@@ -217,7 +218,52 @@ Setup <- R6::R6Class("Setup",
 
         # Create shell script to wrap the R scripts.
         ..create.shell = function() {
-            # TODO: Implement.
+            # Create the shell according to the `os` field.
+            if(private$..os == "windows") { private$..windows.shell() } else { private$..linux.shell() }
+
+            # Create the file with the shell code.
+            dump.contents(file = paste0(private$..path, "/setup/run.ps1"), private$..shell)
+        },
+
+
+        # Shell types.
+
+
+        # Shell script for running the simulations on windows.
+        ..windows.shell = function() {
+            # Add the boilerplate and installation script the the `Windows` shell script.
+            private$..shell <- paste0(
+                "# Window title.", "\n",
+                "$host.ui.rawui.WindowTitle = 'Updating package installation...'", "\n\n",
+
+                "# Install the package", "\n",
+                "Rscript.exe ", private$..path, "/setup/scripts/install.R", "\n\n",
+
+                "# Update the window title.", "\n",
+                "$host.ui.rawui.WindowTitle = 'Package updated'", "\n\n",
+
+                "# Ask for confirmation that the installation went fine.", "\n",
+                "pause", "\n\n",
+
+                "# Update window title.", "\n",
+                "$host.ui.rawui.WindowTitle = 'Engaging simulators...'", "\n\n",
+
+                "# Invoke the simulator scripts.", "\n"
+            )
+
+            # Add the simulator invocations to the `Windows` shell script.
+            for(name in names(private$..ranges)) {
+               private$..shell <- append(private$..shell, paste0(
+                   "Start-Process powershell { $host.ui.rawui.WindowTitle = '", capitalize(gsub("_", " ", name)) ,"'; Rscript.exe ", private$..path ,"/setup/scripts/", name ,".R; pause };"
+               ))
+            }
+        },
+
+
+        # Shell script for running the simulations on linux.
+        ..linux.shell = function() {
+            # TODO: implement.
+            stop(..ERRORS..$not.implemented)
         },
 
 
@@ -271,6 +317,11 @@ Setup <- R6::R6Class("Setup",
 
         path = function() {
             return(private$..path)
+        },
+
+
+        shell = function() {
+            return(private$..shell)
         },
 
 
