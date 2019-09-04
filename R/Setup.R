@@ -149,15 +149,15 @@ Setup <- R6::R6Class("Setup",
                     library(netpaw)
 
                     # Load the specific simulator object.
-                    load(simulator.load.path)
+                    load(paste0(getwd(), simulator.load.path))
 
                     # No matter what, do the following.
                     on.exit({
                         # Save the simulator.
-                        save(simulator, file = simulator.save.path)
+                        save(simulator, file = paste0(getwd(), simulator.save.path))
 
                         # Provide feedback about where the simulator was saved.
-                        cat("\n", "Simulator was saved at `", simulator.save.path, "`.", "\n", sep = "")
+                        cat("\n", "Simulator was saved at `", getwd(), simulator.save.path, "`.", "\n", sep = "")
                     })
 
                     # Run the simulator.
@@ -167,8 +167,8 @@ Setup <- R6::R6Class("Setup",
                 # Construct the expression.
                 private$..expressions[[name]] <- as.expression(as.call(list(
                     simulate = simulate,
-                    simulator.load.path = paste0(private$..path, "/setup/scripts/objects/", name, ".RData"),
-                    simulator.save.path = paste0(private$..path, "/setup/output/simulators/", name, "_completed.RData"),
+                    simulator.load.path = paste0("/scripts/objects/", name, ".RData"),
+                    simulator.save.path = paste0("/output/simulators/", name, "_completed.RData"),
                     callback = private$..callback
                 )))
             }
