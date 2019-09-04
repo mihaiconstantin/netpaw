@@ -486,6 +486,23 @@ get.pcor <- function(nvars) {
 
 
 
+# Dump some contents to a file.
+dump.contents <- function(file, contents, verbose = TRUE) {
+    # Open connection.
+    connection <- file(file)
+
+    # Close the connection on exit.
+    on.exit(close(connection))
+
+    # Write contents.
+    writeLines(contents, connection)
+
+    # Console feedback.
+    if(verbose) cat("Successfully created file `", crayon::yellow(file) ,"`.", "\n", sep = "")
+}
+
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # String manipulations ----------------------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
