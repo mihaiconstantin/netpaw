@@ -64,8 +64,14 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 .onAttach <- function(libname, pkgname) {
-    # Print the logo.
-    cat(LOGO, "\n")
+    # Add package specific default options.
+    options("netpaw" = list(
+        # Option about using a colorful logo.
+        logo.colors = if(is.null(getOption("netpaw")$logo.colors)) TRUE else getOption("netpaw")$logo.colors
+    ))
+
+    # Print the logo with our without colors.
+    if(getOption("netpaw")$logo.colors) cat(LOGO.COLOR, "\n") else cat(LOGO.NO.COLOR, "\n")
 }
 
 
