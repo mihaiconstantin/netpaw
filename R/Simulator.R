@@ -30,7 +30,7 @@ Simulator <- R6::R6Class("Simulator",
 
     private = list(
         ..design = NULL,
-        ..simulations = NULL,
+        ..simulations = list(),
         ..targets = list(),
 
 
@@ -98,6 +98,18 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
+        # Run all simulations.
+        ..run = function(verbose, ...) {
+            # Set the targets field to the entire simulation rage.
+            private$..targets <- c(private$..targets, list(range = 1:length(private$..simulations)))
+
+            # Run the simulations.
+            for (i in 1:length(private$..simulations)) {
+               private$..simulations[[i]]$perform(..., verbose = verbose)
+            }
+        },
+
+
         # Core logic for running a range of simulations (i.e., the range is based on the `..simulations` field).
         ..run.rage = function(start, end, verbose, ...) {
             # Prevent range overflow.
@@ -152,6 +164,18 @@ Simulator <- R6::R6Class("Simulator",
 
             # Create simulations from design.
             private$..create.simulations()
+        },
+
+
+        run = function(verbose = TRUE, ...) {
+            # Actions before the run.
+            if(verbose) private$..before(length(private$..simulations))
+
+            # Run.
+            private$..run(verbose, ...)
+
+            # Actions after the run.
+            if(verbose) private$..after()
         },
 
 
