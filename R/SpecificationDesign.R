@@ -70,7 +70,13 @@ SpecificationDesign <- R6::R6Class("SpecificationDesign",
         # Set the design replications using a question.
         ..set.replications = function() {
             # Capture the answer.
-            private$..replications <- Question$new("select", "\nHow many times should each cell be replicated?", c(100, 200, 300, 400, 500), multiple = FALSE, confirmation = private$..confirmation)$answer
+            private$..replications <- Question$new("select", "\nHow many times should each cell be replicated?", c(100, 500, "other"), multiple = FALSE, confirmation = private$..confirmation)$answer
+
+            # If a custom number of replications is requested.
+            if(private$..replications == "other") {
+                # Capture the custom answer. Only the first value is used.
+                private$..replications <- Question$new(type = "open", question = "How many replications?", example = "1000", separator = private$..separator, duplicates = private$..duplicates, confirmation = private$..confirmation)$answer[1]
+            }
         },
 
 
