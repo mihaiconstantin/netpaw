@@ -288,6 +288,29 @@ Setup <- R6::R6Class("Setup",
 
             # Write setup.
             private$..write.setup()
+        },
+
+
+        # Print.
+        print = function() {
+            # General details.
+            cat(crayon::bold("Simulation setup:"))
+            cat("\n")
+            cat("  - os:", crayon::yellow(private$..os))
+            cat("\n")
+            cat("  - path:", crayon::yellow(private$..path))
+            cat("\n")
+            cat("  - simulations:", crayon::yellow(private$..simulator$total))
+            cat("\n")
+            cat("  - cores:", crayon::yellow(private$..cores))
+            cat("\n")
+            cat("  - splits:", crayon::yellow(length(private$..splits)))
+            cat("\n")
+            cat("  - ranges:", paste(crayon::yellow(private$..ranges), collapse = crayon::silver(" | ")))
+            cat("\n")
+
+            # API details.
+            print.class.api(Setup)
         }
     ),
 
