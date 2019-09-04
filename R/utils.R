@@ -226,7 +226,7 @@ print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods =
 
         # Print methods.
         for (name in methods) {
-            cat("    - ", paste(name ,"(", paste(formalArgs(blueprint$public_methods[[name]]), collapse = ", "), ")", sep = ""))
+            cat("    -", paste(name ,"(", paste(formalArgs(blueprint$public_methods[[name]]), collapse = ", "), ")", sep = ""))
             cat("\n")
         }
     } else {
@@ -253,7 +253,7 @@ print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods =
 
             # Print methods.
             for (name in parent.methods) {
-                cat("    - ", paste(name ,"(", paste(formalArgs(blueprint$get_inherit()$public_methods[[name]]), collapse = ", "), ")", sep = ""))
+                cat("    -", paste(name ,"(", paste(formalArgs(blueprint$get_inherit()$public_methods[[name]]), collapse = ", "), ")", sep = ""))
                 cat("\n")
             }
         } else {
