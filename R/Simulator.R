@@ -216,6 +216,17 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
+        # Merge a simulator instance (i.e., its fields will be merged).
+        # TODO: Not now, but later, see how to recreate a `Design` object from a list of simulations.
+        merge = function(simulator) {
+            # Type check.
+            assert("Simulator" %in% class(simulator), ..ERRORS..$incorrect.object.type)
+
+            # Merge the simulations.
+            private$..simulations <- c(private$..simulations, simulator$simulations)
+        },
+
+
         # Print.
         print = function() {
             # General details.
