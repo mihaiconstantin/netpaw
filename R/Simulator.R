@@ -141,7 +141,7 @@ Simulator <- R6::R6Class("Simulator",
         # Things to be done after the runners.
         ..after = function() {
             # Console feedback.
-            cat("Simulator finished. End time: ",  as.character(Sys.time()), ".", sep = "")
+            cat("Simulator finished. End time: ", as.character(Sys.time()), ".", sep = "")
         }
     ),
 
@@ -257,12 +257,12 @@ Simulator <- R6::R6Class("Simulator",
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Exported wrapper for simulator API --------------------------------------
+# Exported wrappers for simulator API -------------------------------------
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
 simulator <- function(design) {
-    # Build the design.
+    # Build the simulator.
     simulator <- Simulator$new(design)
 
     return(simulator)
