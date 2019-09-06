@@ -43,8 +43,11 @@ Simulator <- R6::R6Class("Simulator",
         },
 
 
-        # Register a design.
-        ..create.simulations = function() {
+        # Create the simulator.
+
+
+        # Create from design.
+        ..create.from.design = function() {
             # Create data frames containing combinations of all design factors.
             combinations <- private$..combine.design.factors()
 
@@ -95,6 +98,9 @@ Simulator <- R6::R6Class("Simulator",
 
             return(combinations)
         },
+
+
+        # Backend for the run API.
 
 
         # Run all simulations.
@@ -148,12 +154,15 @@ Simulator <- R6::R6Class("Simulator",
 
     public = list(
         # Constructor.
-        initialize = function(design) {
-            # Boot.
-            private$..boot(design)
+        initialize = function(design = NULL) {
+            # If the design is provided, then create the simulator from it.
+            if(!is.null(design)) {
+                # Boot.
+                private$..boot(design)
 
-            # Create simulations from design.
-            private$..create.simulations()
+                # Create the simulator.
+                private$..create.from.design()
+            }
         },
 
 
