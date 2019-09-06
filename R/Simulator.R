@@ -290,4 +290,65 @@ simulator <- function(design) {
 
 
 
+#' Note: the order is not guaranteed!
+#' @export
+merge.simulators <- function(path = NULL, ..., verbose = TRUE) {
+    # Crete an empty simulator.
+    simulator <- Simulator$new()
+
+    # Initialize the progress bar.
+    if(verbose) progress.bar = progress::progress_bar$new(format = "[:bar] merging simulator :current of :total (:elapsed)", clear = FALSE)
+
+    # Console feedback on start.
+    if(verbose) cat("Merging simulators.", "\n")
+
+    # Merge from a provided path.
+    if(!is.null(path)) {
+        # Get the files where the simulators are saved.
+        files = list.files(path)
+
+        # Bypass the progress bar and set the total.
+        if(verbose) progress.bar$.__enclos_env__$private$total <- length(files)
+
+        # Load and merge the simulators.
+        for(file in files) {
+            # Tick the progress bar.
+            if(verbose) progress.bar$tick()
+
+            # Load the simulator.
+            split.simulator <- readRDS(paste0(path, "/", file))
+
+            # Merge the simulator.
+            simulator$merge(split.simulator)
+        }
+
+    # Merge from a list of simulators.
+    } else {
+        # Capture all simulators.
+        simulators <- list(...)
+
+        # Bypass the progress bar and set the total.
+        if(verbose) progress.bar$.__enclos_env__$private$total <- length(simulators)
+
+        # Merge the simulators.
+        for (split.simulator in simulators) {
+            # Tick the progress bar.
+            if(verbose) progress.bar$tick()
+
+            # Merge the simulator.
+            simulator$merge(split.simulator)
+        }
+    }
+
+    # Handle the progress bar completion to avoid printing issues (e.g., if finished earlier than expected ticks, mark it as terminated manually).
+    if(verbose && !progress.bar$finished) progress.bar$terminate()
+
+    # Console feedback on end
+    if(verbose) cat("Merge completed.", "\n")
+
+    return(simulator)
+}
+
+
+
 # End of file.
