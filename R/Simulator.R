@@ -31,7 +31,6 @@ Simulator <- R6::R6Class("Simulator",
     private = list(
         ..design = NULL,
         ..simulations = list(),
-        ..targets = list(),
 
 
         # Boilerplate.
@@ -100,9 +99,6 @@ Simulator <- R6::R6Class("Simulator",
 
         # Run all simulations.
         ..run = function(verbose, ...) {
-            # Set the targets field to the entire simulation rage.
-            private$..targets <- c(private$..targets, list(range = 1:length(private$..simulations)))
-
             # Run the simulations.
             for (i in 1:length(private$..simulations)) {
                private$..simulations[[i]]$perform(..., verbose = verbose)
@@ -115,9 +111,6 @@ Simulator <- R6::R6Class("Simulator",
             # Prevent range overflow.
             assert((start > 0) && (end <= length(private$..simulations)), "Invalid simulation range.")
 
-            # Keep track of the things we've ran.
-            private$..targets <- c(private$..targets, list(range = start:end))
-
             # Run simulations in specified range.
             for (i in start:end) {
                private$..simulations[[i]]$perform(..., verbose = verbose)
@@ -129,9 +122,6 @@ Simulator <- R6::R6Class("Simulator",
         ..run.subset = function(subset, verbose, ...) {
             # Prevent subset overflow.
             assert((min(subset) > 0) && max(subset) <= length(private$..simulations), "Invalid simulation subset.")
-
-            # Keep track of the things we've ran.
-            private$..targets <- c(private$..targets, list(subset = subset))
 
             # Run the simulations specified in the subset.
             for (i in subset) {
@@ -247,7 +237,9 @@ Simulator <- R6::R6Class("Simulator",
 
 
         targets = function() {
-            return(private$..targets)
+            return(which(sapply(private$..simulations, function(simulation) {
+                simulation$replications == simulation$completed
+            })))
         },
 
 
@@ -257,7 +249,7 @@ Simulator <- R6::R6Class("Simulator",
 
 
         completed = function() {
-            return(length(unlist(private$..targets)))
+            return(length(unlist(self$targets)))
         }
     )
 )
