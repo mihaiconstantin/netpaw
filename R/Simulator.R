@@ -290,7 +290,6 @@ simulator <- function(design) {
 
 
 
-#' Note: the order is not guaranteed!
 #' @export
 merge.simulators <- function(path = NULL, ..., verbose = TRUE) {
     # Crete an empty simulator.
