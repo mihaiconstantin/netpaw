@@ -632,7 +632,7 @@ vector.lines <- function(...) {
 
 # How many lines of R code are in a directory?
 how.many.lines <- function(path = "./R") {
-    files <- list.files(path = "./R", recursive = TRUE, full.names = TRUE)
+    files <- list.files(path = path, recursive = TRUE, full.names = TRUE)
 
     lines <- sapply(files, function(file) {
         file.lines <- length(readLines(file))
