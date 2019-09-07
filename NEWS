@@ -12,16 +12,19 @@ Changes in version 2.0.0
         - mechanism to ask console questions and capture and parse user input
         - mechanism to replicate simulations (i.e., simulator -> simulations -> replications)
         - various utility functions
-    - fixes: n.a.
     - improvements:
         - changed codebase to use `R6` classes and pass-by-reference semantics
         - ASCII logo (i.e., color and non-color version)
-        - improved plotting (i.e, image-based plot for each replication and `.pdf` for each simulation)
+        - custom plotting (i.e, image-based plot for each replication and `.pdf` for each simulation)
+        - informative printing for user-accessible `R6` objects
+        - progress bar for all repetitive actions
+        - resampling possibility in case variables in generated data show no variance
+    - fixes: n.a.
 
 
 
 Changes in version 1.0.0
     - features:
         - simulation script according to the master thesis (i.e., 27 network structures)
-    - fixes: n.a.
     - improvements: n.a.
+    - fixes: n.a.
