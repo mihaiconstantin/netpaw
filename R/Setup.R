@@ -224,32 +224,11 @@ Setup <- R6::R6Class("Setup",
 
         # Shell script for running the simulations on windows.
         ..windows.shell = function() {
-            # Add the boilerplate and installation script the the `Windows` shell script.
-            private$..shell <- paste0(
-                "# Window title.", "\n",
-                "$host.ui.rawui.WindowTitle = 'Updating package installation...'", "\n\n",
+            # Load the template for the Windows Powershell script.
+            private$..shell <- readLines("./assets/templates/run.ps1")
 
-                "# Install the package", "\n",
-                "Rscript.exe ", "./scripts/install.R", "\n\n",
-
-                "# Update the window title.", "\n",
-                "$host.ui.rawui.WindowTitle = 'Package updated'", "\n\n",
-
-                "# Ask for confirmation that the installation went fine.", "\n",
-                "pause", "\n\n",
-
-                "# Update window title.", "\n",
-                "$host.ui.rawui.WindowTitle = 'Engaging simulators...'", "\n\n",
-
-                "# Invoke the simulator scripts."
-            )
-
-            # Add the simulator invocations to the `Windows` shell script.
-            for(name in names(private$..ranges)) {
-               private$..shell <- append(private$..shell, paste0(
-                   "Start-Process powershell { $host.ui.rawui.WindowTitle = '", capitalize(gsub("_", " ", name)) ,"'; Rscript.exe ", "./scripts/", name ,".R; pause };"
-               ))
-            }
+            # Replace the placeholder with the scripts.
+            private$..shell <- gsub("{{scripts}}", paste0("\"", names(private$..ranges), ".R\"", collapse = ", "), private$..shell, perl = TRUE)
         },
 
 
