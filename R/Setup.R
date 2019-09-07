@@ -199,7 +199,7 @@ Setup <- R6::R6Class("Setup",
             # Each expression gets its file.
             for(name in names(private$..expressions)) {
                 # Dump the expression to the file.
-                dump.contents(paste0(private$..path, "/", "setup/scripts/", name, ".R"), paste0(private$..expressions[[name]], collapse = "\n"))
+                dump.contents(paste0(private$..path, "/", "setup/scripts/", name, ".R"), paste0(private$..expressions[[name]], collapse = "\n"), sep = private$..endings)
             }
         },
 
@@ -218,8 +218,8 @@ Setup <- R6::R6Class("Setup",
             # Create the shell according to the `os` field.
             if(private$..os == "windows") { private$..windows.shell() } else { private$..linux.shell() }
 
-            # Create the file with the shell code.
-            dump.contents(file = paste0(private$..path, "/setup/run.ps1"), private$..shell)
+            # Create the file with the shell code with the right end-line returns.
+            dump.contents(file = paste0(private$..path, "/setup/run.", ifelse(private$..os == "windows", "ps1", "sh")), private$..shell, sep = private$..endings)
         },
 
 
