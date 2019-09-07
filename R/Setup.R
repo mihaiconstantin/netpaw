@@ -34,6 +34,7 @@ Setup <- R6::R6Class("Setup",
         ..path = NULL,
         ..callback = NULL,
         ..shell = NULL,
+        ..endings = NULL,
         ..ranges = list(),
         ..splits = list(),
         ..expressions = list(),
@@ -55,6 +56,9 @@ Setup <- R6::R6Class("Setup",
 
             # Set the path where to write the setup.
             if(is.null(path)) private$..path <- getwd() else private$..path <- path
+
+            # Set the correct line endings.
+            if(private$..os == "windows") private$..endings <- "\r\n" else private$..endings <- "\n"
 
             # Set the callback.
             private$..callback = callback
@@ -320,6 +324,11 @@ Setup <- R6::R6Class("Setup",
 
         shell = function() {
             return(private$..shell)
+        },
+
+
+        endings = function() {
+            return(private$..endings)
         },
 
 
