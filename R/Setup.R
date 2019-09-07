@@ -234,8 +234,11 @@ Setup <- R6::R6Class("Setup",
 
         # Shell script for running the simulations on linux.
         ..linux.shell = function() {
-            # TODO: implement.
-            stop(..ERRORS..$not.implemented)
+            # Load the template for the Linux shell script.
+            private$..shell <- readLines("./assets/templates/run.sh")
+
+            # Replace the placeholder with the scripts.
+            private$..shell <- gsub("{{scripts}}", paste0("\"", names(private$..ranges), ".R\"", collapse = " "), private$..shell, perl = TRUE)
         },
 
 
