@@ -118,6 +118,9 @@ Setup <- R6::R6Class("Setup",
                 # Remove previous installation.
                 try(remove.packages("netpaw")),
 
+                # Check if `devtools` is needed.
+                if(!("devtools" %in% rownames(installed.packages()))) install.packages("devtools"),
+
                 # Install most recent version.
                 devtools::install_github("mihaiconstantin/netpaw@dev"),
 
