@@ -1,0 +1,27 @@
+Changes in version 2.0.0
+    - features:
+        - automated mechanism for performing simulations
+        - mechanism to add new models (i.e., generator, sampler, estimator, and comparator)
+        - mechanism for splitting simulations across multiple processes
+        - error and warning handling and capturing for review
+        - mechanism to interactively specify a simulation design
+        - mechanism for approximating the duration of a simulation design
+        - mechanism to generate `R6` object instances in a multi-threading fashion
+        - scaffolder for generating boilerplate code for new models and graphs
+        - mechanism to keep track of the instantiation time and ancestry of an object
+        - mechanism to ask console questions and capture and parse user input
+        - mechanism to replicate simulations (i.e., simulator -> simulations -> replications)
+        - various utility functions
+    - fixes: n.a.
+    - improvements:
+        - changed codebase to use `R6` classes and pass-by-reference semantics
+        - ASCII logo (i.e., color and non-color version)
+        - improved plotting (i.e, image-based plot for each replication and `.pdf` for each simulation)
+
+
+
+Changes in version 1.0.0
+    - features:
+        - simulation script according to the master thesis (i.e., 27 network structures)
+    - fixes: n.a.
+    - improvements: n.a.
