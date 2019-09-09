@@ -197,6 +197,33 @@ find.ancestor <- function(type) {
 
 
 
+# Find the ancestry line of an `R6ClassGenerator`.
+find.ancestry <- function(type) {
+    # Construct the family.
+    ancestry <- c()
+
+    # Find ancestors.
+    (function(type) {
+        # Evaluate to type.
+        blueprint <- eval(as.symbol(type))
+
+        # Type check.
+        assert(class(blueprint) == "R6ClassGenerator", ..ERRORS..$incorrect.object.type)
+
+        # Get the parent class.
+        inherit <- as.character(blueprint$inherit)
+
+        ancestry <<- c(ancestry, type)
+
+        # If more parents exist, recall, else return type.
+        if(length(inherit) > 0) { Recall(inherit) } else { return(type) }
+    })(type)
+
+    return(ancestry)
+}
+
+
+
 # Print the API of an R6 class.
 print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods = c("initialize", "clone", "print", "plot"), parent = FALSE) {
     # Determine the excluded fields.
