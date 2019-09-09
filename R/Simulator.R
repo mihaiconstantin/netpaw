@@ -291,7 +291,7 @@ simulator <- function(design) {
 
 
 #' @export
-merge.simulators <- function(path = NULL, ..., verbose = TRUE) {
+combine.simulators <- function(path = NULL, ..., verbose = TRUE) {
     # Crete an empty simulator.
     simulator <- Simulator$new()
 
