@@ -56,7 +56,7 @@ Generator <- R6::R6Class("Generator",
 
             # Generate the model.
             private$..model <- Model$new(list = private$..generator(...))
-            
+
             # Run after the generator.
             private$..after()
         },

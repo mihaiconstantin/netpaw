@@ -180,7 +180,7 @@ is.invariant <- function(column, tolerance = 1) {
 
 
 
-# Find ancestor of an `R6ClassGenerator`.
+# Find the oldest ancestor of an `R6ClassGenerator`.
 find.ancestor <- function(type) {
     # Evaluate to type.
     blueprint <- eval(as.symbol(type))
