@@ -176,9 +176,9 @@ Scaffolder <- R6::R6Class("Scaffolder",
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #' @export
-scaffold <- function(...) {
+scaffold <- function(type = "model", name, alias, author, doi, ...) {
     # Make the requested file.
-    return(Scaffolder$new(...))
+    return(Scaffolder$new(type = type, name = name, alias = alias, author = author, doi = doi, ...))
 }
 
 
