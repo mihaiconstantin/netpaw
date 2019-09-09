@@ -263,11 +263,31 @@ print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods =
 
     # Parent fields and methods.
     if(parent) {
-        # Get parent fields.
-        parent.fields <- names(c(blueprint$get_inherit()$active, blueprint$get_inherit()$public_fields))[!grepl(excluded.fields, names(c(blueprint$get_inherit()$active, blueprint$get_inherit()$public_fields)))]
+        # Get all parents.
+        parents <- find.ancestry(blueprint$classname)[-1]
 
-        # Get parent methods.
-        parent.methods <- names(blueprint$get_inherit()$public_methods)[!grepl(excluded.methods, names(blueprint$get_inherit()$public_methods))]
+        # Storage for the parent fields.
+        parent.fields <- c()
+
+        # Storage for the parent methods.
+        parent.methods <- list()
+
+        # Get fields and methods for all parents.
+        for(parent in parents) {
+            # Create the blueprint.
+            parent.blueprint <- eval(as.symbol(parent))
+
+            # Append the parent fields.
+            parent.fields <- c(parent.fields, names(c(parent.blueprint$active, parent.blueprint$public_fields))[!grepl(excluded.fields, names(c(parent.blueprint$active, parent.blueprint$public_fields)))])
+
+            # Determine the methods.
+            methods <- names(parent.blueprint$public_methods)[!grepl(excluded.methods, names(parent.blueprint$public_methods))]
+
+            # Append the private methods.
+            for(method in methods) {
+                parent.methods[[method]] <- formalArgs(parent.blueprint$public_methods[[method]])
+            }
+        }
 
         # Print parent fields.
         if(length(parent.fields)) { cat("  - inherited fields:", paste(parent.fields, collapse = " | ")) } else { cat("  - inherited fields:", crayon::silver("n.a.")) }
@@ -279,8 +299,8 @@ print.class.api <- function(blueprint, excluded.fields = c(), excluded.methods =
             cat("\n")
 
             # Print methods.
-            for (name in parent.methods) {
-                cat("    -", paste(name ,"(", paste(formalArgs(blueprint$get_inherit()$public_methods[[name]]), collapse = ", "), ")", sep = ""))
+            for (name in names(parent.methods)) {
+                cat("    -", paste(name ,"(", paste(parent.methods[[name]], collapse = ", "), ")", sep = ""))
                 cat("\n")
             }
         } else {
