@@ -20,6 +20,7 @@ To facilitate researchers to conduct such sample size calculations we provide an
 
 <!-- Badges. -->
 <a href="https://www.repostatus.org/#moved"><img src="https://www.repostatus.org/badges/latest/moved.svg" alt="Repository status"/></a>
+(see [github.com/mihaiconstantin/powerly](https://github.com/mihaiconstantin/powerly))
 
 ### Installation
 - the package can be installed as `devtools::install_github('mihaiconstantin/netPower')`
