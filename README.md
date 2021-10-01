@@ -1,17 +1,35 @@
-# netPower
+<h1>
+  This repository has been moved and it is no longer maintained.
+  <sub>Please read below.</sub>
+</h1>
+
+This repository is part of the research master thesis titled ***Sample Size Recommendations for Estimating Cross-Sectional Network Models*** where we performed simulations for several network models to provide sample size recommendations. The primary purpose of this repository is to allow researchers to replicate the results presented in the thesis (i.e., using the repository version at commit [9ca8392](https://github.com/mihaiconstantin/netpaw/tree/9ca839210efe107bc8ccff38bc383d1d59e0b351)). The thesis and the simulation scripts are freely available on OSF at [osf.io/zkaxu](https://osf.io/zkaxu). 
+
+**If you are interested in sample size analysis for psychological networks**, you are cordially invited to take a look at following paper:
+
+- Constantin, M. A., Schuurman, N. K., & Vermunt, J. (2021). A General Monte Carlo Method for Sample Size Analysis in the Context of Network Models. *PsyArXiv*. https://doi.org/10.31234/osf.io/j5v7u
+
+In this paper, which we submitted for publication, we introduce a general method to perform sample size calculations for psychological networks.
+To facilitate researchers to conduct such sample size calculations we provide an `R` package called `powerly` available both on GitHub at [mihaiconstantin/powerly](https://github.com/mihaiconstantin/powerly) and [CRAN](https://www.r-pkg.org/pkg/powerly). The package `powerly` is stable and under active development to support new models. To request a new model, performance measure, or statistic, please open an issue at [github.com/mihaiconstantin/powerly/issues](https://github.com/mihaiconstantin/powerly/issues).
+
+---
+
+## netPower
 **Sample Size Recommendations for Estimating Cross-Sectional Network Models.** 
 
+<!-- Badges. -->
+<a href="https://www.repostatus.org/#moved"><img src="https://www.repostatus.org/badges/latest/moved.svg" alt="Repository status"/></a>
 
-## Installation
+### Installation
 - the package can be installed as `devtools::install_github('mihaiconstantin/netPower')`
 
 
-## Description
+### Description
 The data used in the study can be loaded via `data("netPowerData")`.
 The code block below illustrates the main four functions found in this package. 
 
 
-#### 1. build_design(participants, nodes, architectures, connectedness, models)
+##### 1. build_design(participants, nodes, architectures, connectedness, models)
 - builds the simulation design  
 
 ```r
@@ -40,7 +58,7 @@ head(design)
 ```
 
 
-#### 2. run_cell(participants, nodes, density, architecture)
+##### 2. run_cell(participants, nodes, density, architecture)
 - applies the simulation procedure on a single design cell (i.e., referred to as row in the `design` matrix above)
 
 ```r
@@ -73,7 +91,7 @@ plot(result_cell)
     - `$computed` contains the outcome measures of interests
 
 
-#### 3. run_cells(cells)
+##### 3. run_cells(cells)
 - applies the simulation procedure on a selected number of cells (i.e., it is a wrapper around `run_cell`)
 
 ```r
@@ -86,7 +104,7 @@ result_cells = run_cells(design[c(1, 97, 165), ])
 ```
 
 
-#### 4. replicate_cells(cells, replications)
+##### 4. replicate_cells(cells, replications)
 - applies the simulation procedure on a selected number of cell and replicates the procedure `n` number of times (i.e., it is a wrapper around `run_cells`)
 
 ```r
