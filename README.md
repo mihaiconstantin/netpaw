@@ -4,7 +4,7 @@
   <sub>Please read below.</sub>
 </h1>
 
-This repository is part of the research master thesis titled ***Sample Size Recommendations for Estimating Cross-Sectional Network Models*** where we performed simulations for several network models to provide sample size recommendations. The primary purpose of this repository is to allow researchers to replicate the results presented in the thesis (i.e., using the repository version at commit [9ca8392](https://github.com/mihaiconstantin/netpaw/tree/9ca839210efe107bc8ccff38bc383d1d59e0b351)). The thesis and the simulation scripts are freely available on OSF at [osf.io/zkaxu](https://osf.io/zkaxu). 
+This repository is part of the research master thesis titled ***Sample Size Recommendations for Estimating Cross-Sectional Network Models*** by Mihai A. Constantin, under the supervision of Angélique O. J. Cramer. In this project we performed simulations for several network models to provide sample size recommendations. The primary purpose of this repository is to allow researchers to replicate the results presented in the thesis (i.e., using the repository version at commit [9ca8392](https://github.com/mihaiconstantin/netpaw/tree/9ca839210efe107bc8ccff38bc383d1d59e0b351)). The thesis and the simulation scripts are freely available on OSF at [osf.io/zkaxu](https://osf.io/zkaxu). 
 
 **If you are interested in sample size analysis for psychological networks**, you are cordially invited to take a look at following paper:
 
